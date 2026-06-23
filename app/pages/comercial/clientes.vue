@@ -224,6 +224,11 @@
                     <option>Clinicas estetica</option>
                     <option>Estetica automotiva</option>
                     <option>Auto Center</option>
+                    <option>Energia solar</option>
+                    <option>Assistência técnica</option>
+                    <option>Chaveiro</option>
+                    <option>Eletricista</option>
+                    <option>Contabilidade</option>
                   </select>
                 </div>
                 <div>
