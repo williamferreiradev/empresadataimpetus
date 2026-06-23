@@ -177,12 +177,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { MapIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'comercial' })
 
 const supabase = useSupabaseClient()
+const { userViewAllLeads, userId } = useUserRole()
 const showModal = ref(false)
 
 const isLoading = ref(true)
@@ -203,13 +204,23 @@ onMounted(() => {
   fetchLeadsExtraidos()
 })
 
+watch([userViewAllLeads, userId], () => {
+  fetchLeadsExtraidos()
+})
+
 async function fetchLeadsExtraidos() {
   isLoading.value = true
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_clientes')
     .select('*')
     .eq('status', 'Extraído')
     .order('criado_em', { ascending: false })
+    
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+  
+  const { data, error } = await query
   
   if (error) {
     console.error('Erro ao buscar leads extraídos:', error.message)

@@ -174,28 +174,41 @@ definePageMeta({
 })
 
 const supabase = useSupabaseClient<Database>()
+const { userViewAllLeads, userId } = useUserRole()
 
 // ----------------------------------------------------
 // FETCH DATA
 // ----------------------------------------------------
 const { data: propostas, pending: pendingPropostas } = useAsyncData('inicio-propostas', async () => {
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_propostas')
     .select('*')
     .order('criado_em', { ascending: false });
+    
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+  
+  const { data, error } = await query
   if (error) console.error(error);
   return data || [];
-});
+}, { watch: [userViewAllLeads, userId] });
 
 const { data: clientes, pending: pendingClientes } = useAsyncData('inicio-clientes', async () => {
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_clientes')
     .select('*')
     .order('criado_em', { ascending: false })
     .limit(10);
+    
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+  
+  const { data, error } = await query
   if (error) console.error(error);
   return data || [];
-});
+}, { watch: [userViewAllLeads, userId] });
 
 // ----------------------------------------------------
 // UTILS

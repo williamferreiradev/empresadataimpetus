@@ -5,6 +5,8 @@ export const useUserRole = () => {
   // Estado global para cachear os papéis do usuário logado e não sobrecarregar o DB
   const userRoles = useState<string[]>('user_roles', () => [])
   const userFullName = useState<string>('user_full_name', () => '')
+  const userViewAllLeads = useState<boolean>('user_view_all_leads', () => false)
+  const userIdState = useState<string>('user_id_state', () => '')
   const isRolesLoaded = useState<boolean>('is_roles_loaded', () => false)
 
   const fetchRoles = async () => {
@@ -14,6 +16,8 @@ export const useUserRole = () => {
     if (!userId) {
       userRoles.value = []
       userFullName.value = ''
+      userViewAllLeads.value = false
+      userIdState.value = ''
       isRolesLoaded.value = false
       return []
     }
@@ -27,7 +31,7 @@ export const useUserRole = () => {
       console.log('Buscando papéis para o usuário ID:', userId)
       const { data, error } = await supabase
         .from('profiles')
-        .select('papeis, full_name')
+        .select('papeis, full_name, vertodoslead')
         .eq('id', userId)
         .single()
         
@@ -36,6 +40,8 @@ export const useUserRole = () => {
       if (!error && data) {
         userRoles.value = data.papeis || []
         userFullName.value = data.full_name || user.value?.email?.split('@')[0] || 'Usuário'
+        userViewAllLeads.value = !!data.vertodoslead
+        userIdState.value = userId
         isRolesLoaded.value = true
         console.log('Papéis carregados com sucesso:', userRoles.value)
       } else if (error) {
@@ -51,7 +57,23 @@ export const useUserRole = () => {
   const clearRoles = () => {
     userRoles.value = []
     userFullName.value = ''
+    userViewAllLeads.value = false
+    userIdState.value = ''
     isRolesLoaded.value = false
+  }
+
+  const toggleViewAllLeads = async () => {
+    if (!userIdState.value) return
+    const newValue = !userViewAllLeads.value
+    userViewAllLeads.value = newValue // optimistic update
+    
+    try {
+      const { error } = await supabase.from('profiles').update({ vertodoslead: newValue }).eq('id', userIdState.value)
+      if (error) throw error
+    } catch (e) {
+      console.error('Erro ao atualizar vertodoslead:', e)
+      userViewAllLeads.value = !newValue // rollback
+    }
   }
 
   // Limpa o cache automaticamente caso o usuário deslogue
@@ -64,9 +86,12 @@ export const useUserRole = () => {
   return {
     userRoles,
     userFullName,
+    userViewAllLeads,
+    userId: userIdState,
     isRolesLoaded,
     fetchRoles,
     clearRoles,
+    toggleViewAllLeads,
     // Verifica se possui um dos papéis requeridos ou é AdmDono
     hasRole: (allowedRoles: string[]) => {
       let roles = userRoles.value || []

@@ -267,6 +267,7 @@ definePageMeta({
 })
 
 const supabase = useSupabaseClient<Database>()
+const { userViewAllLeads, userId } = useUserRole()
 
 // Colunas Exatas Solicitadas
 const columns = [
@@ -285,7 +286,7 @@ const columns = [
 // FETCH DATA
 // ----------------------------------------------------
 const { data: clientes, pending, refresh } = useAsyncData('pipeline-clientes', async () => {
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_clientes')
     .select(`
       *,
@@ -295,9 +296,14 @@ const { data: clientes, pending, refresh } = useAsyncData('pipeline-clientes', a
     `)
     .order('updated_at', { ascending: false });
     
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+
+  const { data, error } = await query
   if (error) console.error(error);
   return data || [];
-});
+}, { watch: [userViewAllLeads, userId] });
 
 // Helper para agrupar
 function getClientsByStatus(status: string) {

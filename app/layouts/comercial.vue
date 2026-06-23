@@ -64,6 +64,24 @@
         <h1 class="text-xl font-semibold text-gray-800 capitalize">{{ pageTitle }}</h1>
         
         <div class="flex items-center gap-6">
+          <!-- Toggle Ver Todos os Leads -->
+          <div class="hidden sm:flex items-center bg-gray-100 rounded-full p-1 shadow-inner border border-gray-200/50">
+            <button 
+              @click="userViewAllLeads ? toggleViewAllLeads() : null"
+              :class="!userViewAllLeads ? 'bg-white shadow text-orange-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium'"
+              class="px-4 py-1.5 text-xs rounded-full transition-all"
+            >
+              Meus Leads
+            </button>
+            <button 
+              @click="!userViewAllLeads ? toggleViewAllLeads() : null"
+              :class="userViewAllLeads ? 'bg-white shadow text-orange-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium'"
+              class="px-4 py-1.5 text-xs rounded-full transition-all"
+            >
+              Todos
+            </button>
+          </div>
+
           <!-- Notifications & Profile -->
           <div class="flex items-center gap-4">
             <button class="relative p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
@@ -101,7 +119,7 @@ import {
 
 const user = useSupabaseUser()
 const route = useRoute()
-const { userRoles, userFullName, fetchRoles } = useUserRole()
+const { userRoles, userFullName, userViewAllLeads, toggleViewAllLeads, fetchRoles } = useUserRole()
 
 // Busca os papéis caso ainda não estejam no cache
 import { onMounted } from 'vue'

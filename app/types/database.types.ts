@@ -131,6 +131,7 @@ export interface Database {
           updated_at: string
           papeis: Database["public"]["Enums"]["papel"][] | null
           ativo: boolean | null
+          vertodoslead: boolean | null
         }
         Insert: {
           id: string
@@ -141,6 +142,7 @@ export interface Database {
           updated_at?: string
           papeis?: Database["public"]["Enums"]["papel"][] | null
           ativo?: boolean | null
+          vertodoslead?: boolean | null
         }
         Update: {
           id?: string
@@ -151,6 +153,7 @@ export interface Database {
           updated_at?: string
           papeis?: Database["public"]["Enums"]["papel"][] | null
           ativo?: boolean | null
+          vertodoslead?: boolean | null
         }
         Relationships: [
           {

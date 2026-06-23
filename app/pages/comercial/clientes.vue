@@ -322,6 +322,7 @@ definePageMeta({
 })
 
 const supabase = useSupabaseClient<Database>()
+const { userViewAllLeads, userId } = useUserRole()
 
 // Lista de Status solicitada
 const statusOptions = [
@@ -340,7 +341,7 @@ const statusOptions = [
 // FETCH DATA
 // ----------------------------------------------------
 const { data: clientes, pending, refresh } = useAsyncData('todos-clientes', async () => {
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_clientes')
     .select(`
       *,
@@ -350,9 +351,14 @@ const { data: clientes, pending, refresh } = useAsyncData('todos-clientes', asyn
     `)
     .order('criado_em', { ascending: false });
     
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+
+  const { data, error } = await query
   if (error) console.error(error);
   return data || [];
-});
+}, { watch: [userViewAllLeads, userId] });
 
 // ----------------------------------------------------
 // FILTROS LOGIC
