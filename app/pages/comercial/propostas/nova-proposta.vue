@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto pb-28">
+  <div class="w-full px-6 md:px-12 mx-auto pb-28">
     <!-- Header -->
     <div class="mb-8 flex items-center">
       <NuxtLink to="/comercial/propostas" class="mr-4 p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors">
@@ -62,15 +62,45 @@
         </div>
 
         <div class="grid grid-cols-1 gap-5">
-          <!-- Dropdown de clientes -->
-          <div>
+          <!-- Dropdown de clientes com pesquisa -->
+          <div class="relative" ref="dropdownRef">
             <label class="block text-sm font-bold text-gray-700 mb-2">Lead existente</label>
-            <select v-model="selectedClienteId" @change="preencherCliente" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 bg-gray-50">
-              <option value="">-- Preencher manualmente ou selecionar --</option>
-              <option v-for="c in clientes" :key="c.id" :value="c.id">
+            <div 
+              @click="dropdownOpen = !dropdownOpen" 
+              class="w-full border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 p-3 bg-gray-50 cursor-pointer flex justify-between items-center"
+            >
+              <span class="truncate text-gray-700">{{ selectedClienteNome || '-- Preencher manualmente ou selecionar --' }}</span>
+              <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            
+            <div v-if="dropdownOpen" class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+              <div class="sticky top-0 bg-white p-2 border-b border-gray-100">
+                <input 
+                  v-model="searchCliente" 
+                  type="text" 
+                  class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none" 
+                  placeholder="Pesquisar cliente..." 
+                  @click.stop 
+                />
+              </div>
+              <div 
+                @click="selecionarDropdown('')" 
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm text-gray-600 border-b border-gray-100"
+              >
+                -- Preencher manualmente ou limpar seleção --
+              </div>
+              <div 
+                v-for="c in filteredClientes" 
+                :key="c.id" 
+                @click="selecionarDropdown(c)" 
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm truncate text-gray-800"
+              >
                 {{ c.nome }} {{ c.empresa ? `— ${c.empresa}` : '' }}
-              </option>
-            </select>
+              </div>
+              <div v-if="filteredClientes.length === 0" class="px-4 py-3 text-sm text-gray-500 text-center">
+                Nenhum cliente encontrado
+              </div>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -255,7 +285,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePropostasStore } from '~/stores/propostas'
 
@@ -291,7 +321,51 @@ const successMsg = ref('')
 
 const novoCliente = ref({ nome: '', empresa: '', email: '', telefone: '', segmento: '', origem: '', status: 'Novo' })
 
-onMounted(() => fetchClientes())
+// Refs do dropdown customizado
+const dropdownRef = ref(null)
+const dropdownOpen = ref(false)
+const searchCliente = ref('')
+const selectedClienteNome = ref('')
+
+const filteredClientes = computed(() => {
+  if (!searchCliente.value) return clientes.value
+  const query = searchCliente.value.toLowerCase()
+  return clientes.value.filter(c => 
+    c.nome.toLowerCase().includes(query) || 
+    (c.empresa && c.empresa.toLowerCase().includes(query))
+  )
+})
+
+function selecionarDropdown(c) {
+  if (!c) {
+    selectedClienteId.value = ''
+    selectedClienteNome.value = ''
+    form.value.cliente_nome = ''
+    form.value.cliente_empresa = ''
+  } else {
+    selectedClienteId.value = c.id
+    selectedClienteNome.value = c.nome + (c.empresa ? ` — ${c.empresa}` : '')
+    form.value.cliente_nome = c.nome || ''
+    form.value.cliente_empresa = c.empresa || ''
+  }
+  dropdownOpen.value = false
+  searchCliente.value = ''
+}
+
+function closeDropdown(e) {
+  if (dropdownRef.value && !dropdownRef.value.contains(e.target)) {
+    dropdownOpen.value = false
+  }
+}
+
+onMounted(() => {
+  fetchClientes()
+  document.addEventListener('click', closeDropdown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown)
+})
 
 async function fetchClientes() {
   const { data, error } = await supabase
@@ -300,14 +374,6 @@ async function fetchClientes() {
     .order('criado_em', { ascending: false })
   if (error) console.warn('Erro ao buscar clientes:', error.message)
   if (data) clientes.value = data
-}
-
-function preencherCliente() {
-  const c = clientes.value.find(x => x.id === selectedClienteId.value)
-  if (c) {
-    form.value.cliente_nome = c.nome || ''
-    form.value.cliente_empresa = c.empresa || ''
-  }
 }
 
 async function criarCliente() {

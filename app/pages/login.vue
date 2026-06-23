@@ -23,15 +23,36 @@ definePageMeta({
 })
 
 const user = useSupabaseUser()
-// Removed useSupabaseCookieRedirect() as we have saveRedirectToCookie: false
+const supabase = useSupabaseClient()
+const router = useRouter()
 
-watch(user, () => {
+watch(user, async () => {
   if (user.value) {
-    navigateTo('/')
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('papeis')
+        .eq('id', user.value.id)
+        .single()
+
+      if (profile && profile.papeis && profile.papeis.length === 1) {
+        const p = profile.papeis[0]
+        if (p === 'Comercial') return router.push('/comercial')
+        if (p === 'Pré-vendas') return router.push('/pre-vendas')
+        if (p === 'Marketing') return router.push('/marketing')
+        if (p === 'Entrega') return router.push('/entrega')
+        if (p === 'Customer Success') return router.push('/cs')
+        if (p === 'Financeiro') return router.push('/financeiro')
+        if (p === 'Administrativo') return router.push('/administrativo')
+      }
+    } catch (e) {
+      console.error('Erro ao buscar papel:', e)
+    }
+    router.push('/')
   }
 }, { immediate: true })
 
 function onLoginSuccess() {
-  navigateTo('/')
+  // O watcher já vai cuidar do redirecionamento assim que o user for preenchido
 }
 </script>

@@ -15,7 +15,12 @@
       <p class="text-gray-500">O link é inválido ou a proposta ainda não possui conteúdo gerado.</p>
     </div>
 
-    <!-- DOCUMENT WRAPPER -->
+    <!-- SITE PROPOSAL -->
+    <div v-else-if="parsedData.isSite" class="w-full min-h-screen bg-white">
+      <SitePreview :theme="parsedData.theme" :content="parsedData.content" />
+    </div>
+
+    <!-- DOCUMENT WRAPPER (COMMERCIAL PROPOSAL) -->
     <div v-else class="w-full max-w-[1000px] bg-white shadow-2xl print:shadow-none print:w-full print:max-w-none my-0 sm:my-10 overflow-hidden rounded-none sm:rounded-2xl document-container">
       
       <!-- 1. HERO SECTION (DARK) -->
@@ -444,6 +449,9 @@ const parsedData = computed(() => {
       const parsed = typeof proposta.value.conteudo === 'string' 
         ? JSON.parse(proposta.value.conteudo) 
         : proposta.value.conteudo;
+      if (parsed.isSite) {
+        return parsed
+      }
       if (parsed.hero && parsed.diagnostico) {
         return parsed
       }

@@ -14,16 +14,19 @@
           <p class="text-sm text-gray-500 mt-1 font-medium">Selecione um layout base para a proposta do cliente</p>
         </div>
       </div>
-      <button
+      <NuxtLink 
         v-if="modeloSelecionado"
-        @click="usarModelo"
+        :to="{ 
+          path: '/comercial/propostas/editor-site', 
+          query: { modelo: modeloSelecionado.id } 
+        }"
         class="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center"
       >
         <span class="mr-2">Usar modelo {{ modeloSelecionado.nome }}</span>
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
-      </button>
+      </NuxtLink>
     </div>
 
     <!-- Layout Split -->
@@ -384,10 +387,10 @@ const modelos = [
 
 function usarModelo() {
   if (!modeloSelecionado.value) return
-  // Navega para criar proposta com o modelo pré-selecionado
+  // Navega para editar a proposta de site
   router.push({
-    path: '/comercial/propostas/nova-proposta',
-    query: { modelo: modeloSelecionado.value.id, segmento: modeloSelecionado.value.nome }
+    path: '/comercial/propostas/editor-site',
+    query: { modelo: modeloSelecionado.value.id }
   })
 }
 </script>

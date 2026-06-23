@@ -1,13 +1,13 @@
 <template>
-  <div class="max-w-7xl mx-auto">
-    <!-- Header Section -->
-    <div class="text-center mb-10 mt-4">
+  <div class="w-full px-6 md:px-12 mx-auto">
+    <div class="mb-10 mt-4 text-left">
+      <p class="text-sm font-medium text-gray-500 mb-1 tracking-wide uppercase">Olá, {{ userFullName }}</p>
       <h2 class="text-3xl font-bold text-gray-900 mb-6">
         Qual <span class="text-orange-500">Departamento</span> você gostaria de acessar hoje?
       </h2>
       
       <!-- Filters (Pills) -->
-      <div class="flex flex-wrap justify-center gap-3">
+      <div class="flex flex-wrap justify-start gap-3">
         <button 
           v-for="filter in ['Todos', 'Comercial', 'Operações', 'Administrativo']"
           :key="filter"
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { 
   MegaphoneIcon, 
   BriefcaseIcon, 
@@ -63,6 +63,8 @@ import {
   MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 
+const { userFullName, fetchRoles, hasRole } = useUserRole()
+
 const searchQuery = useState('searchQuery', () => '')
 const activeFilter = ref('Todos')
 
@@ -72,54 +74,70 @@ const departments = [
     category: 'Comercial',
     description: 'Acompanhe métricas de funil, campanhas, anúncios, SEO e anomalias em seu stack de marketing.',
     icon: MegaphoneIcon,
-    to: '/marketing'
+    to: '/marketing',
+    allowedRoles: ['Marketing']
   },
   {
     title: 'Comercial',
     category: 'Comercial',
     description: 'Gerencie oportunidades no pipeline, propostas, negociações e fechamento de novos contratos.',
     icon: BriefcaseIcon,
-    to: '/comercial'
+    to: '/comercial',
+    allowedRoles: ['Comercial']
   },
   {
     title: 'Pré-vendas',
     category: 'Comercial',
     description: 'Qualificação de leads inbound e outbound, agendamento de reuniões e primeiro contato comercial.',
     icon: PhoneIcon,
-    to: '/pre-vendas'
+    to: '/pre-vendas',
+    allowedRoles: ['Pré-vendas']
   },
   {
     title: 'Entrega',
     category: 'Operações',
     description: 'Acompanhamento de projetos, logística, implantação técnica e onboarding de novos clientes.',
     icon: TruckIcon,
-    to: '/entrega'
+    to: '/entrega',
+    allowedRoles: ['Entrega']
   },
   {
     title: 'Customer Success',
     category: 'Operações',
     description: 'Gestão de satisfação, retenção de clientes, suporte ativo e expansão de contas base (upsell/cross-sell).',
     icon: HeartIcon,
-    to: '/customer-success'
+    to: '/customer-success',
+    allowedRoles: ['Customer Success']
   },
   {
     title: 'Financeiro',
     category: 'Administrativo',
     description: 'Controle de faturamento, fluxo de caixa, contas a pagar, contas a receber e relatórios financeiros detalhados.',
     icon: BanknotesIcon,
-    to: '/financeiro'
+    to: '/financeiro',
+    allowedRoles: ['Financeiro']
   },
   {
     title: 'Administrativo',
     category: 'Administrativo',
     description: 'Gestão de recursos humanos, controle de infraestrutura, processos internos, auditorias e contabilidade.',
     icon: BuildingOfficeIcon,
-    to: '/administrativo'
+    to: '/administrativo',
+    allowedRoles: ['Administrativo']
   }
 ]
 
+// Garante que o fetch ocorra, caso não venha já cacheadinho do middleware
+onMounted(async () => {
+  await fetchRoles()
+})
+
+const accessibleDepartments = computed(() => {
+  return departments.filter(dept => hasRole(dept.allowedRoles))
+})
+
 const filteredDepartments = computed(() => {
-  return departments.filter(dept => {
+  return accessibleDepartments.value.filter(dept => {
     const matchCategory = activeFilter.value === 'Todos' || dept.category === activeFilter.value
     const search = searchQuery.value.toLowerCase().trim()
     const matchSearch = search === '' || 

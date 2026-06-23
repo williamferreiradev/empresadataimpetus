@@ -208,14 +208,7 @@ function parseCurrency(val: string | null | undefined): number {
 }
 
 function formatCurrency(val: number): string {
-  if (val === 0) return 'R$ 0';
-  if (val >= 1000000) {
-    return `R$ ${(val / 1000000).toFixed(1)}M`.replace('.', ',');
-  }
-  if (val >= 1000) {
-    return `R$ ${(val / 1000).toFixed(0)}k`;
-  }
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(val);
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
 }
 
 function formatDate(dateStr: string | null) {

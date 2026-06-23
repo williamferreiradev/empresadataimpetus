@@ -190,6 +190,57 @@
                   </NuxtLink>
                 </div>
               </div>
+
+              <!-- TAREFAS SECTION -->
+              <div class="border-t border-gray-200 pt-6">
+                <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                  <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                  Tarefas / Lembretes
+                </h4>
+                
+                <!-- Add Task Form -->
+                <div class="flex flex-col md:flex-row gap-3 mb-5 items-end bg-gray-50 border border-gray-100 p-4 rounded-xl">
+                  <div class="flex-1 w-full">
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Título da Tarefa</label>
+                    <input v-model="newTask.titulo" type="text" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Ex: Ligar para confirmar envio">
+                  </div>
+                  <div class="w-full md:w-auto">
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Data e Hora</label>
+                    <input v-model="newTask.data_hora" type="datetime-local" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                  </div>
+                  <button type="button" @click="addTask" :disabled="isAddingTask || !newTask.titulo || !newTask.data_hora" class="w-full md:w-auto bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-lg font-medium shadow-sm transition-colors disabled:opacity-50 text-sm">
+                    {{ isAddingTask ? 'Adicionando...' : 'Adicionar' }}
+                  </button>
+                </div>
+
+                <!-- Tasks List -->
+                <div v-if="isTasksLoading" class="text-center py-6 text-sm text-gray-500 flex flex-col items-center justify-center">
+                  <svg class="animate-spin h-5 w-5 text-gray-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Carregando tarefas...
+                </div>
+                <div v-else-if="clientTasks.length === 0" class="text-center py-8 text-sm text-gray-500 italic border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
+                  Nenhuma tarefa agendada para este lead.
+                </div>
+                <div v-else class="space-y-2.5">
+                  <div v-for="task in clientTasks" :key="task.id" class="flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:border-orange-300 transition-colors bg-white group" :class="{'opacity-60 bg-gray-50 border-gray-200': task.concluida}">
+                    <div class="flex items-center gap-3.5 overflow-hidden">
+                      <input type="checkbox" :checked="task.concluida" @change="toggleTask(task)" class="h-4.5 w-4.5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer mt-0.5">
+                      <div class="overflow-hidden">
+                        <p class="text-sm font-semibold text-gray-900 truncate" :class="{'line-through text-gray-500': task.concluida}">{{ task.titulo }}</p>
+                        <p class="text-xs text-gray-500 flex items-center mt-0.5">
+                          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                          {{ new Date(task.data_hora).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) }}
+                        </p>
+                      </div>
+                    </div>
+                    <button type="button" @click="deleteTask(task.id)" class="text-gray-400 hover:text-red-600 p-1.5 ml-2 shrink-0 transition-colors opacity-0 group-hover:opacity-100 rounded-md hover:bg-red-50">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
               
             </div>
           </div>
@@ -310,6 +361,12 @@ const selectedClient = ref<any>(null)
 const clientProposals = ref<any[]>([])
 const isLoadingProposals = ref(false)
 
+// TASKS STATE
+const clientTasks = ref<any[]>([])
+const isTasksLoading = ref(false)
+const isAddingTask = ref(false)
+const newTask = ref({ titulo: '', data_hora: '' })
+
 function calculateScore(status: string) {
   const scores: Record<string, string> = {
     'Extraído': '1',
@@ -331,6 +388,11 @@ async function openClientDetails(cliente: any) {
   isLoadingProposals.value = true
   clientProposals.value = []
   
+  // Limpa tarefas
+  clientTasks.value = []
+  newTask.value = { titulo: '', data_hora: '' }
+  
+  // Busca Propostas
   try {
     const { data, error } = await supabase
       .from('ibeia_propostas')
@@ -345,11 +407,95 @@ async function openClientDetails(cliente: any) {
   } finally {
     isLoadingProposals.value = false
   }
+
+  // Busca Tarefas
+  fetchTasks(cliente.id)
 }
 
 function closeClientDetails() {
   isDetailsModalOpen.value = false
   selectedClient.value = null
+}
+
+// ----------------------------------------------------
+// TASKS LOGIC
+// ----------------------------------------------------
+async function fetchTasks(clienteId: string) {
+  isTasksLoading.value = true
+  try {
+    const { data, error } = await supabase
+      .from('ibeia_clientes_tarefas')
+      .select('*')
+      .eq('cliente_id', clienteId)
+      .order('data_hora', { ascending: true })
+      
+    if (error) throw error
+    clientTasks.value = data || []
+  } catch (err) {
+    console.error('Erro ao buscar tarefas:', err)
+    clientTasks.value = []
+  } finally {
+    isTasksLoading.value = false
+  }
+}
+
+async function addTask() {
+  if (!newTask.value.titulo || !newTask.value.data_hora || !selectedClient.value?.id) return
+  
+  isAddingTask.value = true
+  try {
+    const { error } = await supabase
+      .from('ibeia_clientes_tarefas')
+      .insert({
+        cliente_id: selectedClient.value.id,
+        titulo: newTask.value.titulo,
+        data_hora: new Date(newTask.value.data_hora).toISOString()
+      })
+      
+    if (error) throw error
+    
+    newTask.value = { titulo: '', data_hora: '' }
+    await fetchTasks(selectedClient.value.id)
+  } catch (err: any) {
+    console.error("Erro ao adicionar tarefa:", err)
+    alert('Erro ao adicionar tarefa: ' + (err.message || JSON.stringify(err)))
+  } finally {
+    isAddingTask.value = false
+  }
+}
+
+async function toggleTask(task: any) {
+  const originalStatus = task.concluida
+  task.concluida = !originalStatus
+  try {
+    const { error } = await supabase
+      .from('ibeia_clientes_tarefas')
+      .update({ concluida: task.concluida })
+      .eq('id', task.id)
+      
+    if (error) throw error
+  } catch (err: any) {
+    task.concluida = originalStatus
+    console.error("Erro ao atualizar tarefa:", err)
+    alert('Erro ao atualizar tarefa: ' + (err.message || JSON.stringify(err)))
+  }
+}
+
+async function deleteTask(taskId: string) {
+  if (!confirm('Deseja realmente excluir esta tarefa?')) return;
+  
+  try {
+    const { error } = await supabase
+      .from('ibeia_clientes_tarefas')
+      .delete()
+      .eq('id', taskId)
+      
+    if (error) throw error
+    clientTasks.value = clientTasks.value.filter(t => t.id !== taskId)
+  } catch (err: any) {
+    console.error("Erro ao excluir tarefa:", err)
+    alert('Erro ao excluir tarefa: ' + (err.message || JSON.stringify(err)))
+  }
 }
 </script>
 

@@ -18,6 +18,10 @@
           <HomeIcon class="h-5 w-5 mr-3 text-gray-400 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path === '/comercial/inicio'}" />
           Início
         </NuxtLink>
+        <NuxtLink to="/comercial/extracao" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+          <MagnifyingGlassIcon class="h-5 w-5 mr-3 text-gray-400 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/extracao')}" />
+          Extração
+        </NuxtLink>
         <NuxtLink to="/comercial/clientes" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
           <UsersIcon class="h-5 w-5 mr-3 text-gray-400 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/clientes')}" />
           Clientes
@@ -34,10 +38,22 @@
       
       <!-- Bottom Links -->
       <div class="p-4 border-t border-gray-200 space-y-1">
-        <NuxtLink to="/" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 group transition-colors">
+        <!-- Mostrar "Voltar ao Hub" apenas se o usuário tiver mais de 1 departamento -->
+        <NuxtLink v-if="accessibleCount > 1" to="/" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 group transition-colors">
           <ArrowLeftIcon class="h-5 w-5 mr-3 text-gray-400 group-hover:text-gray-500" />
           Voltar ao Hub
         </NuxtLink>
+        
+        <!-- Mostrar Perfil do Usuário se tiver apenas 1 departamento -->
+        <div v-else class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700">
+          <div class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold mr-3 shrink-0">
+            {{ userInitial }}
+          </div>
+          <div class="truncate">
+            <p class="text-sm font-medium text-gray-900 truncate">{{ userFullName }}</p>
+            <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
+          </div>
+        </div>
       </div>
     </aside>
 
@@ -79,11 +95,24 @@ import {
   ChartBarIcon, 
   BriefcaseIcon, 
   ArrowLeftIcon,
-  BellIcon
+  BellIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 
 const user = useSupabaseUser()
 const route = useRoute()
+const { userRoles, userFullName, fetchRoles } = useUserRole()
+
+// Busca os papéis caso ainda não estejam no cache
+import { onMounted } from 'vue'
+onMounted(() => {
+  fetchRoles()
+})
+
+const accessibleCount = computed(() => {
+  if (userRoles.value.includes('AdmDono')) return 7
+  return userRoles.value.length
+})
 
 const userInitial = computed(() => {
   return user.value?.email?.charAt(0).toUpperCase() || 'U'
@@ -93,6 +122,7 @@ const pageTitle = computed(() => {
   const path = route.path
   if (path.includes('nova')) return 'Nova Proposta'
   if (path.includes('propostas')) return 'Propostas'
+  if (path.includes('extracao')) return 'Extração de Leads'
   if (path.includes('clientes')) return 'Clientes'
   if (path.includes('pipeline')) return 'Pipeline'
   if (path.includes('crm')) return 'CRM'
