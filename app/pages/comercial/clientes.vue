@@ -203,7 +203,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
-                  <input v-model="form.CNPJ" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="00.000.000/0000-00">
+                  <input v-model="form.CNPJ" @input="formatarCNPJ" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="00.000.000/0000-00">
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Decisor</label>
@@ -506,6 +506,24 @@ function openModal(client?: any) {
 
 function closeModal() {
   isModalOpen.value = false
+}
+
+function formatarCNPJ(event: Event) {
+  const target = event.target as HTMLInputElement;
+  let value = target.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+  // Limita a 14 dígitos numéricos
+  if (value.length > 14) {
+    value = value.slice(0, 14);
+  }
+
+  // Applica a máscara: 00.000.000/0000-00
+  value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+  value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+  value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+  value = value.replace(/(\d{4})(\d)/, '$1-$2');
+
+  form.value.CNPJ = value;
 }
 
 // ----------------------------------------------------
