@@ -200,6 +200,17 @@
                 </div>
               </div>
 
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
+                  <input v-model="form.CNPJ" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="00.000.000/0000-00">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Decisor</label>
+                  <input v-model="form.Nome_Decisor" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome de quem toma a decisão">
+                </div>
+              </div>
+
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Segmento</label>
@@ -233,6 +244,11 @@
                     <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
                   </select>
                 </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Anotações</label>
+                <textarea v-model="form.anotacao" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Observações, informações importantes sobre o lead..."></textarea>
               </div>
 
             </form>
@@ -454,7 +470,10 @@ const initialForm = {
   empresa: '',
   segmento: '',
   origem: '',
-  status: 'Novo'
+  status: 'Novo',
+  CNPJ: '',
+  Nome_Decisor: '',
+  anotacao: ''
 }
 
 const form = ref({ ...initialForm })
@@ -470,7 +489,10 @@ function openModal(client?: any) {
       empresa: client.empresa || '',
       segmento: client.segmento || '',
       origem: client.origem || '',
-      status: client.status || 'Novo'
+      status: client.status || 'Novo',
+      CNPJ: client.CNPJ || '',
+      Nome_Decisor: client.Nome_Decisor || '',
+      anotacao: client.anotacao || ''
     }
     fetchTasks(client.id)
   } else {
@@ -626,7 +648,10 @@ async function saveClient() {
       empresa: form.value.empresa || null,
       segmento: form.value.segmento || null,
       origem: form.value.origem || null,
-      status: form.value.status
+      status: form.value.status,
+      CNPJ: form.value.CNPJ || null,
+      Nome_Decisor: form.value.Nome_Decisor || null,
+      anotacao: form.value.anotacao || null
     }
 
     if (isEditing.value) {
