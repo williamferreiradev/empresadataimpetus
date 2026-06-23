@@ -18,6 +18,7 @@ function saveLocal(list: any[]) {
 
 export const usePropostasStore = defineStore('propostas', () => {
   const supabase = useSupabaseClient()
+  const { userViewAllLeads, userId } = useUserRole()
   const propostas = ref<any[]>(loadLocal())
   const loading   = ref(false)
   const error     = ref<string | null>(null)
@@ -27,10 +28,16 @@ export const usePropostasStore = defineStore('propostas', () => {
     error.value   = null
     
     try {
-      const { data, error: err } = await supabase
+      let query = supabase
         .from('ibeia_propostas')
         .select('*')
         .order('criado_em', { ascending: false })
+        
+      if (!userViewAllLeads.value && userId.value) {
+        query = query.eq('responsavel', userId.value)
+      }
+        
+      const { data, error: err } = await query
         
       if (err) throw err
       

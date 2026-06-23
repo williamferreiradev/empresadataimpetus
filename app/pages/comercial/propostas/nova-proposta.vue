@@ -247,11 +247,29 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Segmento</label>
-                  <input v-model="novoCliente.segmento" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: Varejo" />
+                  <select v-model="novoCliente.segmento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    <option value="">Selecione...</option>
+                    <option>Cerimonialista</option>
+                    <option>Imobiliaria alto padrão</option>
+                    <option>Imobiliria Minha Casa Minha Vida</option>
+                    <option>Concessionaria</option>
+                    <option>Clinicas odontologicas</option>
+                    <option>Clinicas estetica</option>
+                    <option>Estetica automotiva</option>
+                    <option>Auto Center</option>
+                  </select>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Origem</label>
-                  <input v-model="novoCliente.origem" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: Indicação" />
+                  <select v-model="novoCliente.origem" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    <option value="">Selecione...</option>
+                    <option>Facebook ads</option>
+                    <option>Google ADS</option>
+                    <option>Indicação</option>
+                    <option>Google maps</option>
+                    <option>Instagram</option>
+                    <option>Receita federal</option>
+                  </select>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
@@ -285,7 +303,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePropostasStore } from '~/stores/propostas'
 
@@ -295,6 +313,7 @@ const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const router = useRouter()
 const store = usePropostasStore()
+const { userViewAllLeads, userId } = useUserRole()
 
 // Estado do formulário
 const form = ref({
@@ -367,11 +386,21 @@ onUnmounted(() => {
   document.removeEventListener('click', closeDropdown)
 })
 
+watch([userViewAllLeads, userId], () => {
+  fetchClientes()
+})
+
 async function fetchClientes() {
-  const { data, error } = await supabase
+  let query = supabase
     .from('ibeia_clientes')
     .select('id, nome, empresa')
     .order('criado_em', { ascending: false })
+    
+  if (!userViewAllLeads.value && userId.value) {
+    query = query.eq('responsavel', userId.value)
+  }
+
+  const { data, error } = await query
   if (error) console.warn('Erro ao buscar clientes:', error.message)
   if (data) clientes.value = data
 }
@@ -500,6 +529,7 @@ async function gerarComGemini() {
       contexto: form.value.contexto,
       status: 'em_revisao',
       criado_por: user.value?.email || 'Vendedor',
+      responsavel: user.value?.sub || user.value?.id || null,
       conteudo: JSON.stringify(jsonGerado),
     }
 
@@ -536,6 +566,7 @@ async function salvarRascunho() {
       contexto: form.value.contexto,
       status: 'rascunho',
       criado_por: user.value?.email || 'Vendedor',
+      responsavel: user.value?.sub || user.value?.id || null,
     }
     if (selectedClienteId.value) payload.cliente_id = selectedClienteId.value
 

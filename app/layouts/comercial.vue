@@ -38,6 +38,12 @@
       
       <!-- Bottom Links -->
       <div class="p-4 border-t border-gray-200 space-y-1">
+        <!-- Sair da Conta -->
+        <button @click="handleLogout" class="w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50 transition-colors mb-2">
+          <ArrowRightOnRectangleIcon class="h-5 w-5 mr-3 text-red-500" />
+          Sair da Conta
+        </button>
+
         <!-- Mostrar "Voltar ao Hub" apenas se o usuário tiver mais de 1 departamento -->
         <NuxtLink v-if="accessibleCount > 1" to="/" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 group transition-colors">
           <ArrowLeftIcon class="h-5 w-5 mr-3 text-gray-400 group-hover:text-gray-500" />
@@ -114,9 +120,11 @@ import {
   BriefcaseIcon, 
   ArrowLeftIcon,
   BellIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 
+const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const route = useRoute()
 const { userRoles, userFullName, userViewAllLeads, toggleViewAllLeads, fetchRoles } = useUserRole()
@@ -146,4 +154,13 @@ const pageTitle = computed(() => {
   if (path.includes('crm')) return 'CRM'
   return 'Visão Geral'
 })
+
+const handleLogout = async () => {
+  try {
+    await supabase.auth.signOut()
+    navigateTo('/login')
+  } catch (error) {
+    console.error('Erro ao sair da conta:', error)
+  }
+}
 </script>

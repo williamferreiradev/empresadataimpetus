@@ -207,10 +207,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePropostasStore } from '~/stores/propostas'
 import { storeToRefs } from 'pinia'
+import { useUserRole } from '#imports'
 
 definePageMeta({ layout: 'comercial' })
 
@@ -230,7 +231,13 @@ const salvando = ref(false)
 const propostaParaDelete = ref(null)
 const deletando = ref(false)
 
+const { userViewAllLeads, userId } = useUserRole()
+
 onMounted(() => store.fetchPropostas())
+
+watch([userViewAllLeads, userId], () => {
+  store.fetchPropostas()
+})
 
 function irParaModelo() {
   showTipoModal.value = false

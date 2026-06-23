@@ -203,11 +203,29 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Segmento</label>
-                  <input v-model="form.segmento" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: Varejo">
+                  <select v-model="form.segmento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    <option value="">Selecione...</option>
+                    <option>Cerimonialista</option>
+                    <option>Imobiliaria alto padrão</option>
+                    <option>Imobiliria Minha Casa Minha Vida</option>
+                    <option>Concessionaria</option>
+                    <option>Clinicas odontologicas</option>
+                    <option>Clinicas estetica</option>
+                    <option>Estetica automotiva</option>
+                    <option>Auto Center</option>
+                  </select>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Origem</label>
-                  <input v-model="form.origem" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: Indicação">
+                  <select v-model="form.origem" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    <option value="">Selecione...</option>
+                    <option>Facebook ads</option>
+                    <option>Google ADS</option>
+                    <option>Indicação</option>
+                    <option>Google maps</option>
+                    <option>Instagram</option>
+                    <option>Receita federal</option>
+                  </select>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
