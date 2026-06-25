@@ -263,7 +263,24 @@ function iniciarPolling(runId, datasetId) {
 async function processarLeads(items) {
   console.log("Total de items vindos do Apify:", items?.length, items);
   loadingText.value = 'Aplicando filtros...'
-  let filtrados = items || []
+  // Pré-processamento e enriquecimento de dados
+  // Pré-processamento e enriquecimento de dados
+  let filtrados = (items || []).map(item => {
+    let site = item.website || item?.infoExtract?.website || '';
+    
+    // Se o site for um link do whatsapp e não tivermos o telefone, tentamos extrair o número
+    if (site && (site.includes('wa.me/') || site.includes('api.whatsapp.com/send'))) {
+      if (!item.phone && !item.phoneUnformatted) {
+        // Busca sequências numéricas no link
+        const match = site.match(/(?:wa\.me\/|phone=)(\d+)/);
+        if (match && match[1]) {
+          item.phoneUnformatted = '+' + match[1];
+          item.phone = '+' + match[1];
+        }
+      }
+    }
+    return item;
+  });
 
   // Avaliação mínima
   if (avaliacaoMinima.value) {
@@ -275,9 +292,20 @@ async function processarLeads(items) {
     filtrados = filtrados.filter(item => (item.reviewsCount || 0) >= minAvaliacoes.value)
   }
 
-  // Apenas sem site
+  // Apenas sem site (considera redes sociais e whatsapp como "sem site próprio")
   if (semSite.value) {
-    filtrados = filtrados.filter(item => !(item.website || item?.infoExtract?.website))
+    filtrados = filtrados.filter(item => {
+      const site = (item.website || item?.infoExtract?.website || '').toLowerCase();
+      if (!site) return true;
+      
+      const isSocialOrZzap = site.includes('wa.me') || 
+                             site.includes('api.whatsapp.com') || 
+                             site.includes('instagram.com') || 
+                             site.includes('facebook.com') || 
+                             site.includes('linktr.ee');
+                             
+      return isSocialOrZzap;
+    })
   }
 
   // Alto padrão
