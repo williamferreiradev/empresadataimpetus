@@ -22,13 +22,26 @@
         <div class="space-y-6">
           <!-- Nicho -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Nichos / Termos de Busca (Máx. 3)</label>
-            <input 
+            <label class="block text-sm font-bold text-gray-700 mb-2">Nicho de Busca</label>
+            <select 
               v-model="nicho" 
-              type="text" 
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
-              placeholder="ex: imobiliaria"
-            />
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm bg-white"
+            >
+              <option value="" disabled>Selecione...</option>
+              <option value="Cerimonialista">Cerimonialista</option>
+              <option value="Imobiliaria alto padrão">Imobiliaria alto padrão</option>
+              <option value="Imobiliaria Minha Casa Minha Vida">Imobiliaria Minha Casa Minha Vida</option>
+              <option value="Concessionaria">Concessionaria</option>
+              <option value="Clinicas odontologicas">Clinicas odontologicas</option>
+              <option value="Clinicas estetica">Clinicas estetica</option>
+              <option value="Estetica automotiva">Estetica automotiva</option>
+              <option value="Auto Center">Auto Center</option>
+              <option value="Energia solar">Energia solar</option>
+              <option value="Assistência técnica">Assistência técnica</option>
+              <option value="Chaveiro">Chaveiro</option>
+              <option value="Eletricista">Eletricista</option>
+              <option value="Contabilidade">Contabilidade</option>
+            </select>
           </div>
 
           <!-- Região -->
@@ -182,7 +195,8 @@ import { ArrowLeftIcon, MapIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'comercial' })
 
-const nicho = ref('imobiliaria')
+const user = useSupabaseUser()
+const nicho = ref('')
 const regiao = ref('Brasil')
 const avaliacaoMinima = ref(0)
 const minAvaliacoes = ref(0)
@@ -278,7 +292,10 @@ async function processarLeads(items) {
       loadingText.value = 'Salvando leads no banco de dados...'
       const responseSalvar = await $fetch('/api/extracao/salvar', {
         method: 'POST',
-        body: { leads: filtrados }
+        body: { 
+          leads: filtrados,
+          responsavel: user.value?.id 
+        }
       })
       
       // Atualiza a tabela para mostrar os leads que voltaram do banco (com ID)

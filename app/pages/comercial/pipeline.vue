@@ -120,6 +120,10 @@
                       </svg>
                       {{ selectedClient.telefone || 'Sem telefone' }}
                     </span>
+                    <a v-if="selectedClient.origem?.toLowerCase() === 'google maps' && selectedClient.infoExtract?.url" :href="selectedClient.infoExtract.url" target="_blank" class="flex items-center ml-4 text-blue-600 hover:text-blue-800 font-medium">
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                      Abrir maps
+                    </a>
                   </div>
                 </div>
                 

@@ -3,6 +3,7 @@ import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const leads = body.leads || []
+  const responsavelId = body.responsavel || null
 
   if (!leads.length) {
     return { success: true, count: 0 }
@@ -16,9 +17,9 @@ export default defineEventHandler(async (event) => {
     empresa: lead.title || null,
     telefone: lead.phoneUnformatted || lead.phone || null,
     segmento: lead.categoryName || 'Google Maps',
-    origem: 'Google Maps',
+    origem: 'google maps',
     status: 'Extraído',
-    responsavel: user?.id || null,
+    responsavel: responsavelId || user?.id || null,
     CNPJ: null,
     Nome_Decisor: null,
     infoExtract: lead

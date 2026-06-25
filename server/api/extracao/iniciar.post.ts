@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const response = await $fetch(`https://api.apify.com/v2/acts/compass~crawler-google-places/runs?token=${token}`, {
       method: 'POST',
       body: {
-        searchStringsArray: [nicho],
+        searchStringsArray: [searchString],
         locationQuery: regiao,
         maxCrawledPlacesPerSearch: maxLeads || 10,
         language: 'pt-BR',
