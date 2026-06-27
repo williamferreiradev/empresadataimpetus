@@ -32,25 +32,31 @@
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
     >
-      <button 
-        @click="changeThickness(-1)" 
-        class="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded transition-colors text-sm"
-        title="Mais fina"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-        </svg>
-      </button>
-      
-      <button 
-        @click="changeThickness(1)" 
-        class="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded transition-colors text-sm"
-        title="Mais grossa"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-      </button>
+      <div class="flex items-center gap-2 border-r border-gray-600 pr-2">
+        <button 
+          @click="changeThickness(-1)" 
+          class="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded transition-colors text-sm font-bold"
+          title="Mais fina"
+        >-</button>
+        
+        <span class="text-xs font-mono w-4 text-center">{{ computedThickness }}</span>
+        
+        <button 
+          @click="changeThickness(1)" 
+          class="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded transition-colors text-sm font-bold"
+          title="Mais grossa"
+        >+</button>
+      </div>
+
+      <!-- Colors -->
+      <div class="flex items-center gap-1 px-1">
+        <button @click="changeColor('#9ca3af')" class="w-4 h-4 rounded-full bg-gray-400 border border-gray-500 hover:ring-2 ring-gray-400"></button>
+        <button @click="changeColor('#111827')" class="w-4 h-4 rounded-full bg-gray-900 border border-gray-700 hover:ring-2 ring-gray-900"></button>
+        <button @click="changeColor('#1e293b')" class="w-4 h-4 rounded-full bg-slate-800 border border-slate-600 hover:ring-2 ring-slate-800"></button>
+        <button @click="changeColor('#115e59')" class="w-4 h-4 rounded-full bg-teal-800 border border-teal-600 hover:ring-2 ring-teal-800"></button>
+        <button @click="changeColor('#d97706')" class="w-4 h-4 rounded-full bg-amber-600 border border-amber-500 hover:ring-2 ring-amber-600"></button>
+        <button @click="changeColor('#881337')" class="w-4 h-4 rounded-full bg-rose-900 border border-rose-700 hover:ring-2 ring-rose-900"></button>
+      </div>
       
       <div class="w-px h-4 bg-gray-600 mx-1"></div>
       
@@ -100,13 +106,25 @@ const removeEdge = () => {
   removeEdges([props.id])
 }
 
+const computedThickness = computed(() => {
+  const edge = findEdge(props.id)
+  return edge?.style?.strokeWidth || 2
+})
+
+const changeColor = (color) => {
+  const edge = findEdge(props.id)
+  if (edge) {
+    edge.style = { ...edge.style, stroke: color }
+  }
+}
+
 const changeThickness = (delta) => {
   const edge = findEdge(props.id)
   if (edge) {
     const currentWidth = edge.style?.strokeWidth || 2
     let newWidth = currentWidth + delta
     if (newWidth < 1) newWidth = 1
-    if (newWidth > 12) newWidth = 12
+    if (newWidth > 20) newWidth = 20
     
     // Atualiza o estilo reativamente
     edge.style = { ...edge.style, strokeWidth: newWidth }

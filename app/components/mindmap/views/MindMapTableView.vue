@@ -11,6 +11,8 @@
     <div v-if="!flatNodes.length" class="text-gray-500 italic text-center py-8">
       O mapa está vazio.
     </div>
+    
+
 
     <div v-else class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
@@ -42,10 +44,9 @@
             <!-- Tópico -->
             <td class="px-6 py-5">
               <div 
-                class="text-gray-900 break-words"
-                :class="getTypographyClasses(item.node.data?.typography)"
+                class="text-gray-900 break-words rich-text-node"
+                v-html="item.node.data?.label || '(Sem texto)'"
               >
-                {{ item.node.data?.label || '(Sem texto)' }}
               </div>
             </td>
 
@@ -74,11 +75,7 @@ const props = defineProps({
   }
 })
 
-const getTypographyClasses = (type) => {
-  if (type === 'h1') return 'text-xl font-bold'
-  if (type === 'h2') return 'text-lg font-semibold'
-  return 'text-base font-medium'
-}
+
 
 const getColorClass = (color) => {
   switch (color) {

@@ -69,12 +69,15 @@ const elements = ref(
 
 const emitElements = () => {
   const obj = toObject()
-  // Limpar propriedades internas do VueFlow (como initialized, dimensions, etc) para não quebrar o load futuro
+  // Limpar propriedades internas do VueFlow
   const cleanNodes = obj.nodes.map(n => ({
     id: n.id,
     type: n.type,
     position: n.position,
-    data: n.data
+    data: n.data,
+    style: n.style,
+    width: n.width,
+    height: n.height
   }))
   const cleanEdges = obj.edges.map(e => ({
     id: e.id,
@@ -89,15 +92,35 @@ const emitElements = () => {
   emit('update:elements', [...cleanNodes, ...cleanEdges])
 }
 
-onNodesChange(() => emitElements())
-onEdgesChange(() => emitElements())
-
-watch(elements, () => {
+const onNodeDataChange = () => {
+  // Chamado quando texto, cor, etc. são alterados internamente no BaseNode
   emitElements()
-}, { deep: true })
+}
+
+onNodesChange((changes) => {
+  // Ignora disparos vazios
+  if (changes && changes.length) {
+    emitElements()
+  }
+})
+onEdgesChange(() => emitElements())
 
 let idCounter = Date.now()
 const getId = () => `node_${idCounter++}`
+
+const getEdgeColor = (sourceId) => {
+  const { findNode } = useVueFlow()
+  const sourceNode = findNode(sourceId)
+  const color = sourceNode?.data?.color || 'default'
+  switch(color) {
+    case 'dark': return '#111827'
+    case 'navy': return '#1e293b'
+    case 'emerald': return '#115e59'
+    case 'gold': return '#d97706'
+    case 'wine': return '#881337'
+    default: return '#9ca3af'
+  }
+}
 
 const onConnect = (params) => {
   elements.value = addEdge({ 
@@ -105,7 +128,7 @@ const onConnect = (params) => {
     updatable: true, 
     type: 'customEdge',
     animated: false,
-    style: { strokeWidth: 2, stroke: '#9ca3af' }
+    style: { strokeWidth: 2, stroke: getEdgeColor(params.source) }
   }, elements.value)
 }
 
@@ -127,6 +150,7 @@ const onDrop = (event) => {
 
   let label = 'Novo Nó'
   if (type === 'text') label = 'Escreva seu texto...'
+  if (type === 'sticky') label = 'Nova nota...'
 
   const newNode = {
     id: getId(),
@@ -134,7 +158,8 @@ const onDrop = (event) => {
     position,
     data: { 
       label, 
-      shape: type 
+      shape: type,
+      color: type === 'sticky' ? 'sticky-yellow' : 'default'
     }
   }
 

@@ -1,31 +1,52 @@
 <template>
   <div 
-    class="relative rounded border-2 shadow-sm min-w-[200px] min-h-[80px] flex items-center justify-center p-3 transition-colors group"
+    class="relative rounded border-2 shadow-sm min-w-[200px] min-h-[80px] w-full h-full flex items-center justify-center p-3 transition-colors group"
     :class="[
       colorClasses,
-      selected ? 'ring-2 ring-orange-400 border-orange-400' : '',
-      data.shape === 'circle' ? 'rounded-full aspect-square min-w-[120px] min-h-[120px]' : 'rounded-lg'
+      shapeClasses,
+      selected ? 'ring-2 ring-orange-400 border-orange-400' : ''
     ]"
     @dblclick="startEditing"
   >
+    <NodeResizer min-width="120" min-height="60" :is-visible="selected" handle-class="bg-orange-500 border-2 border-white rounded-md w-3 h-3" />
+
     <!-- Toolbar de Formatação (Visível apenas quando selecionado) -->
     <div v-if="selected" class="absolute -top-14 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white border border-gray-200 shadow-md rounded-md p-1.5 z-50 whitespace-nowrap">
       
-      <!-- Typography -->
+      <!-- Rich Text Actions -->
       <div class="flex items-center gap-1 border-r border-gray-300 pr-2">
-        <button @click.stop="changeTypography('h1')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 text-gray-800 transition-colors" :class="{'bg-gray-200': typography === 'h1'}" title="Título Principal">H1</button>
-        <button @click.stop="changeTypography('h2')" class="px-2 py-0.5 rounded font-semibold hover:bg-gray-100 text-gray-800 transition-colors" :class="{'bg-gray-200': typography === 'h2'}" title="Subtítulo">H2</button>
-        <button @click.stop="changeTypography('body')" class="px-2 py-0.5 rounded text-sm hover:bg-gray-100 text-gray-800 transition-colors" :class="{'bg-gray-200': typography === 'body'}" title="Texto Padrão">T</button>
+        <button @click.stop="formatText('formatBlock', 'H1')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 text-gray-800 transition-colors" title="Título Principal">H1</button>
+        <button @click.stop="formatText('formatBlock', 'H2')" class="px-2 py-0.5 rounded font-semibold hover:bg-gray-100 text-gray-800 transition-colors" title="Subtítulo">H2</button>
+        <button @click.stop="formatText('formatBlock', 'P')" class="px-2 py-0.5 rounded text-sm hover:bg-gray-100 text-gray-800 transition-colors" title="Texto Padrão">P</button>
+        <div class="w-px h-4 bg-gray-300 mx-1"></div>
+        <button @click.stop="formatText('bold')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 text-gray-800 transition-colors" title="Negrito">B</button>
+        <button @click.stop="formatText('italic')" class="px-2 py-0.5 rounded italic hover:bg-gray-100 text-gray-800 transition-colors" title="Itálico">I</button>
+        <div class="w-px h-4 bg-gray-300 mx-1"></div>
+        <button @click.stop="formatText('justifyLeft')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Alinhar à Esquerda">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h16" /></svg>
+        </button>
+        <button @click.stop="formatText('justifyCenter')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Centralizar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M7 12h10M4 18h16" /></svg>
+        </button>
+        <button @click.stop="formatText('justifyRight')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Alinhar à Direita">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M10 12h10M4 18h16" /></svg>
+        </button>
+        <button @click.stop="formatText('justifyFull')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Justificar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
       </div>
 
       <!-- Colors -->
-      <div class="flex items-center gap-1 pl-1">
+      <div class="flex items-center gap-1 pl-1 flex-wrap w-[180px]">
         <button @click.stop="changeColor('default')" class="w-5 h-5 rounded-full bg-white border border-gray-300 hover:ring-2 ring-gray-400" title="Padrão"></button>
-      <button @click.stop="changeColor('dark')" class="w-5 h-5 rounded-full bg-gray-900 border border-gray-700 hover:ring-2 ring-gray-900" title="Dark"></button>
-      <button @click.stop="changeColor('navy')" class="w-5 h-5 rounded-full bg-slate-800 border border-slate-600 hover:ring-2 ring-slate-800" title="Navy"></button>
-      <button @click.stop="changeColor('emerald')" class="w-5 h-5 rounded-full bg-teal-800 border border-teal-600 hover:ring-2 ring-teal-800" title="Emerald"></button>
-      <button @click.stop="changeColor('gold')" class="w-5 h-5 rounded-full bg-amber-600 border border-amber-500 hover:ring-2 ring-amber-600" title="Gold"></button>
-      <button @click.stop="changeColor('wine')" class="w-5 h-5 rounded-full bg-rose-900 border border-rose-700 hover:ring-2 ring-rose-900" title="Wine"></button>
+        <button @click.stop="changeColor('sticky-yellow')" class="w-5 h-5 rounded-full bg-yellow-200 border border-yellow-300 hover:ring-2 ring-yellow-400" title="Amarelo (Sticky)"></button>
+        <button @click.stop="changeColor('sticky-pink')" class="w-5 h-5 rounded-full bg-pink-200 border border-pink-300 hover:ring-2 ring-pink-400" title="Rosa (Sticky)"></button>
+        <button @click.stop="changeColor('sticky-blue')" class="w-5 h-5 rounded-full bg-blue-200 border border-blue-300 hover:ring-2 ring-blue-400" title="Azul (Sticky)"></button>
+        <button @click.stop="changeColor('dark')" class="w-5 h-5 rounded-full bg-gray-900 border border-gray-700 hover:ring-2 ring-gray-900" title="Dark"></button>
+        <button @click.stop="changeColor('navy')" class="w-5 h-5 rounded-full bg-slate-800 border border-slate-600 hover:ring-2 ring-slate-800" title="Navy"></button>
+        <button @click.stop="changeColor('emerald')" class="w-5 h-5 rounded-full bg-teal-800 border border-teal-600 hover:ring-2 ring-teal-800" title="Emerald"></button>
+        <button @click.stop="changeColor('gold')" class="w-5 h-5 rounded-full bg-amber-600 border border-amber-500 hover:ring-2 ring-amber-600" title="Gold"></button>
+        <button @click.stop="changeColor('wine')" class="w-5 h-5 rounded-full bg-rose-900 border border-rose-700 hover:ring-2 ring-rose-900" title="Wine"></button>
       </div>
     </div>
 
@@ -61,25 +82,25 @@
     
     <!-- Area de texto editavel -->
     <div v-if="isEditing" class="w-full h-full flex items-center justify-center">
-      <textarea 
-        v-model="internalLabel"
-        @blur="finishEditing"
-        @keydown.enter.prevent="finishEditing"
+      <div 
         ref="inputRef"
-        class="w-full text-center bg-transparent outline-none resize-none overflow-hidden text-inherit p-0 m-0 border-none leading-tight"
-        :class="typographyClasses"
-        rows="1"
-      ></textarea>
+        contenteditable="true"
+        @blur="finishEditing"
+        @input="onInput"
+        @keydown.stop
+        class="w-full text-center bg-transparent outline-none overflow-hidden text-inherit p-1 m-0 border-none leading-tight rich-text-node cursor-text"
+      ></div>
     </div>
-    <div v-else class="text-center break-words whitespace-pre-wrap select-none pointer-events-none leading-tight" :class="typographyClasses">
-      {{ data.label || 'Duplo clique p/ editar' }}
+    <div v-else class="text-center break-words select-none pointer-events-none leading-tight rich-text-node" v-html="data.label || 'Duplo clique p/ editar'">
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, computed } from 'vue'
+import { ref, watch, nextTick, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Handle, useVueFlow } from '@vue-flow/core'
+import { NodeResizer } from '@vue-flow/node-resizer'
+import '@vue-flow/node-resizer/dist/style.css'
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -92,7 +113,7 @@ const isEditing = ref(false)
 const internalLabel = ref(props.data.label)
 const inputRef = ref(null)
 
-const { addNodes, addEdges, findNode } = useVueFlow()
+const { addNodes, addEdges, findNode, updateNodeData, getNodes } = useVueFlow()
 
 const colorClasses = computed(() => {
   const c = props.data?.color || 'default'
@@ -102,48 +123,75 @@ const colorClasses = computed(() => {
     case 'emerald': return 'bg-teal-800 border-teal-600 text-white'
     case 'gold': return 'bg-amber-600 border-amber-500 text-white'
     case 'wine': return 'bg-rose-900 border-rose-700 text-white'
+    case 'sticky-yellow': return 'bg-yellow-100 border-yellow-300 text-gray-800'
+    case 'sticky-pink': return 'bg-pink-100 border-pink-300 text-gray-800'
+    case 'sticky-blue': return 'bg-blue-100 border-blue-300 text-gray-800'
     default: return 'bg-white border-gray-300 text-gray-800'
   }
 })
 
-const typography = computed(() => props.data?.typography || 'body')
-
-const typographyClasses = computed(() => {
-  switch (typography.value) {
-    case 'h1': return 'text-2xl font-bold'
-    case 'h2': return 'text-lg font-semibold'
-    case 'body':
-    default: return 'text-sm font-medium'
+const shapeClasses = computed(() => {
+  if (props.data?.shape === 'circle') {
+    return 'rounded-full aspect-square min-w-[120px] min-h-[120px]'
   }
+  if (props.data?.shape === 'sticky') {
+    return 'rounded-none shadow-md'
+  }
+  return 'rounded-lg'
 })
 
-const changeColor = (color) => {
-  if (props.data) {
-    props.data.color = color
+const formatText = (command, value = null) => {
+  document.execCommand(command, false, value)
+  if (inputRef.value) {
+    inputRef.value.focus()
   }
 }
 
-const changeTypography = (type) => {
-  if (props.data) {
-    props.data.typography = type
-  }
+const changeColor = (color) => {
+  updateNodeData(props.id, { color })
+}
+
+const onInput = (e) => {
+  internalLabel.value = e.target.innerHTML
 }
 
 const startEditing = async () => {
   isEditing.value = true
   await nextTick()
   if (inputRef.value) {
+    inputRef.value.innerHTML = internalLabel.value || ''
     inputRef.value.focus()
-    inputRef.value.select()
+    // Select all text natively for contenteditable
+    const range = document.createRange()
+    range.selectNodeContents(inputRef.value)
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
   }
 }
 
 const finishEditing = () => {
   isEditing.value = false
-  if (props.data) {
-    props.data.label = internalLabel.value
+  if (inputRef.value) {
+    internalLabel.value = inputRef.value.innerHTML
+  }
+  updateNodeData(props.id, { label: internalLabel.value })
+}
+
+const handleKeydown = (e) => {
+  if (props.selected && e.key === 'Tab' && !isEditing.value) {
+    e.preventDefault()
+    quickCreate('right')
   }
 }
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 
 const quickCreate = (direction) => {
   const currentNode = findNode(props.id)
@@ -174,12 +222,26 @@ const quickCreate = (direction) => {
     targetHandle = 'bottom-t';
   }
 
+  // Lógica inteligente para empilhar se já houver um irmão naquela posição
+  const allNodes = getNodes.value
+  let finalX = pos.x + dx
+  let finalY = pos.y + dy
+
+  // Encontra filhos que o nó atual já criou naquela direção
+  // Aqui fazemos uma busca simplificada: vemos se tem algum nó muito próximo da coordenada esperada
+  const isOverlap = (tx, ty) => allNodes.some(n => Math.abs(n.position.x - tx) < 50 && Math.abs(n.position.y - ty) < 50)
+  
+  // Se houver sobreposição, joga o próximo card um pouco mais para baixo (empilhando)
+  while (isOverlap(finalX, finalY)) {
+    finalY += (props.data.shape === 'circle' ? 140 : 100) // Desce o equivalente à altura do nó + margem
+  }
+
   const newId = `node_${Date.now()}`
   
   const newNode = {
     id: newId,
     type: 'custom',
-    position: { x: pos.x + dx, y: pos.y + dy },
+    position: { x: finalX, y: finalY },
     data: { label: 'Nova Ideia', shape: props.data.shape, color: props.data.color || 'default' }
   }
 
@@ -192,7 +254,7 @@ const quickCreate = (direction) => {
     updatable: true,
     type: 'customEdge',
     animated: false,
-    style: { strokeWidth: 2, stroke: '#9ca3af' }
+    style: { strokeWidth: 2, stroke: '#9ca3af' } // A cor vai ser atualizada automaticamente no onNodesChange pelo getEdgeColor
   }
 
   addNodes([newNode])
@@ -200,6 +262,36 @@ const quickCreate = (direction) => {
 }
 
 watch(() => props.data?.label, (newVal) => {
-  internalLabel.value = newVal
+  if (internalLabel.value !== newVal) {
+    internalLabel.value = newVal
+  }
 })
 </script>
+
+<style>
+.rich-text-node h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.rich-text-node h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.rich-text-node p {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+.rich-text-node b, .rich-text-node strong {
+  font-weight: 700;
+}
+.rich-text-node i, .rich-text-node em {
+  font-style: italic;
+}
+.rich-text-node:empty:before {
+  content: "Digite algo...";
+  color: #9ca3af;
+  pointer-events: none;
+}
+</style>

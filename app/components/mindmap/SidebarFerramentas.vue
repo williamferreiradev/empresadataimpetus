@@ -21,7 +21,7 @@
         <div class="w-4 h-4 border border-gray-300 rounded-full"></div>
       </div>
 
-      <!-- Text Node (acts like a rectangle with no border initially, but let's stick to standard shapes for now) -->
+      <!-- Text Node -->
       <div 
         class="w-10 h-10 rounded border-2 border-gray-400 bg-gray-800 flex items-center justify-center cursor-grab hover:border-orange-500 hover:bg-gray-700 transition-colors"
         draggable="true"
@@ -29,6 +29,19 @@
         title="Texto"
       >
         <span class="text-gray-300 font-bold text-lg leading-none font-serif">T</span>
+      </div>
+
+      <!-- Sticky Note -->
+      <div 
+        class="w-10 h-10 rounded border-2 border-gray-400 bg-gray-800 flex items-center justify-center cursor-grab hover:border-orange-500 hover:bg-gray-700 transition-colors relative overflow-hidden"
+        draggable="true"
+        @dragstart="onDragStart($event, 'sticky')"
+        title="Nota (Sticky)"
+      >
+        <div class="w-5 h-5 bg-yellow-300 rounded-sm relative">
+          <!-- Folded corner effect -->
+          <div class="absolute bottom-0 right-0 w-1.5 h-1.5 bg-yellow-400 border-t border-l border-yellow-500 shadow-sm"></div>
+        </div>
       </div>
     </div>
   </aside>

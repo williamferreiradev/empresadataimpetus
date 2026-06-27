@@ -9,10 +9,9 @@
         :class="bulletColor"
       ></div>
       <span 
-        class="text-gray-800 break-words"
-        :class="typographyClasses"
+        class="text-gray-800 break-words rich-text-node"
+        v-html="node.data?.label || '(Sem texto)'"
       >
-        {{ node.data?.label || '(Sem texto)' }}
       </span>
     </div>
     
@@ -41,12 +40,7 @@ const props = defineProps({
   }
 })
 
-const typographyClasses = computed(() => {
-  const t = props.node.data?.typography || 'body'
-  if (t === 'h1') return 'text-xl font-bold'
-  if (t === 'h2') return 'text-lg font-semibold'
-  return 'text-base font-normal text-gray-700'
-})
+
 
 const bulletColor = computed(() => {
   const c = props.node.data?.color || 'default'
