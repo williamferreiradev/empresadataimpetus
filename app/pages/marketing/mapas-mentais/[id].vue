@@ -1,10 +1,10 @@
 <template>
   <div class="w-screen h-screen relative overflow-hidden bg-[#f8f9fa]">
     <!-- Header flutuante para controle do mapa -->
-    <div class="absolute top-4 left-24 z-50 flex items-center bg-white rounded-lg shadow-md border border-gray-200 px-4 py-2 gap-4">
+    <div class="absolute top-4 left-24 z-50 flex items-center bg-white dark:bg-zinc-800 rounded-lg shadow-md border border-gray-200 dark:border-zinc-700 px-4 py-2 gap-4">
       <button 
         @click="navigateTo('/marketing/mapas-mentais')"
-        class="text-gray-500 hover:text-gray-900 transition-colors"
+        class="text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-100 dark:text-zinc-100 transition-colors"
         title="Voltar"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -14,31 +14,31 @@
       
       <div class="h-6 w-px bg-gray-300"></div>
       
-      <div v-if="loading" class="text-sm text-gray-500">Carregando...</div>
+      <div v-if="loading" class="text-sm text-gray-500 dark:text-zinc-400">Carregando...</div>
       <input 
         v-else
         v-model="mapa.nome" 
-        class="font-semibold text-gray-900 bg-transparent border-none outline-none focus:ring-2 focus:ring-orange-500 rounded px-1"
+        class="font-semibold text-gray-900 dark:text-zinc-100 bg-transparent border-none outline-none focus:ring-2 focus:ring-orange-500 rounded px-1"
         placeholder="Nome do mapa"
       />
       <div class="h-6 w-px bg-gray-300 mx-2"></div>
       
       <!-- Visualização -->
-      <div class="flex items-center bg-gray-100 rounded p-1">
+      <div class="flex items-center bg-gray-100 dark:bg-zinc-800 rounded p-1">
         <button 
           @click="currentView = 'map'"
           class="px-3 py-1 text-sm font-medium rounded transition-colors"
-          :class="currentView === 'map' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:text-gray-900'"
+          :class="currentView === 'map' ? 'bg-white dark:bg-zinc-800 shadow text-orange-600' : 'text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-100 dark:text-zinc-100'"
         >Mapa</button>
         <button 
           @click="currentView = 'text'"
           class="px-3 py-1 text-sm font-medium rounded transition-colors"
-          :class="currentView === 'text' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:text-gray-900'"
+          :class="currentView === 'text' ? 'bg-white dark:bg-zinc-800 shadow text-orange-600' : 'text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-100 dark:text-zinc-100'"
         >Texto</button>
         <button 
           @click="currentView = 'table'"
           class="px-3 py-1 text-sm font-medium rounded transition-colors"
-          :class="currentView === 'table' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:text-gray-900'"
+          :class="currentView === 'table' ? 'bg-white dark:bg-zinc-800 shadow text-orange-600' : 'text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-100 dark:text-zinc-100'"
         >Tabela</button>
       </div>
       

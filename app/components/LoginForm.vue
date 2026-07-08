@@ -9,7 +9,7 @@
       required
     >
       <template #icon>
-        <EnvelopeIcon class="h-5 w-5 text-gray-400" />
+        <EnvelopeIcon class="h-5 w-5 text-gray-400 dark:text-zinc-500" />
       </template>
     </BaseInput>
 
@@ -23,7 +23,7 @@
         required
       >
         <template #icon>
-          <LockClosedIcon class="h-5 w-5 text-gray-400" />
+          <LockClosedIcon class="h-5 w-5 text-gray-400 dark:text-zinc-500" />
         </template>
       </BaseInput>
     </div>

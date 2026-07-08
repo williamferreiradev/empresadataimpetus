@@ -9,7 +9,7 @@
         :class="bulletColor"
       ></div>
       <span 
-        class="text-gray-800 break-words rich-text-node"
+        class="text-gray-800 dark:text-zinc-100 break-words rich-text-node"
         v-html="node.data?.label || '(Sem texto)'"
       >
       </span>

@@ -1,8 +1,8 @@
 <template>
   <div class="w-full px-6 md:px-12 mx-auto">
     <div class="mb-10 mt-4 text-left">
-      <p class="text-sm font-medium text-gray-500 mb-1 tracking-wide uppercase">Olá, {{ userFullName }}</p>
-      <h2 class="text-3xl font-bold text-gray-900 mb-6">
+      <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1 tracking-wide uppercase">Olá, {{ userFullName }}</p>
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-zinc-100 mb-6">
         Qual <span class="text-orange-500">Departamento</span> você gostaria de acessar hoje?
       </h2>
       
@@ -16,7 +16,7 @@
             'px-5 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-200 hover:scale-105',
             activeFilter === filter 
               ? 'bg-orange-500 text-white border border-orange-500' 
-              : 'bg-white border border-gray-200 text-gray-600 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200'
+              : 'bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:bg-orange-50 dark:hover:bg-zinc-700 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-200 dark:hover:border-zinc-600'
           ]"
         >
           {{ filter }}
@@ -38,11 +38,11 @@
     
     <!-- Empty State -->
     <div v-else class="text-center py-20">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-        <MagnifyingGlassIcon class="h-8 w-8 text-gray-400" />
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-zinc-800 mb-4">
+        <MagnifyingGlassIcon class="h-8 w-8 text-gray-400 dark:text-zinc-500" />
       </div>
-      <h3 class="text-lg font-medium text-gray-900">Nenhum departamento encontrado</h3>
-      <p class="mt-1 text-gray-500">Tente ajustar seus filtros ou termo de busca.</p>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-zinc-100">Nenhum departamento encontrado</h3>
+      <p class="mt-1 text-gray-500 dark:text-zinc-400">Tente ajustar seus filtros ou termo de busca.</p>
       <button @click="resetFilters" class="mt-4 text-emerald-600 font-medium hover:text-emerald-500">
         Limpar filtros
       </button>

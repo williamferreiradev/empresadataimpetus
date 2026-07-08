@@ -8,7 +8,7 @@
         @dragstart="onDragStart($event, 'rectangle')"
         title="Retângulo"
       >
-        <div class="w-5 h-3 border border-gray-300 rounded-sm"></div>
+        <div class="w-5 h-3 border border-gray-300 dark:border-zinc-600 rounded-sm"></div>
       </div>
       
       <!-- Shape: Circle -->
@@ -18,7 +18,7 @@
         @dragstart="onDragStart($event, 'circle')"
         title="Círculo"
       >
-        <div class="w-4 h-4 border border-gray-300 rounded-full"></div>
+        <div class="w-4 h-4 border border-gray-300 dark:border-zinc-600 rounded-full"></div>
       </div>
 
       <!-- Text Node -->

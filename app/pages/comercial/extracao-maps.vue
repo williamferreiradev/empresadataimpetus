@@ -3,11 +3,11 @@
     
     <!-- Breadcrumb / Header -->
     <div class="mb-6 flex items-center gap-4">
-      <button @click="navigateTo('/comercial/extracao')" class="p-2 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+      <button @click="navigateTo('/comercial/extracao')" class="p-2 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors shadow-sm">
         <ArrowLeftIcon class="w-5 h-5" />
       </button>
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 flex items-center gap-3">
           <MapIcon class="w-7 h-7 text-blue-600" />
           Google Maps
         </h1>
@@ -15,17 +15,17 @@
     </div>
 
     <!-- Formulario Principal -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
       <div class="p-10">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Parâmetros da Busca</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 mb-8">Parâmetros da Busca</h2>
 
         <div class="space-y-6">
           <!-- Nicho -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Nicho de Busca</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Nicho de Busca</label>
             <select 
               v-model="nicho" 
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm bg-white"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm bg-white dark:bg-zinc-800"
             >
               <option value="" disabled>Selecione...</option>
               <option value="Cerimonialista">Cerimonialista</option>
@@ -46,11 +46,11 @@
 
           <!-- Região -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Região (Cidade, Estado, País)</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Região (Cidade, Estado, País)</label>
             <input 
               v-model="regiao" 
               type="text" 
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
               placeholder="ex: Brasil"
             />
           </div>
@@ -58,40 +58,40 @@
           <!-- Grid Filtros numéricos -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Avaliação Mínima</label>
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Avaliação Mínima</label>
               <input 
                 v-model="avaliacaoMinima" 
                 type="number" 
                 step="0.1"
                 min="0"
                 max="5"
-                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
                 placeholder="4"
               />
             </div>
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Mínimo de Avaliações</label>
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Mínimo de Avaliações</label>
               <input 
                 v-model="minAvaliacoes" 
                 type="number" 
                 min="0"
-                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
                 placeholder="10"
               />
             </div>
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Qtd Máxima de Leads</label>
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Qtd Máxima de Leads</label>
               <input 
                 v-model="maxLeads" 
                 type="number" 
                 min="1"
-                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all shadow-sm"
                 placeholder="10"
               />
             </div>
           </div>
 
-          <div class="h-px bg-gray-100 my-8"></div>
+          <div class="h-px bg-gray-100 dark:bg-zinc-800 my-8"></div>
 
           <!-- Checkboxes -->
           <div class="space-y-4">
@@ -99,22 +99,22 @@
               <input 
                 v-model="altoPadrao"
                 type="checkbox" 
-                class="w-5 h-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500 cursor-pointer"
+                class="w-5 h-5 rounded border-gray-300 dark:border-zinc-600 text-orange-500 focus:ring-orange-500 cursor-pointer"
               />
-              <span class="ml-3 font-medium text-gray-700 group-hover:text-gray-900">Apenas leads de Alto Padrão (Tem Website e Nota mínima 4.5)</span>
+              <span class="ml-3 font-medium text-gray-700 dark:text-zinc-300 group-hover:text-gray-900 dark:text-zinc-100">Apenas leads de Alto Padrão (Tem Website e Nota mínima 4.5)</span>
             </label>
 
             <label class="flex items-center cursor-pointer group">
               <input 
                 v-model="semSite"
                 type="checkbox" 
-                class="w-5 h-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500 cursor-pointer"
+                class="w-5 h-5 rounded border-gray-300 dark:border-zinc-600 text-orange-500 focus:ring-orange-500 cursor-pointer"
               />
-              <span class="ml-3 font-medium text-gray-700 group-hover:text-gray-900">Apenas empresas sem site (oportunidade para venda de site)</span>
+              <span class="ml-3 font-medium text-gray-700 dark:text-zinc-300 group-hover:text-gray-900 dark:text-zinc-100">Apenas empresas sem site (oportunidade para venda de site)</span>
             </label>
           </div>
 
-          <div class="h-px bg-gray-100 my-8"></div>
+          <div class="h-px bg-gray-100 dark:bg-zinc-800 my-8"></div>
 
           <!-- Action -->
           <div v-if="errorMessage" class="p-4 rounded-lg bg-red-50 text-red-600 text-sm font-medium">
@@ -140,40 +140,40 @@
     </div>
 
     <!-- Tabela de Resultados -->
-    <div v-if="leads.length > 0" class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="text-lg font-bold text-gray-900">Resultados ({{ leads.length }})</h3>
+    <div v-if="leads.length > 0" class="mt-8 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
+      <div class="px-8 py-6 border-b border-gray-100 dark:border-zinc-800 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100">Resultados ({{ leads.length }})</h3>
         <button class="text-sm font-bold text-orange-500 hover:text-orange-600 bg-orange-50 px-4 py-2 rounded-lg">Exportar CSV</button>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-gray-50 border-b border-gray-100">
-              <th class="p-4 font-bold text-gray-500 text-sm">Empresa</th>
-              <th class="p-4 font-bold text-gray-500 text-sm">CNPJ / Info</th>
-              <th class="p-4 font-bold text-gray-500 text-sm">Avaliação</th>
-              <th class="p-4 font-bold text-gray-500 text-sm">Telefone</th>
-              <th class="p-4 font-bold text-gray-500 text-sm">Website</th>
-              <th class="p-4 font-bold text-gray-500 text-sm text-right">Ações</th>
+            <tr class="bg-gray-50 dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800">
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm">Empresa</th>
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm">CNPJ / Info</th>
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm">Avaliação</th>
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm">Telefone</th>
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm">Website</th>
+              <th class="p-4 font-bold text-gray-500 dark:text-zinc-400 text-sm text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(lead, idx) in leads" :key="idx" class="border-b border-gray-50 hover:bg-gray-50/50">
-              <td class="p-4 font-medium text-gray-900">{{ lead.nome || lead.empresa || lead.title || 'Sem Nome' }}</td>
+            <tr v-for="(lead, idx) in leads" :key="idx" class="border-b border-gray-50 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900/50">
+              <td class="p-4 font-medium text-gray-900 dark:text-zinc-100">{{ lead.nome || lead.empresa || lead.title || 'Sem Nome' }}</td>
               <td class="p-4">
                 <div v-if="lead.infoExtract?.cnpj" class="flex flex-col">
                   <span class="text-sm font-bold text-emerald-600">{{ lead.infoExtract.cnpj }}</span>
-                  <span class="text-xs text-gray-500 truncate max-w-[200px]" :title="lead.infoExtract.cnae">{{ lead.infoExtract.cnae || 'CNAE não disponível' }}</span>
+                  <span class="text-xs text-gray-500 dark:text-zinc-400 truncate max-w-[200px]" :title="lead.infoExtract.cnae">{{ lead.infoExtract.cnae || 'CNAE não disponível' }}</span>
                 </div>
-                <span v-else class="text-xs text-gray-400 italic bg-gray-100 px-2 py-1 rounded-md">Pendente / Não Achou</span>
+                <span v-else class="text-xs text-gray-400 dark:text-zinc-500 italic bg-gray-100 dark:bg-zinc-800 px-2 py-1 rounded-md">Pendente / Não Achou</span>
               </td>
-              <td class="p-4 text-gray-600 flex items-center gap-1">
-                ⭐ {{ lead.infoExtract?.totalScore || lead.totalScore || '-' }} <span class="text-xs text-gray-400">({{ lead.infoExtract?.reviewsCount || lead.reviewsCount || 0 }})</span>
+              <td class="p-4 text-gray-600 dark:text-zinc-400 flex items-center gap-1">
+                ⭐ {{ lead.infoExtract?.totalScore || lead.totalScore || '-' }} <span class="text-xs text-gray-400 dark:text-zinc-500">({{ lead.infoExtract?.reviewsCount || lead.reviewsCount || 0 }})</span>
               </td>
-              <td class="p-4 text-gray-600">{{ lead.telefone || lead.phoneUnformatted || lead.phone || '-' }}</td>
+              <td class="p-4 text-gray-600 dark:text-zinc-400">{{ lead.telefone || lead.phoneUnformatted || lead.phone || '-' }}</td>
               <td class="p-4 text-blue-500 hover:underline">
                 <a v-if="lead.infoExtract?.website || lead.website" :href="lead.infoExtract?.website || lead.website" target="_blank" rel="noopener">Acessar</a>
-                <span v-else class="text-gray-400 no-underline">-</span>
+                <span v-else class="text-gray-400 dark:text-zinc-500 no-underline">-</span>
               </td>
               <td class="p-4 text-right">
                 <button v-if="lead.id" @click="excluirLead(lead.id, idx)" class="text-sm font-medium text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">

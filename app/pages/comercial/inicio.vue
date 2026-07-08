@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+      <div class="bg-white dark:bg-zinc-800 p-6 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-sm font-medium text-gray-500 mb-1">Novas Propostas (Mês)</p>
-            <h3 class="text-2xl font-bold text-gray-900">{{ novasPropostas }}</h3>
+            <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1">Novas Propostas (Mês)</p>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">{{ novasPropostas }}</h3>
           </div>
           <div class="p-2 bg-orange-50 rounded-lg">
             <DocumentTextIcon class="h-6 w-6 text-orange-500" />
@@ -13,11 +13,11 @@
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+      <div class="bg-white dark:bg-zinc-800 p-6 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-sm font-medium text-gray-500 mb-1">Valor no Pipeline</p>
-            <h3 class="text-2xl font-bold text-gray-900">{{ formatCurrency(valorPipeline) }}</h3>
+            <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1">Valor no Pipeline</p>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">{{ formatCurrency(valorPipeline) }}</h3>
           </div>
           <div class="p-2 bg-blue-50 rounded-lg">
             <ChartBarIcon class="h-6 w-6 text-blue-500" />
@@ -25,11 +25,11 @@
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+      <div class="bg-white dark:bg-zinc-800 p-6 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-sm font-medium text-gray-500 mb-1">Fechamentos (Mês)</p>
-            <h3 class="text-2xl font-bold text-gray-900">{{ fechamentosMes }}</h3>
+            <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1">Fechamentos (Mês)</p>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">{{ fechamentosMes }}</h3>
           </div>
           <div class="p-2 bg-emerald-50 rounded-lg">
             <BriefcaseIcon class="h-6 w-6 text-emerald-500" />
@@ -37,11 +37,11 @@
         </div>
       </div>
       
-      <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+      <div class="bg-white dark:bg-zinc-800 p-6 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-sm font-medium text-gray-500 mb-1">Valor Fechado (Mês)</p>
-            <h3 class="text-2xl font-bold text-gray-900">{{ formatCurrency(valorFechadoMes) }}</h3>
+            <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1">Valor Fechado (Mês)</p>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">{{ formatCurrency(valorFechadoMes) }}</h3>
           </div>
           <div class="p-2 bg-green-50 rounded-lg">
             <BanknotesIcon class="h-6 w-6 text-green-500" />
@@ -53,64 +53,64 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       <!-- Gráfico 1 -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 p-6">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-bold text-gray-800">Propostas por Dia (Sem. Atual)</h3>
+          <h3 class="text-lg font-bold text-gray-800 dark:text-zinc-100">Propostas por Dia (Sem. Atual)</h3>
         </div>
         
         <!-- CSS Bar Chart -->
         <div class="flex items-end justify-between h-40 pt-4">
           <div v-for="(day, index) in chartPropostasAtual" :key="index" class="flex flex-col items-center w-full group cursor-pointer">
             <div class="relative flex justify-center w-full h-full items-end">
-              <span class="absolute -top-6 text-xs font-bold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
+              <span class="absolute -top-6 text-xs font-bold text-gray-600 dark:text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
               <div class="w-10 bg-orange-200 rounded-t-md group-hover:bg-orange-300 transition-colors" :style="{ height: day.percentage }"></div>
             </div>
-            <span class="text-xs text-gray-400 mt-2 font-medium">{{ day.label }}</span>
+            <span class="text-xs text-gray-400 dark:text-zinc-500 mt-2 font-medium">{{ day.label }}</span>
           </div>
         </div>
       </div>
 
       <!-- Gráfico 2 -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 p-6">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-bold text-gray-800">Propostas por Dia (Sem. Passada)</h3>
+          <h3 class="text-lg font-bold text-gray-800 dark:text-zinc-100">Propostas por Dia (Sem. Passada)</h3>
         </div>
         
         <!-- CSS Bar Chart -->
         <div class="flex items-end justify-between h-40 pt-4">
           <div v-for="(day, index) in chartPropostasPassada" :key="index" class="flex flex-col items-center w-full group cursor-pointer">
             <div class="relative flex justify-center w-full h-full items-end">
-              <span class="absolute -top-6 text-xs font-bold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
+              <span class="absolute -top-6 text-xs font-bold text-gray-600 dark:text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
               <div class="w-10 bg-gray-200 rounded-t-md group-hover:bg-gray-300 transition-colors" :style="{ height: day.percentage }"></div>
             </div>
-            <span class="text-xs text-gray-400 mt-2 font-medium">{{ day.label }}</span>
+            <span class="text-xs text-gray-400 dark:text-zinc-500 mt-2 font-medium">{{ day.label }}</span>
           </div>
         </div>
       </div>
 
       <!-- Gráfico 3 -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 p-6">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-bold text-gray-800">Valor Fechado (Sem. Atual)</h3>
+          <h3 class="text-lg font-bold text-gray-800 dark:text-zinc-100">Valor Fechado (Sem. Atual)</h3>
         </div>
         
         <!-- CSS Bar Chart -->
         <div class="flex items-end justify-between h-40 pt-4">
           <div v-for="(day, index) in chartValorFechado" :key="index" class="flex flex-col items-center w-full group cursor-pointer">
             <div class="relative flex justify-center w-full h-full items-end">
-              <span class="absolute -top-6 text-xs font-bold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
+              <span class="absolute -top-6 text-xs font-bold text-gray-600 dark:text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">{{ day.formatted }}</span>
               <div class="w-10 bg-green-300 rounded-t-md group-hover:bg-green-400 transition-colors" :style="{ height: day.percentage }"></div>
             </div>
-            <span class="text-xs text-gray-400 mt-2 font-medium">{{ day.label }}</span>
+            <span class="text-xs text-gray-400 dark:text-zinc-500 mt-2 font-medium">{{ day.label }}</span>
           </div>
         </div>
       </div>
     </div>
     
     <!-- Clientes Adicionados -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-        <h3 class="text-lg font-bold text-gray-800">Clientes Adicionados (Esse Mês)</h3>
+    <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 overflow-hidden">
+      <div class="p-6 border-b border-gray-100 dark:border-zinc-800 flex justify-between items-center">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-zinc-100">Clientes Adicionados (Esse Mês)</h3>
         <NuxtLink to="/comercial/clientes" class="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors">
           Ver todos &rarr;
         </NuxtLink>
@@ -118,35 +118,35 @@
       
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-100">
-          <thead class="bg-gray-50">
+          <thead class="bg-gray-50 dark:bg-zinc-900">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de Adição</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origem</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Cliente</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Data de Adição</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Origem</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-100">
+          <tbody class="bg-white dark:bg-zinc-800 divide-y divide-gray-100">
             <tr v-if="pendingClientes">
-              <td colspan="4" class="px-6 py-8 text-center text-gray-500 text-sm">Carregando clientes...</td>
+              <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-zinc-400 text-sm">Carregando clientes...</td>
             </tr>
             <tr v-else-if="!clientes || clientes.length === 0">
-              <td colspan="4" class="px-6 py-8 text-center text-gray-500 text-sm">Nenhum cliente adicionado recentemente.</td>
+              <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-zinc-400 text-sm">Nenhum cliente adicionado recentemente.</td>
             </tr>
-            <tr v-else v-for="cliente in clientes" :key="cliente.id" class="hover:bg-gray-50 transition-colors cursor-pointer">
+            <tr v-else v-for="cliente in clientes" :key="cliente.id" class="hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors cursor-pointer">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
                     {{ cliente.nome.charAt(0).toUpperCase() }}
                   </div>
                   <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">{{ cliente.nome }}</div>
-                    <div class="text-sm text-gray-500">{{ cliente.email || 'Sem e-mail' }}</div>
+                    <div class="text-sm font-medium text-gray-900 dark:text-zinc-100">{{ cliente.nome }}</div>
+                    <div class="text-sm text-gray-500 dark:text-zinc-400">{{ cliente.email || 'Sem e-mail' }}</div>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(cliente.criado_em) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cliente.origem || '-' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-zinc-400">{{ formatDate(cliente.criado_em) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-zinc-400">{{ cliente.origem || '-' }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span :class="getStatusClass(cliente.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                   {{ formatStatus(cliente.status) }}

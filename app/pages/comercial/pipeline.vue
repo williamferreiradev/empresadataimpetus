@@ -1,14 +1,14 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">Pipeline de Vendas</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">Pipeline de Vendas</h2>
       <NuxtLink to="/comercial/clientes" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors">
         Gerenciar Clientes
       </NuxtLink>
     </div>
 
     <div v-if="pending" class="flex justify-center items-center py-20">
-      <p class="text-gray-500 font-medium">Carregando pipeline...</p>
+      <p class="text-gray-500 dark:text-zinc-400 font-medium">Carregando pipeline...</p>
     </div>
 
     <!-- Kanban Board -->
@@ -17,14 +17,14 @@
       <div 
         v-for="status in columns" 
         :key="status"
-        class="flex-shrink-0 w-80 bg-gray-100 rounded-xl flex flex-col max-h-[80vh]"
+        class="flex-shrink-0 w-80 bg-gray-100 dark:bg-zinc-800 rounded-xl flex flex-col max-h-[80vh]"
         @dragover.prevent
         @drop="onDrop($event, status)"
       >
         <!-- Header da Coluna -->
-        <div class="p-4 font-bold text-gray-800 flex justify-between items-center border-b border-gray-200 bg-gray-50 rounded-t-xl">
+        <div class="p-4 font-bold text-gray-800 dark:text-zinc-100 flex justify-between items-center border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-900 rounded-t-xl">
           <span class="uppercase text-sm tracking-wide">{{ status }}</span>
-          <span class="bg-gray-200 text-gray-700 text-xs py-1 px-2 rounded-full font-bold">
+          <span class="bg-gray-200 text-gray-700 dark:text-zinc-300 text-xs py-1 px-2 rounded-full font-bold">
             {{ getClientsByStatus(status).length }}
           </span>
         </div>
@@ -37,13 +37,13 @@
             draggable="true"
             @dragstart="onDragStart($event, cliente.id)"
             @click="openClientDetails(cliente)"
-            class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-grab active:cursor-grabbing hover:border-orange-300 hover:shadow-md transition-all group"
+            class="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-zinc-700 cursor-grab active:cursor-grabbing hover:border-orange-300 hover:shadow-md transition-all group"
           >
             <div class="flex justify-between items-start mb-2">
-              <div class="font-bold text-gray-900 text-sm group-hover:text-orange-600 transition-colors">{{ cliente.nome }}</div>
+              <div class="font-bold text-gray-900 dark:text-zinc-100 text-sm group-hover:text-orange-600 transition-colors">{{ cliente.nome }}</div>
             </div>
             
-            <div class="text-xs text-gray-500 mb-3 flex items-center">
+            <div class="text-xs text-gray-500 dark:text-zinc-400 mb-3 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
@@ -65,8 +65,8 @@
           </div>
           
           <!-- State Vazio -->
-          <div v-if="getClientsByStatus(status).length === 0" class="h-full flex items-center justify-center py-6 border-2 border-dashed border-gray-200 rounded-lg">
-            <span class="text-xs text-gray-400 font-medium">Solte cards aqui</span>
+          <div v-if="getClientsByStatus(status).length === 0" class="h-full flex items-center justify-center py-6 border-2 border-dashed border-gray-200 dark:border-zinc-700 rounded-lg">
+            <span class="text-xs text-gray-400 dark:text-zinc-500 font-medium">Solte cards aqui</span>
           </div>
         </div>
       </div>
@@ -77,16 +77,16 @@
       <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" @click="closeClientDetails"></div>
       
       <div class="relative w-full max-w-2xl mx-auto my-6 z-50">
-        <div class="relative flex flex-col w-full bg-white border-0 rounded-xl shadow-xl outline-none focus:outline-none">
+        <div class="relative flex flex-col w-full bg-white dark:bg-zinc-800 border-0 rounded-xl shadow-xl outline-none focus:outline-none">
           <!-- Cabeçalho -->
-          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-200 rounded-t-xl bg-gray-50">
+          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-200 dark:border-zinc-700 rounded-t-xl bg-gray-50 dark:bg-zinc-900">
             <div>
-              <h3 class="text-xl font-bold text-gray-900">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-zinc-100">
                 Detalhes do Lead
               </h3>
-              <p class="text-sm text-gray-500 mt-1">Visão geral do cliente e propostas geradas</p>
+              <p class="text-sm text-gray-500 dark:text-zinc-400 mt-1">Visão geral do cliente e propostas geradas</p>
             </div>
-            <button class="p-1 ml-auto bg-transparent border-0 text-gray-400 float-right text-3xl leading-none font-semibold outline-none focus:outline-none hover:text-gray-600" @click="closeClientDetails">
+            <button class="p-1 ml-auto bg-transparent border-0 text-gray-400 dark:text-zinc-500 float-right text-3xl leading-none font-semibold outline-none focus:outline-none hover:text-gray-600 dark:text-zinc-400" @click="closeClientDetails">
               <span class="bg-transparent h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
             </button>
           </div>
@@ -96,26 +96,26 @@
             <div v-if="selectedClient" class="space-y-6">
               
               <!-- Info Básica + Score -->
-              <div class="flex items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+              <div class="flex items-center justify-between bg-white dark:bg-zinc-800 p-4 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm">
                 <div>
-                  <h4 class="text-lg font-bold text-gray-900">{{ selectedClient.nome }}</h4>
-                  <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <h4 class="text-lg font-bold text-gray-900 dark:text-zinc-100">{{ selectedClient.nome }}</h4>
+                  <div class="flex items-center text-sm text-gray-500 dark:text-zinc-400 mt-1">
                     <span class="mr-3 flex items-center">
-                      <svg class="h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-4 w-4 mr-1 text-gray-400 dark:text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                       {{ selectedClient.empresa || 'Nenhuma empresa' }}
                     </span>
                     <span class="mr-3 flex items-center">
-                      <svg class="h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-4 w-4 mr-1 text-gray-400 dark:text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       {{ selectedClient.email || 'Sem e-mail' }}
                     </span>
                   </div>
-                  <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <div class="flex items-center text-sm text-gray-500 dark:text-zinc-400 mt-1">
                     <span class="flex items-center">
-                      <svg class="h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-4 w-4 mr-1 text-gray-400 dark:text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       {{ selectedClient.telefone || 'Sem telefone' }}
@@ -128,7 +128,7 @@
                 </div>
                 
                 <div class="text-center">
-                  <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Score</div>
+                  <div class="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Score</div>
                   <div class="h-14 w-14 rounded-full flex items-center justify-center font-black text-2xl mx-auto" 
                     :class="[
                       calculateScore(selectedClient.status) === 'F' ? 'bg-red-100 text-red-600 border-4 border-red-200' : 
@@ -144,15 +144,15 @@
               <!-- Lista de Propostas -->
               <div>
                 <div class="mb-3">
-                  <h4 class="text-lg font-bold text-gray-900 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <h4 class="text-lg font-bold text-gray-900 dark:text-zinc-100 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 dark:text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     Propostas Geradas
                   </h4>
                 </div>
                 
-                <div v-if="isLoadingProposals" class="py-6 text-center text-gray-500">
+                <div v-if="isLoadingProposals" class="py-6 text-center text-gray-500 dark:text-zinc-400">
                   <svg class="animate-spin h-6 w-6 text-orange-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -160,7 +160,7 @@
                   Buscando propostas...
                 </div>
                 
-                <div v-else-if="clientProposals.length === 0" class="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500">
+                <div v-else-if="clientProposals.length === 0" class="bg-gray-50 dark:bg-zinc-900 border border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-6 text-center text-gray-500 dark:text-zinc-400">
                   Nenhuma proposta encontrada para "{{ selectedClient.nome }}".
                 </div>
                 
@@ -170,16 +170,16 @@
                     :key="proposta.id" 
                     :to="`/p/${proposta.id}`"
                     target="_blank"
-                    class="block p-3 border border-gray-100 bg-white rounded-lg hover:shadow-md hover:border-orange-200 cursor-pointer transition-all"
+                    class="block p-3 border border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-800 rounded-lg hover:shadow-md hover:border-orange-200 cursor-pointer transition-all"
                   >
                     <div class="flex justify-between items-start mb-2">
                       <div>
-                        <p class="font-medium text-gray-900 text-sm">{{ proposta.segmento || 'Projeto sem título' }}</p>
-                        <p class="text-xs text-gray-500 mt-0.5">Criada em {{ new Date(proposta.criado_em).toLocaleDateString('pt-BR') }}</p>
+                        <p class="font-medium text-gray-900 dark:text-zinc-100 text-sm">{{ proposta.segmento || 'Projeto sem título' }}</p>
+                        <p class="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">Criada em {{ new Date(proposta.criado_em).toLocaleDateString('pt-BR') }}</p>
                       </div>
                       <span class="px-2 py-1 text-[10px] font-bold rounded-full uppercase tracking-wide"
                         :class="{
-                          'bg-gray-100 text-gray-600': proposta.status === 'rascunho',
+                          'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400': proposta.status === 'rascunho',
                           'bg-blue-100 text-blue-600': proposta.status === 'em_revisao',
                           'bg-purple-100 text-purple-600': proposta.status === 'enviado',
                           'bg-green-100 text-green-600': proposta.status === 'aprovado'
@@ -188,29 +188,29 @@
                       </span>
                     </div>
                     <div class="flex justify-between items-center text-xs">
-                      <span class="text-gray-600 font-medium">{{ proposta.valor_estimado || 'Valor não definido' }}</span>
-                      <span class="text-gray-400">{{ proposta.prazo_estimado ? 'Prazo: ' + proposta.prazo_estimado : 'Prazo a definir' }}</span>
+                      <span class="text-gray-600 dark:text-zinc-400 font-medium">{{ proposta.valor_estimado || 'Valor não definido' }}</span>
+                      <span class="text-gray-400 dark:text-zinc-500">{{ proposta.prazo_estimado ? 'Prazo: ' + proposta.prazo_estimado : 'Prazo a definir' }}</span>
                     </div>
                   </NuxtLink>
                 </div>
               </div>
 
               <!-- TAREFAS SECTION -->
-              <div class="border-t border-gray-200 pt-6">
-                <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+              <div class="border-t border-gray-200 dark:border-zinc-700 pt-6">
+                <h4 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-4 flex items-center">
                   <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                   Tarefas / Lembretes
                 </h4>
                 
                 <!-- Add Task Form -->
-                <div class="flex flex-col md:flex-row gap-3 mb-5 items-end bg-gray-50 border border-gray-100 p-4 rounded-xl">
+                <div class="flex flex-col md:flex-row gap-3 mb-5 items-end bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 p-4 rounded-xl">
                   <div class="flex-1 w-full">
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Título da Tarefa</label>
-                    <input v-model="newTask.titulo" type="text" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Ex: Ligar para confirmar envio">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1.5">Título da Tarefa</label>
+                    <input v-model="newTask.titulo" type="text" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Ex: Ligar para confirmar envio">
                   </div>
                   <div class="w-full md:w-auto">
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Data e Hora</label>
-                    <input v-model="newTask.data_hora" type="datetime-local" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1.5">Data e Hora</label>
+                    <input v-model="newTask.data_hora" type="datetime-local" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800">
                   </div>
                   <button type="button" @click="addTask" :disabled="isAddingTask || !newTask.titulo || !newTask.data_hora" class="w-full md:w-auto bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-lg font-medium shadow-sm transition-colors disabled:opacity-50 text-sm">
                     {{ isAddingTask ? 'Adicionando...' : 'Adicionar' }}
@@ -218,26 +218,26 @@
                 </div>
 
                 <!-- Tasks List -->
-                <div v-if="isTasksLoading" class="text-center py-6 text-sm text-gray-500 flex flex-col items-center justify-center">
-                  <svg class="animate-spin h-5 w-5 text-gray-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <div v-if="isTasksLoading" class="text-center py-6 text-sm text-gray-500 dark:text-zinc-400 flex flex-col items-center justify-center">
+                  <svg class="animate-spin h-5 w-5 text-gray-400 dark:text-zinc-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                   Carregando tarefas...
                 </div>
-                <div v-else-if="clientTasks.length === 0" class="text-center py-8 text-sm text-gray-500 italic border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
+                <div v-else-if="clientTasks.length === 0" class="text-center py-8 text-sm text-gray-500 dark:text-zinc-400 italic border-2 border-dashed border-gray-200 dark:border-zinc-700 rounded-xl bg-gray-50 dark:bg-zinc-900">
                   Nenhuma tarefa agendada para este lead.
                 </div>
                 <div v-else class="space-y-2.5">
-                  <div v-for="task in clientTasks" :key="task.id" class="flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:border-orange-300 transition-colors bg-white group" :class="{'opacity-60 bg-gray-50 border-gray-200': task.concluida}">
+                  <div v-for="task in clientTasks" :key="task.id" class="flex items-center justify-between p-3 border border-gray-200 dark:border-zinc-700 rounded-xl hover:border-orange-300 transition-colors bg-white dark:bg-zinc-800 group" :class="{'opacity-60 bg-gray-50 dark:bg-zinc-900 border-gray-200 dark:border-zinc-700': task.concluida}">
                     <div class="flex items-center gap-3.5 overflow-hidden">
-                      <input type="checkbox" :checked="task.concluida" @change="toggleTask(task)" class="h-4.5 w-4.5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer mt-0.5">
+                      <input type="checkbox" :checked="task.concluida" @change="toggleTask(task)" class="h-4.5 w-4.5 text-orange-600 focus:ring-orange-500 border-gray-300 dark:border-zinc-600 rounded cursor-pointer mt-0.5">
                       <div class="overflow-hidden">
-                        <p class="text-sm font-semibold text-gray-900 truncate" :class="{'line-through text-gray-500': task.concluida}">{{ task.titulo }}</p>
-                        <p class="text-xs text-gray-500 flex items-center mt-0.5">
+                        <p class="text-sm font-semibold text-gray-900 dark:text-zinc-100 truncate" :class="{'line-through text-gray-500 dark:text-zinc-400': task.concluida}">{{ task.titulo }}</p>
+                        <p class="text-xs text-gray-500 dark:text-zinc-400 flex items-center mt-0.5">
                           <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                           {{ new Date(task.data_hora).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) }}
                         </p>
                       </div>
                     </div>
-                    <button type="button" @click="deleteTask(task.id)" class="text-gray-400 hover:text-red-600 p-1.5 ml-2 shrink-0 transition-colors opacity-0 group-hover:opacity-100 rounded-md hover:bg-red-50">
+                    <button type="button" @click="deleteTask(task.id)" class="text-gray-400 dark:text-zinc-500 hover:text-red-600 p-1.5 ml-2 shrink-0 transition-colors opacity-0 group-hover:opacity-100 rounded-md hover:bg-red-50">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -250,8 +250,8 @@
           </div>
           
           <!-- Rodapé -->
-          <div class="flex items-center justify-end p-5 border-t border-solid border-gray-200 rounded-b-xl">
-            <button class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium px-4 py-2 rounded-lg text-sm transition-colors" @click="closeClientDetails">
+          <div class="flex items-center justify-end p-5 border-t border-solid border-gray-200 dark:border-zinc-700 rounded-b-xl">
+            <button class="bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 font-medium px-4 py-2 rounded-lg text-sm transition-colors" @click="closeClientDetails">
               Fechar
             </button>
           </div>

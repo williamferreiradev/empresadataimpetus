@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 font-sans text-gray-800 print:bg-white flex flex-col items-center pb-20 sm:pb-0">
+  <div class="min-h-screen bg-gray-50 dark:bg-zinc-900 font-sans text-gray-800 dark:text-zinc-100 print:bg-white dark:bg-zinc-800 flex flex-col items-center pb-20 sm:pb-0">
     
     <!-- Loading State -->
     <div v-if="pending" class="flex justify-center items-center h-screen print:hidden">
@@ -10,22 +10,22 @@
     </div>
 
     <!-- Error State -->
-    <div v-else-if="!proposta || !parsedData" class="w-full max-w-4xl p-10 mt-10 bg-white rounded-xl shadow-sm text-center print:hidden">
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">Proposta não encontrada</h2>
-      <p class="text-gray-500">O link é inválido ou a proposta ainda não possui conteúdo gerado.</p>
+    <div v-else-if="!proposta || !parsedData" class="w-full max-w-4xl p-10 mt-10 bg-white dark:bg-zinc-800 rounded-xl shadow-sm text-center print:hidden">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 mb-2">Proposta não encontrada</h2>
+      <p class="text-gray-500 dark:text-zinc-400">O link é inválido ou a proposta ainda não possui conteúdo gerado.</p>
     </div>
 
     <!-- SITE PROPOSAL -->
-    <div v-else-if="parsedData.isSite" class="w-full min-h-screen bg-white">
+    <div v-else-if="parsedData.isSite" class="w-full min-h-screen bg-white dark:bg-zinc-800">
       <SitePreview :theme="parsedData.theme" :content="parsedData.content" />
     </div>
 
     <!-- DOCUMENT WRAPPER (COMMERCIAL PROPOSAL) -->
-    <div v-else class="w-full max-w-[1000px] bg-white shadow-2xl print:shadow-none print:w-full print:max-w-none my-0 sm:my-10 overflow-hidden rounded-none sm:rounded-2xl document-container">
+    <div v-else class="w-full max-w-[1000px] bg-white dark:bg-zinc-800 shadow-2xl print:shadow-none print:w-full print:max-w-none my-0 sm:my-10 overflow-hidden rounded-none sm:rounded-2xl document-container">
       
       <!-- 1. HERO SECTION (DARK) -->
       <section class="bg-[#0B1120] text-white p-10 md:p-16 relative">
-        <div class="mb-10 text-xs font-bold tracking-[0.2em] text-gray-400 uppercase flex items-center">
+        <div class="mb-10 text-xs font-bold tracking-[0.2em] text-gray-400 dark:text-zinc-500 uppercase flex items-center">
           DATA IMPETUS <span class="mx-3 text-orange-500">•</span> PROPOSTA COMERCIAL EXCLUSIVA
         </div>
         
@@ -43,51 +43,51 @@
         <!-- Client Info Grid -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-left">
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Para</p>
+            <p class="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Para</p>
             <p class="text-lg font-bold text-white">{{ proposta.cliente_nome }}</p>
           </div>
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Empresa</p>
+            <p class="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Empresa</p>
             <p class="text-lg font-bold text-white">{{ proposta.cliente_empresa }}</p>
           </div>
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Segmento</p>
+            <p class="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Segmento</p>
             <p class="text-lg font-bold text-white">{{ proposta.segmento || 'Não informado' }}</p>
           </div>
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Data</p>
+            <p class="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Data</p>
             <p class="text-lg font-bold text-white">{{ new Date(proposta.criado_em).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) }}</p>
           </div>
         </div>
       </section>
 
       <!-- 2. DIAGNÓSTICO -->
-      <section class="p-10 md:p-16 bg-white">
+      <section class="p-10 md:p-16 bg-white dark:bg-zinc-800">
         <div class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-black uppercase tracking-widest rounded-full mb-6 border border-orange-100">
           Diagnóstico
         </div>
         <h2 class="text-3xl font-extrabold text-slate-900 mb-4">{{ parsedData.diagnostico.titulo }}</h2>
-        <p class="text-lg text-gray-600 mb-10 max-w-3xl leading-relaxed">{{ parsedData.diagnostico.intro }}</p>
+        <p class="text-lg text-gray-600 dark:text-zinc-400 mb-10 max-w-3xl leading-relaxed">{{ parsedData.diagnostico.intro }}</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="(ponto, i) in parsedData.diagnostico.pontos" :key="i" class="bg-gray-50 rounded-2xl p-6 border border-gray-100 shadow-sm page-break-inside-avoid">
+          <div v-for="(ponto, i) in parsedData.diagnostico.pontos" :key="i" class="bg-gray-50 dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800 shadow-sm page-break-inside-avoid">
             <div class="flex items-center mb-3">
               <div class="w-2.5 h-2.5 rounded-full bg-orange-500 mr-3"></div>
               <h3 class="font-bold text-slate-900 text-lg">{{ ponto.titulo }}</h3>
             </div>
-            <p class="text-gray-600 text-sm leading-relaxed">{{ ponto.descricao }}</p>
+            <p class="text-gray-600 dark:text-zinc-400 text-sm leading-relaxed">{{ ponto.descricao }}</p>
           </div>
         </div>
       </section>
 
       <!-- 4. SOLUÇÃO E ENTREGAS -->
-      <section class="bg-gray-50 text-slate-900 p-10 md:p-16 page-break-inside-avoid">
+      <section class="bg-gray-50 dark:bg-zinc-900 text-slate-900 p-10 md:p-16 page-break-inside-avoid">
         <div class="inline-block px-3 py-1 bg-orange-100 text-orange-600 text-xs font-black uppercase tracking-widest rounded-full mb-6">
           A Solução
         </div>
         <h2 class="text-3xl font-extrabold text-slate-900 mb-8">{{ parsedData.solucao.titulo }}</h2>
         
-        <div class="bg-white rounded-2xl p-8 shadow-sm border border-orange-200 border-l-8 border-l-orange-500 mb-12 page-break-inside-avoid">
+        <div class="bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-sm border border-orange-200 border-l-8 border-l-orange-500 mb-12 page-break-inside-avoid">
           <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-2">Solução Proposta</p>
           <h3 class="text-2xl md:text-3xl font-black text-slate-900">{{ parsedData.solucao.nome_solucao }}</h3>
         </div>
@@ -120,14 +120,14 @@
       </section>
 
       <!-- 5. RESULTADOS ESPERADOS (LIGHT) -->
-      <section class="p-10 md:p-16 bg-white page-break-inside-avoid">
+      <section class="p-10 md:p-16 bg-white dark:bg-zinc-800 page-break-inside-avoid">
         <div class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-black uppercase tracking-widest rounded-full mb-6 border border-orange-100">
           Resultados
         </div>
         <h2 class="text-3xl font-extrabold text-slate-900 mb-8">O que muda na prática</h2>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div v-for="(resultado, i) in parsedData.resultados" :key="i" class="text-center p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col justify-center items-center page-break-inside-avoid">
+          <div v-for="(resultado, i) in parsedData.resultados" :key="i" class="text-center p-6 bg-gray-50 dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 flex flex-col justify-center items-center page-break-inside-avoid">
             <!-- Quebra automática de texto para valores grandes divididos por espaço -->
             <div class="font-black text-orange-500 mb-3 leading-none flex flex-col items-center">
               <span class="text-4xl md:text-5xl lg:text-[50px]">{{ resultado.valor.split(' ')[0] }}</span>
@@ -275,7 +275,7 @@
       </section>
 
       <!-- 7. PRÓXIMOS PASSOS (LIGHT) -->
-      <section class="p-10 md:p-16 bg-white page-break-inside-avoid">
+      <section class="p-10 md:p-16 bg-white dark:bg-zinc-800 page-break-inside-avoid">
         <div class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-black uppercase tracking-widest rounded-full mb-6 border border-orange-100">
           Próximos Passos
         </div>
@@ -290,7 +290,7 @@
             </div>
             
             <!-- Card de Conteúdo -->
-            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-gray-50 dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800">
               <h3 class="text-xl font-black text-slate-900 mb-2">{{ passo.titulo }}</h3>
               <p class="text-slate-600 leading-relaxed">{{ passo.descricao }}</p>
             </div>

@@ -2,14 +2,14 @@
   <div class="w-full px-6 md:px-12 mx-auto pb-28">
     <!-- Header -->
     <div class="mb-8 flex items-center">
-      <NuxtLink to="/comercial/propostas" class="mr-4 p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors">
+      <NuxtLink to="/comercial/propostas" class="mr-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-200 dark:text-zinc-300 transition-colors">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Nova Proposta</h1>
-        <p class="text-gray-500 text-sm">Preencha o briefing e deixa a IA gerar para você.</p>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">Nova Proposta</h1>
+        <p class="text-gray-500 dark:text-zinc-400 text-sm">Preencha o briefing e deixa a IA gerar para você.</p>
       </div>
     </div>
 
@@ -47,9 +47,9 @@
     <form @submit.prevent="gerarComGemini">
 
       <!-- SEÇÃO 1: CLIENTE -->
-      <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
+      <div class="bg-white dark:bg-zinc-800 p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 mb-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-bold text-gray-800 flex items-center">
+          <h2 class="text-lg font-bold text-gray-800 dark:text-zinc-100 flex items-center">
             <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mr-3 text-sm font-black">1</span>
             Cliente
           </h2>
@@ -64,28 +64,28 @@
         <div class="grid grid-cols-1 gap-5">
           <!-- Dropdown de clientes com pesquisa -->
           <div class="relative" ref="dropdownRef">
-            <label class="block text-sm font-bold text-gray-700 mb-2">Lead existente</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Lead existente</label>
             <div 
               @click="dropdownOpen = !dropdownOpen" 
-              class="w-full border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 p-3 bg-gray-50 cursor-pointer flex justify-between items-center"
+              class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 p-3 bg-gray-50 dark:bg-zinc-900 cursor-pointer flex justify-between items-center"
             >
-              <span class="truncate text-gray-700">{{ selectedClienteNome || '-- Preencher manualmente ou selecionar --' }}</span>
-              <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <span class="truncate text-gray-700 dark:text-zinc-300">{{ selectedClienteNome || '-- Preencher manualmente ou selecionar --' }}</span>
+              <svg class="w-5 h-5 text-gray-400 dark:text-zinc-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
             
-            <div v-if="dropdownOpen" class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-              <div class="sticky top-0 bg-white p-2 border-b border-gray-100">
+            <div v-if="dropdownOpen" class="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+              <div class="sticky top-0 bg-white dark:bg-zinc-800 p-2 border-b border-gray-100 dark:border-zinc-800">
                 <input 
                   v-model="searchCliente" 
                   type="text" 
-                  class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none" 
+                  class="w-full border border-gray-300 dark:border-zinc-600 rounded-lg p-2 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none" 
                   placeholder="Pesquisar cliente..." 
                   @click.stop 
                 />
               </div>
               <div 
                 @click="selecionarDropdown('')" 
-                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm text-gray-600 border-b border-gray-100"
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm text-gray-600 dark:text-zinc-400 border-b border-gray-100 dark:border-zinc-800"
               >
                 -- Preencher manualmente ou limpar seleção --
               </div>
@@ -93,11 +93,11 @@
                 v-for="c in filteredClientes" 
                 :key="c.id" 
                 @click="selecionarDropdown(c)" 
-                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm truncate text-gray-800"
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm truncate text-gray-800 dark:text-zinc-100"
               >
                 {{ c.nome }} {{ c.empresa ? `— ${c.empresa}` : '' }}
               </div>
-              <div v-if="filteredClientes.length === 0" class="px-4 py-3 text-sm text-gray-500 text-center">
+              <div v-if="filteredClientes.length === 0" class="px-4 py-3 text-sm text-gray-500 dark:text-zinc-400 text-center">
                 Nenhum cliente encontrado
               </div>
             </div>
@@ -105,18 +105,18 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Nome do contato <span class="text-red-500">*</span></label>
-              <input v-model="form.cliente_nome" required type="text" placeholder="Ex: João Silva" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Nome do contato <span class="text-red-500">*</span></label>
+              <input v-model="form.cliente_nome" required type="text" placeholder="Ex: João Silva" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Empresa <span class="text-red-500">*</span></label>
-              <input v-model="form.cliente_empresa" required type="text" placeholder="Ex: Clínica Saúde+" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Empresa <span class="text-red-500">*</span></label>
+              <input v-model="form.cliente_empresa" required type="text" placeholder="Ex: Clínica Saúde+" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Segmento</label>
-            <select v-model="form.segmento" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3">
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Segmento</label>
+            <select v-model="form.segmento" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3">
               <option value="">Selecione...</option>
               <option>Clínica/Saúde</option>
               <option>Imobiliária</option>
@@ -133,46 +133,46 @@
       </div>
 
       <!-- SEÇÃO 2: BRIEFING -->
-      <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
-        <h2 class="text-lg font-bold text-gray-800 flex items-center mb-6">
+      <div class="bg-white dark:bg-zinc-800 p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 mb-6">
+        <h2 class="text-lg font-bold text-gray-800 dark:text-zinc-100 flex items-center mb-6">
           <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mr-3 text-sm font-black">2</span>
           Briefing da reunião
         </h2>
 
         <div class="space-y-5">
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Dores identificadas <span class="text-red-500">*</span></label>
-            <textarea v-model="form.dores" required rows="4" placeholder="Ex: Perde 3h/dia criando propostas manualmente. Follow-up inconsistente. CRM desatualizado..." class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Dores identificadas <span class="text-red-500">*</span></label>
+            <textarea v-model="form.dores" required rows="4" placeholder="Ex: Perde 3h/dia criando propostas manualmente. Follow-up inconsistente. CRM desatualizado..." class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Escopo solicitado <span class="text-red-500">*</span></label>
-            <textarea v-model="form.escopo" required rows="3" placeholder="Ex: Automação de propostas comerciais + follow-up via WhatsApp + integração com CRM existente" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Escopo solicitado <span class="text-red-500">*</span></label>
+            <textarea v-model="form.escopo" required rows="3" placeholder="Ex: Automação de propostas comerciais + follow-up via WhatsApp + integração com CRM existente" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Investimento estimado</label>
-              <input v-model="form.valor_estimado" type="text" placeholder="Ex: R$ 4.800 / mês" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Investimento estimado</label>
+              <input v-model="form.valor_estimado" type="text" placeholder="Ex: R$ 4.800 / mês" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
             <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Prazo de entrega</label>
-              <input v-model="form.prazo_estimado" type="text" placeholder="Ex: 3 semanas" class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Prazo de entrega</label>
+              <input v-model="form.prazo_estimado" type="text" placeholder="Ex: 3 semanas" class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Contexto adicional</label>
-            <textarea v-model="form.contexto" rows="3" placeholder="Ex: Cliente já usa n8n. Tem urgência pro próximo trimestre. Concorre com fornecedor X." class="w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Contexto adicional</label>
+            <textarea v-model="form.contexto" rows="3" placeholder="Ex: Cliente já usa n8n. Tem urgência pro próximo trimestre. Concorre com fornecedor X." class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3 resize-none"></textarea>
           </div>
         </div>
       </div>
     </form>
 
     <!-- Barra de ações fixa no bottom -->
-    <div class="fixed bottom-0 left-0 lg:left-64 right-0 bg-white border-t border-gray-200 p-4 px-8 flex justify-between items-center shadow-lg z-40">
+    <div class="fixed bottom-0 left-0 lg:left-64 right-0 bg-white dark:bg-zinc-800 border-t border-gray-200 dark:border-zinc-700 p-4 px-8 flex justify-between items-center shadow-lg z-40">
       <div class="flex space-x-3">
-        <button type="button" @click="salvarRascunho" :disabled="isSaving || isGenerating" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center">
+        <button type="button" @click="salvarRascunho" :disabled="isSaving || isGenerating" class="px-5 py-2.5 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center">
           <svg v-if="isSaving" class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -180,8 +180,8 @@
           {{ isSaving ? 'Salvando...' : 'Salvar rascunho' }}
         </button>
 
-        <button type="button" @click="copiarPrompt" :disabled="isGenerating" class="px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center">
-          <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button type="button" @click="copiarPrompt" :disabled="isGenerating" class="px-5 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center">
+          <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
           Copiar prompt
@@ -210,11 +210,11 @@
       <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" @click="showModal = false"></div>
       
       <div class="relative w-full max-w-2xl mx-auto my-6 z-50">
-        <div class="relative flex flex-col w-full bg-white border-0 rounded-xl shadow-xl outline-none focus:outline-none">
+        <div class="relative flex flex-col w-full bg-white dark:bg-zinc-800 border-0 rounded-xl shadow-xl outline-none focus:outline-none">
           <!-- Cabeçalho -->
-          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-200 rounded-t-xl">
-            <h3 class="text-xl font-bold text-gray-900">Adicionar Cliente</h3>
-            <button class="p-1 ml-auto bg-transparent border-0 text-gray-400 text-3xl leading-none font-semibold outline-none focus:outline-none hover:text-gray-600" @click="showModal = false">
+          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-200 dark:border-zinc-700 rounded-t-xl">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-zinc-100">Adicionar Cliente</h3>
+            <button class="p-1 ml-auto bg-transparent border-0 text-gray-400 dark:text-zinc-500 text-3xl leading-none font-semibold outline-none focus:outline-none hover:text-gray-600 dark:text-zinc-400" @click="showModal = false">
               <span class="h-6 w-6 text-2xl block outline-none">×</span>
             </button>
           </div>
@@ -224,30 +224,30 @@
             <div class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
-                  <input v-model="novoCliente.nome" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome do cliente" />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Nome *</label>
+                  <input v-model="novoCliente.nome" type="text" required class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome do cliente" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
-                  <input v-model="novoCliente.empresa" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome da empresa" />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Empresa</label>
+                  <input v-model="novoCliente.empresa" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome da empresa" />
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                  <input v-model="novoCliente.email" type="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="email@exemplo.com" />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">E-mail</label>
+                  <input v-model="novoCliente.email" type="email" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="email@exemplo.com" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-                  <input v-model="novoCliente.telefone" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="(11) 99999-9999" />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Telefone</label>
+                  <input v-model="novoCliente.telefone" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="(11) 99999-9999" />
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Segmento</label>
-                  <select v-model="novoCliente.segmento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Segmento</label>
+                  <select v-model="novoCliente.segmento" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800">
                     <option value="">Selecione...</option>
                     <option>Cerimonialista</option>
                     <option>Imobiliaria alto padrão</option>
@@ -265,8 +265,8 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Origem</label>
-                  <select v-model="novoCliente.origem" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Origem</label>
+                  <select v-model="novoCliente.origem" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800">
                     <option value="">Selecione...</option>
                     <option>Facebook ads</option>
                     <option>Google ADS</option>
@@ -277,8 +277,8 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                  <select v-model="novoCliente.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Status</label>
+                  <select v-model="novoCliente.status" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800">
                     <option>Novo</option>
                     <option>Em contato</option>
                     <option>Qualificado</option>
@@ -292,8 +292,8 @@
           </div>
           
           <!-- Rodapé -->
-          <div class="flex items-center justify-end p-5 border-t border-solid border-gray-200 rounded-b-xl">
-            <button class="text-gray-500 bg-transparent font-medium px-6 py-2 text-sm outline-none mr-2" type="button" @click="showModal = false" :disabled="criandoCliente">
+          <div class="flex items-center justify-end p-5 border-t border-solid border-gray-200 dark:border-zinc-700 rounded-b-xl">
+            <button class="text-gray-500 dark:text-zinc-400 bg-transparent font-medium px-6 py-2 text-sm outline-none mr-2" type="button" @click="showModal = false" :disabled="criandoCliente">
               Cancelar
             </button>
             <button class="bg-orange-500 text-white font-medium text-sm px-6 py-2 rounded-lg shadow hover:bg-orange-600 outline-none" type="button" @click="criarCliente" :disabled="criandoCliente">

@@ -1,7 +1,7 @@
 <template>
   <div class="h-full min-h-[calc(100vh-120px)] flex flex-col">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">Calendário Editorial</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100">Calendário Editorial</h2>
       <!-- Ajustei a cor para orange-500 para combinar com o tema -->
       <button @click="creationStep = 'choice'" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 shadow-md hover:shadow-lg active:scale-95">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -12,38 +12,39 @@
     <!-- Kanban Board -->
     <div class="flex flex-1 gap-5 overflow-x-auto pb-4 items-stretch scrollbar-hide">
       <div v-for="col in columns" :key="col.id" 
-           class="flex flex-col flex-1 bg-gray-50 rounded-2xl min-w-[280px] h-full border border-gray-100 shadow-sm"
+           class="flex flex-col flex-1 bg-gray-50 dark:bg-zinc-900 rounded-2xl min-w-[280px] h-full border border-gray-100 dark:border-zinc-800 shadow-sm"
            @dragover.prevent
            @dragenter.prevent
            @drop="onDrop($event, col.id)">
-        <div class="p-4 font-bold text-gray-800 border-b border-gray-100/80 rounded-t-2xl flex justify-between items-center">
+        <div class="p-4 font-bold text-gray-800 dark:text-zinc-100 border-b border-gray-100 dark:border-zinc-800/80 rounded-t-2xl flex justify-between items-center">
           <span class="flex items-center gap-2.5">
             <span class="w-2.5 h-2.5 rounded-full" :class="col.color"></span>
             {{ col.label }}
           </span>
-          <span class="bg-white border border-gray-100 text-gray-500 px-2.5 py-0.5 rounded-full text-xs font-bold">{{ tasks.filter(t => t.status === col.id).length }}</span>
+          <span class="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-800 text-gray-500 dark:text-zinc-400 px-2.5 py-0.5 rounded-full text-xs font-bold">{{ tasks.filter(t => t.status === col.id).length }}</span>
         </div>
         
         <div class="flex-1 p-3 overflow-y-auto space-y-3">
           <div v-for="task in tasks.filter(t => t.status === col.id)" :key="task.id"
                draggable="true"
                @dragstart="onDragStart($event, task)"
-               class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 cursor-grab active:cursor-grabbing hover:border-blue-300 hover:shadow-md transition-all group relative">
+               @click.self="openTaskView(task)"
+               class="bg-white dark:bg-zinc-800 dark:bg-gray-800 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 dark:border-gray-700 cursor-grab active:cursor-grabbing hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all group relative">
             
             <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button @click="deleteTask(task.id)" class="text-gray-300 hover:text-red-500 transition-colors bg-white/80 rounded p-1">
+              <button @click="deleteTask(task.id)" class="text-gray-300 hover:text-red-500 transition-colors bg-white dark:bg-zinc-800/80 rounded p-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
               </button>
             </div>
 
-            <h4 class="font-bold text-gray-800 mb-1.5 pr-6 leading-tight">{{ task.title }}</h4>
-            <p class="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed" v-if="task.description">{{ task.description }}</p>
+            <h4 class="font-bold text-gray-800 dark:text-zinc-100 mb-1.5 pr-6 leading-tight">{{ task.title }}</h4>
+            <p class="text-sm text-gray-500 dark:text-zinc-400 line-clamp-2 mb-4 leading-relaxed" v-if="task.description">{{ task.description }}</p>
             
             <div class="flex items-end justify-between mt-3 pt-3 border-t border-gray-50">
               <div class="flex flex-col gap-1.5 text-xs">
-                 <div class="flex items-center text-gray-500">
+                 <div class="flex items-center text-gray-500 dark:text-zinc-400">
                    <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                   Previsto: <span class="font-semibold text-gray-700 ml-1">{{ formatDate(task.dateToPost) }}</span>
+                   Previsto: <span class="font-semibold text-gray-700 dark:text-zinc-300 ml-1">{{ formatDate(task.dateToPost) }}</span>
                  </div>
                  <div v-if="task.datePosted" class="flex items-center text-emerald-600 bg-emerald-50 px-2 py-1.5 rounded-lg -ml-1 mt-1 border border-emerald-100/50">
                    <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -58,7 +59,7 @@
           </div>
 
           <!-- Botão extra para adicionar card no final da coluna 'Novo' -->
-          <button v-if="col.id === 'novo'" @click="creationStep = 'choice'" class="w-full mt-2 py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-bold hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 transition-all flex items-center justify-center gap-2">
+          <button v-if="col.id === 'novo'" @click="creationStep = 'choice'" class="w-full mt-2 py-3 border-2 border-dashed border-gray-300 dark:border-zinc-600 dark:border-gray-700 rounded-xl text-gray-500 dark:text-zinc-400 dark:text-gray-400 dark:text-zinc-500 font-bold hover:border-orange-500 dark:hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-all flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Adicionar Card
           </button>
@@ -68,16 +69,16 @@
 
     <!-- Modal Novo Conteúdo (Fluxo) -->
     <div v-if="creationStep !== null" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-      <div class="bg-white rounded-3xl w-full shadow-2xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]"
+      <div class="bg-white dark:bg-zinc-800 rounded-3xl w-full shadow-2xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]"
            :class="creationStep === 'choice' ? 'max-w-2xl' : 'max-w-md'">
-        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 shrink-0">
-          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <button v-if="creationStep !== 'choice' && creationStep !== 'processing'" @click="creationStep = 'choice'" class="text-gray-400 hover:text-orange-500 transition-colors p-1">
+        <div class="p-5 border-b border-gray-100 dark:border-zinc-800 flex justify-between items-center bg-gray-50 dark:bg-zinc-900/50 shrink-0">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-zinc-100 flex items-center gap-2">
+            <button v-if="creationStep !== 'choice' && creationStep !== 'processing'" @click="creationStep = 'choice'" class="text-gray-400 dark:text-zinc-500 hover:text-orange-500 transition-colors p-1">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             {{ creationStep === 'choice' ? 'Como deseja criar?' : (creationStep === 'manual' ? 'Novo Conteúdo' : (creationStep === 'processing' ? 'Aguarde a IA...' : 'IA Implementadora')) }}
           </h3>
-          <button v-if="creationStep !== 'processing'" @click="closeModal" class="text-gray-400 hover:text-gray-600 bg-white p-2 rounded-full shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors">
+          <button v-if="creationStep !== 'processing'" @click="closeModal" class="text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-800 p-2 rounded-full shadow-sm border border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
@@ -85,24 +86,24 @@
         <!-- STEP: CHOICE -->
         <div v-if="creationStep === 'choice'" class="p-8 grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-y-auto">
           <!-- Opção Manual -->
-          <div @click="creationStep = 'manual'" class="group cursor-pointer p-6 border-2 border-gray-100 rounded-3xl hover:border-orange-500 hover:bg-orange-50 hover:shadow-lg transition-all flex flex-col items-center text-center bg-white gap-4">
+          <div @click="creationStep = 'manual'" class="group cursor-pointer p-6 border-2 border-gray-100 dark:border-zinc-800 rounded-3xl hover:border-orange-500 hover:bg-orange-50 hover:shadow-lg transition-all flex flex-col items-center text-center bg-white dark:bg-zinc-800 gap-4">
             <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-orange-100 group-hover:text-orange-500 transition-colors">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
             </div>
             <div>
-              <h4 class="font-bold text-gray-800 text-lg mb-2 group-hover:text-orange-600 transition-colors">Eu mesmo crio</h4>
-              <p class="text-sm text-gray-500 leading-relaxed">Preencha título, descrição e datas manualmente para adicionar ao seu calendário.</p>
+              <h4 class="font-bold text-gray-800 dark:text-zinc-100 text-lg mb-2 group-hover:text-orange-600 transition-colors">Eu mesmo crio</h4>
+              <p class="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">Preencha título, descrição e datas manualmente para adicionar ao seu calendário.</p>
             </div>
           </div>
           
           <!-- Opção IA -->
-          <div @click="creationStep = 'ai'" class="group cursor-pointer p-6 border-2 border-gray-100 rounded-3xl hover:border-orange-500 hover:bg-orange-50 hover:shadow-lg transition-all flex flex-col items-center text-center bg-white gap-4">
+          <div @click="creationStep = 'ai'" class="group cursor-pointer p-6 border-2 border-gray-100 dark:border-zinc-800 rounded-3xl hover:border-orange-500 hover:bg-orange-50 hover:shadow-lg transition-all flex flex-col items-center text-center bg-white dark:bg-zinc-800 gap-4">
             <div class="w-16 h-16 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 group-hover:bg-orange-100 group-hover:text-orange-500 transition-colors shadow-inner">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
             </div>
             <div>
-              <h4 class="font-bold text-gray-800 text-lg mb-2 group-hover:text-orange-600 transition-colors">A IA cria por mim</h4>
-              <p class="text-sm text-gray-500 leading-relaxed">Fale ou escreva o que você deseja e a inteligência artificial cuida de tudo para você.</p>
+              <h4 class="font-bold text-gray-800 dark:text-zinc-100 text-lg mb-2 group-hover:text-orange-600 transition-colors">A IA cria por mim</h4>
+              <p class="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">Fale ou escreva o que você deseja e a inteligência artificial cuida de tudo para você.</p>
             </div>
           </div>
         </div>
@@ -110,22 +111,22 @@
         <!-- STEP: MANUAL -->
         <form v-else-if="creationStep === 'manual'" @submit.prevent="saveNewTask" class="p-6 space-y-5 overflow-y-auto">
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1.5">Título <span class="text-red-500">*</span></label>
-            <input v-model="newTask.title" type="text" required placeholder="Ex: Dicas de Vendas" class="w-full border-gray-200 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800" />
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1.5">Título <span class="text-red-500">*</span></label>
+            <input v-model="newTask.title" type="text" required placeholder="Ex: Dicas de Vendas" class="w-full border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 dark:text-zinc-100" />
           </div>
           
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1.5">Descrição</label>
-            <textarea v-model="newTask.description" rows="3" placeholder="Detalhes do que será abordado..." class="w-full border-gray-200 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 resize-none"></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1.5">Descrição</label>
+            <textarea v-model="newTask.description" rows="3" placeholder="Detalhes do que será abordado..." class="w-full border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 dark:text-zinc-100 resize-none"></textarea>
           </div>
           
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1.5">Data Prevista de Postagem <span class="text-red-500">*</span></label>
-            <input v-model="newTask.dateToPost" type="date" required class="w-full border-gray-200 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800" />
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1.5">Data Prevista de Postagem <span class="text-red-500">*</span></label>
+            <input v-model="newTask.dateToPost" type="date" required class="w-full border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 dark:text-zinc-100" />
           </div>
           
-          <div class="pt-5 flex gap-3 justify-end border-t border-gray-100 mt-2">
-            <button type="button" @click="closeModal" class="px-5 py-3 text-sm font-bold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors">Cancelar</button>
+          <div class="pt-5 flex gap-3 justify-end border-t border-gray-100 dark:border-zinc-800 mt-2">
+            <button type="button" @click="closeModal" class="px-5 py-3 text-sm font-bold text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 hover:text-gray-900 dark:hover:text-zinc-100 dark:text-zinc-100 transition-colors">Cancelar</button>
             <button type="submit" class="px-5 py-3 text-sm font-bold text-white bg-orange-500 rounded-xl hover:bg-orange-600 transition-colors shadow-md flex items-center justify-center gap-2">
               <span v-if="isSaving">Salvando...</span>
               <span v-else>Criar Conteúdo</span>
@@ -136,11 +137,11 @@
         <!-- STEP: AI -->
         <div v-else-if="creationStep === 'ai'" class="p-6 space-y-6 overflow-y-auto flex flex-col">
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1.5">Instruções para a IA</label>
-            <textarea v-model="aiPrompt" rows="3" placeholder="Explique para a IA que público você quer atingir e qual o intuito de gerar esse conteúdo..." class="w-full border-gray-200 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 resize-none"></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1.5">Instruções para a IA</label>
+            <textarea v-model="aiPrompt" rows="3" placeholder="Explique para a IA que público você quer atingir e qual o intuito de gerar esse conteúdo..." class="w-full border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm focus:border-orange-500 focus:ring-orange-500 px-4 py-3 border outline-none transition-shadow text-gray-800 dark:text-zinc-100 resize-none"></textarea>
           </div>
 
-          <div class="flex flex-col items-center bg-gray-50 rounded-2xl p-6 border border-gray-100">
+          <div class="flex flex-col items-center bg-gray-50 dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
             <!-- Canvas para visualizador de áudio -->
             <canvas ref="audioVisualizer" class="w-full h-16 mb-6 rounded-lg opacity-80"></canvas>
 
@@ -159,7 +160,7 @@
 
               <!-- Botões Ação quando tem Áudio -->
               <template v-else>
-                <button @click="discardAudio" :disabled="isGeneratingAI" class="flex-1 py-3 px-4 rounded-xl font-bold text-gray-600 bg-white border border-gray-200 hover:bg-red-50 hover:text-red-600 transition-colors flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button @click="discardAudio" :disabled="isGeneratingAI" class="flex-1 py-3 px-4 rounded-xl font-bold text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 hover:text-red-600 transition-colors flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                   Excluir
                 </button>
@@ -191,8 +192,8 @@
           </div>
           
           <div class="space-y-3">
-            <h3 class="text-2xl font-bold text-gray-800 transition-colors">{{ processingTitle }}</h3>
-            <p class="text-base text-gray-500 max-w-sm">{{ processingMessage }}</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-zinc-100 transition-colors">{{ processingTitle }}</h3>
+            <p class="text-base text-gray-500 dark:text-zinc-400 max-w-sm">{{ processingMessage }}</p>
           </div>
 
           <div class="mt-8 w-full transition-opacity duration-500" :class="isProcessingFinished ? 'opacity-100' : 'opacity-0 pointer-events-none'">
@@ -204,11 +205,44 @@
 
       </div>
     </div>
+
+    <!-- Modal Visualização de Tarefa / Conteúdo -->
+    <div v-if="viewingTask" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+      <div class="bg-white dark:bg-zinc-800 dark:bg-gray-800 rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-100 dark:border-zinc-800 dark:border-gray-700 flex justify-between items-center shrink-0">
+          <div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 dark:text-white">{{ viewingTask.title }}</h3>
+            <p class="text-sm text-gray-500 dark:text-zinc-400 dark:text-gray-400 dark:text-zinc-500 mt-1">Previsto: {{ formatDate(viewingTask.dateToPost) }}</p>
+          </div>
+          <button @click="closeTaskView" class="text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:text-zinc-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-800 dark:bg-gray-700 p-2 rounded-full shadow-sm border border-gray-100 dark:border-zinc-800 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 dark:hover:bg-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-8 flex-1 overflow-y-auto bg-gray-50 dark:bg-zinc-900/50 dark:bg-gray-900/50" id="pdf-content">
+          <div class="prose dark:prose-invert max-w-none" v-html="renderMarkdown(viewingTask.description)"></div>
+        </div>
+
+        <!-- Footer / Ações -->
+        <div class="p-6 border-t border-gray-100 dark:border-zinc-800 dark:border-gray-700 flex justify-end gap-4 shrink-0 bg-white dark:bg-zinc-800 dark:bg-gray-800">
+          <button @click="closeTaskView" class="px-5 py-2.5 font-bold text-gray-600 dark:text-zinc-400 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 dark:hover:bg-gray-700 rounded-xl transition-colors">Fechar</button>
+          <button @click="generatePDF" class="px-5 py-2.5 font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Gerar PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue'
+import { marked } from 'marked'
 
 definePageMeta({
   layout: 'marketing'
@@ -226,6 +260,42 @@ const columns = [
 
 const tasks = ref([])
 const isLoading = ref(true)
+
+// Configuração do markdown
+marked.setOptions({
+  breaks: true,
+  gfm: true
+})
+const renderMarkdown = (text) => {
+  if (!text) return '<p class="text-gray-500 dark:text-zinc-400 italic">Sem conteúdo detalhado.</p>'
+  return marked(text)
+}
+
+// Visualização e Exportação de PDF
+const viewingTask = ref(null)
+
+const openTaskView = (task) => {
+  viewingTask.value = task
+}
+
+const closeTaskView = () => {
+  viewingTask.value = null
+}
+
+const generatePDF = async () => {
+  if (typeof window !== 'undefined') {
+    const html2pdf = (await import('html2pdf.js')).default
+    const element = document.getElementById('pdf-content')
+    const opt = {
+      margin:       10,
+      filename:     `${viewingTask.value?.title || 'Conteudo'}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }
+    html2pdf().set(opt).from(element).save()
+  }
+}
 
 onMounted(async () => {
   await fetchTasks()

@@ -11,34 +11,34 @@
     <NodeResizer min-width="120" min-height="60" :is-visible="selected" handle-class="bg-orange-500 border-2 border-white rounded-md w-3 h-3" />
 
     <!-- Toolbar de Formatação (Visível apenas quando selecionado) -->
-    <div v-if="selected" class="absolute -top-14 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white border border-gray-200 shadow-md rounded-md p-1.5 z-50 whitespace-nowrap">
+    <div v-if="selected" class="absolute -top-14 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-md rounded-md p-1.5 z-50 whitespace-nowrap">
       
       <!-- Rich Text Actions -->
-      <div class="flex items-center gap-1 border-r border-gray-300 pr-2">
-        <button @click.stop="formatText('formatBlock', 'H1')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 text-gray-800 transition-colors" title="Título Principal">H1</button>
-        <button @click.stop="formatText('formatBlock', 'H2')" class="px-2 py-0.5 rounded font-semibold hover:bg-gray-100 text-gray-800 transition-colors" title="Subtítulo">H2</button>
-        <button @click.stop="formatText('formatBlock', 'P')" class="px-2 py-0.5 rounded text-sm hover:bg-gray-100 text-gray-800 transition-colors" title="Texto Padrão">P</button>
+      <div class="flex items-center gap-1 border-r border-gray-300 dark:border-zinc-600 pr-2">
+        <button @click.stop="formatText('formatBlock', 'H1')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Título Principal">H1</button>
+        <button @click.stop="formatText('formatBlock', 'H2')" class="px-2 py-0.5 rounded font-semibold hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Subtítulo">H2</button>
+        <button @click.stop="formatText('formatBlock', 'P')" class="px-2 py-0.5 rounded text-sm hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Texto Padrão">P</button>
         <div class="w-px h-4 bg-gray-300 mx-1"></div>
-        <button @click.stop="formatText('bold')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 text-gray-800 transition-colors" title="Negrito">B</button>
-        <button @click.stop="formatText('italic')" class="px-2 py-0.5 rounded italic hover:bg-gray-100 text-gray-800 transition-colors" title="Itálico">I</button>
+        <button @click.stop="formatText('bold')" class="px-2 py-0.5 rounded font-bold hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Negrito">B</button>
+        <button @click.stop="formatText('italic')" class="px-2 py-0.5 rounded italic hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Itálico">I</button>
         <div class="w-px h-4 bg-gray-300 mx-1"></div>
-        <button @click.stop="formatText('justifyLeft')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Alinhar à Esquerda">
+        <button @click.stop="formatText('justifyLeft')" class="px-2 py-0.5 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Alinhar à Esquerda">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h16" /></svg>
         </button>
-        <button @click.stop="formatText('justifyCenter')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Centralizar">
+        <button @click.stop="formatText('justifyCenter')" class="px-2 py-0.5 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Centralizar">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M7 12h10M4 18h16" /></svg>
         </button>
-        <button @click.stop="formatText('justifyRight')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Alinhar à Direita">
+        <button @click.stop="formatText('justifyRight')" class="px-2 py-0.5 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Alinhar à Direita">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M10 12h10M4 18h16" /></svg>
         </button>
-        <button @click.stop="formatText('justifyFull')" class="px-2 py-0.5 rounded hover:bg-gray-100 text-gray-800 transition-colors" title="Justificar">
+        <button @click.stop="formatText('justifyFull')" class="px-2 py-0.5 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 text-gray-800 dark:text-zinc-100 transition-colors" title="Justificar">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
       </div>
 
       <!-- Colors -->
       <div class="flex items-center gap-1 pl-1 flex-wrap w-[180px]">
-        <button @click.stop="changeColor('default')" class="w-5 h-5 rounded-full bg-white border border-gray-300 hover:ring-2 ring-gray-400" title="Padrão"></button>
+        <button @click.stop="changeColor('default')" class="w-5 h-5 rounded-full bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 hover:ring-2 ring-gray-400" title="Padrão"></button>
         <button @click.stop="changeColor('sticky-yellow')" class="w-5 h-5 rounded-full bg-yellow-200 border border-yellow-300 hover:ring-2 ring-yellow-400" title="Amarelo (Sticky)"></button>
         <button @click.stop="changeColor('sticky-pink')" class="w-5 h-5 rounded-full bg-pink-200 border border-pink-300 hover:ring-2 ring-pink-400" title="Rosa (Sticky)"></button>
         <button @click.stop="changeColor('sticky-blue')" class="w-5 h-5 rounded-full bg-blue-200 border border-blue-300 hover:ring-2 ring-blue-400" title="Azul (Sticky)"></button>

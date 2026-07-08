@@ -14,10 +14,10 @@
           <h2 class="font-bold text-xl leading-none text-theme-primary tracking-tight font-serif">
             {{ content.nomeEmpresa || niche.fallbackNome }}
           </h2>
-          <p class="text-[10px] tracking-widest uppercase mt-1" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ niche.fallbackNome }}</p>
+          <p class="text-[10px] tracking-widest uppercase mt-1" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-500 dark:text-zinc-400'">{{ niche.fallbackNome }}</p>
         </div>
       </div>
-      <nav class="hidden md:flex gap-8 text-xs font-bold tracking-widest uppercase" :class="[isDark ? 'text-gray-300' : 'text-gray-600']">
+      <nav class="hidden md:flex gap-8 text-xs font-bold tracking-widest uppercase" :class="[isDark ? 'text-gray-300' : 'text-gray-600 dark:text-zinc-400']">
         <a href="#" class="text-theme-primary border-b-2 pb-1" :style="{ borderColor: theme.cor }">Home</a>
         <a href="#" class="hover:text-theme-primary transition-colors">Portfolio</a>
         <a href="#" class="hover:text-theme-primary transition-colors">Sobre</a>
@@ -32,14 +32,14 @@
     <section class="flex flex-col md:flex-row items-center px-10 md:px-20 py-20 gap-16">
       <div class="flex-1">
         <p class="text-theme-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">{{ theme.hero.tagline }}</p>
-        <p class="italic mb-6 text-xl font-serif" :class="[isDark ? 'text-gray-300' : 'text-gray-600']">Bem-vindo à {{ content.nomeEmpresa || niche.fallbackNome }}</p>
+        <p class="italic mb-6 text-xl font-serif" :class="[isDark ? 'text-gray-300' : 'text-gray-600 dark:text-zinc-400']">Bem-vindo à {{ content.nomeEmpresa || niche.fallbackNome }}</p>
         
-        <h1 class="text-6xl md:text-7xl font-serif font-bold leading-[1.1] mb-8 tracking-tight" :class="[isDark ? 'text-white' : 'text-gray-900']">
+        <h1 class="text-6xl md:text-7xl font-serif font-bold leading-[1.1] mb-8 tracking-tight" :class="[isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100']">
           {{ theme.hero.headline }}<br/>
           <span class="text-theme-primary">{{ theme.hero.highlight }}.</span>
         </h1>
         
-        <p class="text-lg mb-10 max-w-lg leading-relaxed" :class="[isDark ? 'text-gray-400' : 'text-gray-600']">
+        <p class="text-lg mb-10 max-w-lg leading-relaxed" :class="[isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400']">
           {{ theme.hero.subheadline }}
         </p>
         
@@ -55,15 +55,15 @@
         <div class="grid grid-cols-3 gap-8 pt-10 border-t max-w-lg" :class="isDark ? 'border-white/10' : 'border-black/10'">
           <div>
             <p class="text-3xl font-bold text-theme-primary mb-1">{{ niche.stats.v1 }}</p>
-            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500' : 'text-gray-400'">{{ niche.stats.l1 }}</p>
+            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">{{ niche.stats.l1 }}</p>
           </div>
           <div>
             <p class="text-3xl font-bold text-theme-primary mb-1">{{ niche.stats.v2 }}</p>
-            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500' : 'text-gray-400'">{{ niche.stats.l2 }}</p>
+            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">{{ niche.stats.l2 }}</p>
           </div>
           <div>
             <p class="text-3xl font-bold text-theme-primary mb-1">{{ niche.stats.v3 }}</p>
-            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500' : 'text-gray-400'">{{ niche.stats.l3 }}</p>
+            <p class="text-[10px] uppercase tracking-widest" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">{{ niche.stats.l3 }}</p>
           </div>
         </div>
       </div>
@@ -89,18 +89,18 @@
     </section>
 
     <!-- PORTFOLIO -->
-    <section class="px-10 md:px-20 py-24" :class="isDark ? 'bg-[#0a0a0a]' : 'bg-gray-50'">
+    <section class="px-10 md:px-20 py-24" :class="isDark ? 'bg-[#0a0a0a]' : 'bg-gray-50 dark:bg-zinc-900'">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <p class="text-theme-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">Galeria Completa</p>
-        <h2 class="text-5xl font-serif font-bold mb-6" :class="[isDark ? 'text-white' : 'text-gray-900']">Portfolio</h2>
-        <p class="text-lg leading-relaxed" :class="[isDark ? 'text-gray-400' : 'text-gray-600']">
+        <h2 class="text-5xl font-serif font-bold mb-6" :class="[isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100']">Portfolio</h2>
+        <p class="text-lg leading-relaxed" :class="[isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400']">
           Cada trabalho conta uma história. Explore nossa galeria e encontre inspiração.
         </p>
       </div>
 
       <!-- Filters -->
       <div class="flex justify-center gap-6 mb-12 flex-wrap">
-        <button v-for="(tag, i) in niche.portfolio.tags" :key="i" class="text-xs font-bold tracking-widest uppercase border-b-2 pb-1 transition-colors" :class="i === 0 ? 'text-theme-primary border-theme-primary' : (isDark ? 'text-gray-500 border-transparent hover:text-theme-primary' : 'text-gray-400 border-transparent hover:text-theme-primary')" :style="i === 0 ? { borderColor: theme.cor } : {}">
+        <button v-for="(tag, i) in niche.portfolio.tags" :key="i" class="text-xs font-bold tracking-widest uppercase border-b-2 pb-1 transition-colors" :class="i === 0 ? 'text-theme-primary border-theme-primary' : (isDark ? 'text-gray-500 dark:text-zinc-400 border-transparent hover:text-theme-primary' : 'text-gray-400 dark:text-zinc-500 border-transparent hover:text-theme-primary')" :style="i === 0 ? { borderColor: theme.cor } : {}">
           {{ tag }}
         </button>
       </div>
@@ -116,8 +116,8 @@
         </div>
       </div>
 
-      <div class="text-center p-12 border" :class="isDark ? 'border-white/10 bg-[#050505]' : 'border-gray-200 bg-white'">
-        <p class="text-xl font-serif mb-6" :class="[isDark ? 'text-gray-300' : 'text-gray-600']">Gostou do que viu?</p>
+      <div class="text-center p-12 border" :class="isDark ? 'border-white/10 bg-[#050505]' : 'border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800'">
+        <p class="text-xl font-serif mb-6" :class="[isDark ? 'text-gray-300' : 'text-gray-600 dark:text-zinc-400']">Gostou do que viu?</p>
         <button class="bg-theme-primary text-theme-inverted font-bold px-8 py-4 text-sm uppercase tracking-wider hover:opacity-90 transition-opacity">
           Agendar Serviço
         </button>
@@ -140,9 +140,9 @@
       </div>
       <div class="flex-1">
         <p class="text-theme-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">{{ niche.quemSou.tag }}</p>
-        <h2 class="text-5xl font-serif font-bold mb-10" :class="[isDark ? 'text-white' : 'text-gray-900']">{{ niche.quemSou.title }}</h2>
+        <h2 class="text-5xl font-serif font-bold mb-10" :class="[isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100']">{{ niche.quemSou.title }}</h2>
         
-        <div class="text-lg leading-relaxed space-y-6" :class="[isDark ? 'text-gray-400' : 'text-gray-600']">
+        <div class="text-lg leading-relaxed space-y-6" :class="[isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400']">
           <p v-if="content.sobreTexto" class="whitespace-pre-line">{{ content.sobreTexto }}</p>
           <template v-else>
             <p>
@@ -185,28 +185,28 @@
     </section>
 
     <!-- AVALIAÇÕES -->
-    <section class="px-10 md:px-20 py-24" :class="isDark ? 'bg-[#050505]' : 'bg-white'">
+    <section class="px-10 md:px-20 py-24" :class="isDark ? 'bg-[#050505]' : 'bg-white dark:bg-zinc-800'">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <p class="text-theme-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">{{ niche.avaliacoes.tag }}</p>
-        <h2 class="text-5xl font-serif font-bold mb-6" :class="[isDark ? 'text-white' : 'text-gray-900']">Avaliações</h2>
-        <p class="text-lg leading-relaxed" :class="[isDark ? 'text-gray-400' : 'text-gray-600']">
+        <h2 class="text-5xl font-serif font-bold mb-6" :class="[isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100']">Avaliações</h2>
+        <p class="text-lg leading-relaxed" :class="[isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400']">
           O que nossos clientes dizem sobre a experiência {{ content.nomeEmpresa || niche.fallbackNome }}. A satisfação em cada detalhe.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div v-for="(review, i) in niche.avaliacoes.items" :key="i" class="p-10 border" :class="isDark ? 'bg-[#0a0a0a] border-white/5' : 'bg-gray-50 border-gray-200'">
+        <div v-for="(review, i) in niche.avaliacoes.items" :key="i" class="p-10 border" :class="isDark ? 'bg-[#0a0a0a] border-white/5' : 'bg-gray-50 dark:bg-zinc-900 border-gray-200 dark:border-zinc-700'">
           <div class="flex text-theme-primary mb-6">
             <svg v-for="s in 5" :key="s" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
           </div>
-          <p class="text-lg italic mb-8 leading-relaxed" :class="isDark ? 'text-gray-300' : 'text-gray-700'">"{{ review.text }}"</p>
+          <p class="text-lg italic mb-8 leading-relaxed" :class="isDark ? 'text-gray-300' : 'text-gray-700 dark:text-zinc-300'">"{{ review.text }}"</p>
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded bg-theme-primary/10 flex items-center justify-center font-serif text-xl font-bold text-theme-primary">
               {{ review.name.charAt(0) }}
             </div>
             <div>
-              <p class="font-bold text-sm uppercase tracking-wider" :class="isDark ? 'text-white' : 'text-gray-900'">{{ review.name }}</p>
-              <p class="text-[10px] font-bold uppercase tracking-widest mt-1" :class="isDark ? 'text-gray-500' : 'text-gray-400'">{{ review.time }}</p>
+              <p class="font-bold text-sm uppercase tracking-wider" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">{{ review.name }}</p>
+              <p class="text-[10px] font-bold uppercase tracking-widest mt-1" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">{{ review.time }}</p>
             </div>
           </div>
         </div>
@@ -214,11 +214,11 @@
     </section>
 
     <!-- CONTATO -->
-    <section class="px-10 md:px-20 py-24 flex flex-col md:flex-row gap-16" :class="isDark ? 'bg-[#0a0a0a] border-t border-white/5' : 'bg-gray-50 border-t border-gray-200'">
+    <section class="px-10 md:px-20 py-24 flex flex-col md:flex-row gap-16" :class="isDark ? 'bg-[#0a0a0a] border-t border-white/5' : 'bg-gray-50 dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700'">
       <div class="flex-1">
         <p class="text-theme-primary text-xs font-bold tracking-[0.2em] uppercase mb-4">{{ niche.contatoTag }}</p>
-        <h2 class="text-5xl font-serif font-bold mb-8" :class="[isDark ? 'text-white' : 'text-gray-900']">Contato</h2>
-        <p class="text-lg leading-relaxed mb-12" :class="[isDark ? 'text-gray-400' : 'text-gray-600']">
+        <h2 class="text-5xl font-serif font-bold mb-8" :class="[isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100']">Contato</h2>
+        <p class="text-lg leading-relaxed mb-12" :class="[isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400']">
           Estamos localizados no coração da cidade, prontos para oferecer o melhor atendimento. Venha nos visitar ou agende pelo WhatsApp.
         </p>
 
@@ -228,8 +228,8 @@
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             </div>
             <div>
-              <p class="text-xs font-bold tracking-[0.15em] uppercase mb-2" :class="isDark ? 'text-gray-500' : 'text-gray-400'">Nosso Endereço</p>
-              <p class="text-lg font-serif" :class="isDark ? 'text-white' : 'text-gray-900'">Av. Principal, 123 - Centro<br>Brasília - DF</p>
+              <p class="text-xs font-bold tracking-[0.15em] uppercase mb-2" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">Nosso Endereço</p>
+              <p class="text-lg font-serif" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Av. Principal, 123 - Centro<br>Brasília - DF</p>
             </div>
           </div>
           
@@ -238,17 +238,17 @@
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
             <div>
-              <p class="text-xs font-bold tracking-[0.15em] uppercase mb-2" :class="isDark ? 'text-gray-500' : 'text-gray-400'">Horário de Atendimento</p>
-              <p class="text-lg font-serif" :class="isDark ? 'text-white' : 'text-gray-900'">Ter - Sex: 09:00 - 20:00<br>Sáb: 08:00 - 18:00</p>
+              <p class="text-xs font-bold tracking-[0.15em] uppercase mb-2" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">Horário de Atendimento</p>
+              <p class="text-lg font-serif" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Ter - Sex: 09:00 - 20:00<br>Sáb: 08:00 - 18:00</p>
             </div>
           </div>
         </div>
       </div>
       
       <div class="flex-1">
-        <div class="p-12 border h-full flex flex-col justify-center" :class="isDark ? 'border-white/10 bg-[#050505]' : 'border-gray-200 bg-white'">
-          <p class="text-3xl font-serif mb-4" :class="isDark ? 'text-white' : 'text-gray-900'">Prefere Agilidade?</p>
-          <p class="text-lg mb-10" :class="isDark ? 'text-gray-400' : 'text-gray-600'">Agende seu horário diretamente com nossa equipe via WhatsApp.</p>
+        <div class="p-12 border h-full flex flex-col justify-center" :class="isDark ? 'border-white/10 bg-[#050505]' : 'border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800'">
+          <p class="text-3xl font-serif mb-4" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Prefere Agilidade?</p>
+          <p class="text-lg mb-10" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-600 dark:text-zinc-400'">Agende seu horário diretamente com nossa equipe via WhatsApp.</p>
           
           <button class="bg-[#25D366] text-white font-bold px-8 py-5 text-sm uppercase tracking-wider hover:bg-[#20bd5a] transition-colors flex items-center justify-between group">
             <span class="flex items-center gap-3">
@@ -257,7 +257,7 @@
             </span>
             <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
           </button>
-          <p class="text-xs font-bold tracking-[0.1em] uppercase mt-6 flex items-center gap-2" :class="isDark ? 'text-gray-500' : 'text-gray-400'">
+          <p class="text-xs font-bold tracking-[0.1em] uppercase mt-6 flex items-center gap-2" :class="isDark ? 'text-gray-500 dark:text-zinc-400' : 'text-gray-400 dark:text-zinc-500'">
             <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
             Resposta em menos de 10 minutos
           </p>
@@ -266,7 +266,7 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="px-10 md:px-20 py-16 border-t flex flex-col md:flex-row justify-between items-start gap-12" :class="isDark ? 'bg-[#050505] border-white/10' : 'bg-gray-100 border-black/10'">
+    <footer class="px-10 md:px-20 py-16 border-t flex flex-col md:flex-row justify-between items-start gap-12" :class="isDark ? 'bg-[#050505] border-white/10' : 'bg-gray-100 dark:bg-zinc-800 border-black/10'">
       <div class="max-w-sm">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded flex items-center justify-center font-black text-xl text-theme-inverted bg-theme-primary">
@@ -276,15 +276,15 @@
             {{ content.nomeEmpresa || niche.fallbackNome }}
           </h2>
         </div>
-        <p class="text-sm leading-relaxed mb-6" :class="isDark ? 'text-gray-400' : 'text-gray-500'">
+        <p class="text-sm leading-relaxed mb-6" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-500 dark:text-zinc-400'">
           "Onde a nossa excelência se encontra com a sua necessidade. A melhor opção de serviço para você."
         </p>
       </div>
       
       <div class="flex gap-16">
         <div>
-          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900'">Navegação</p>
-          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400' : 'text-gray-500'">
+          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Navegação</p>
+          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-500 dark:text-zinc-400'">
             <li><a href="#" class="hover:text-theme-primary transition-colors">Home</a></li>
             <li><a href="#" class="hover:text-theme-primary transition-colors">Portfolio</a></li>
             <li><a href="#" class="hover:text-theme-primary transition-colors">Galeria</a></li>
@@ -292,16 +292,16 @@
           </ul>
         </div>
         <div>
-          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900'">Horários</p>
-          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400' : 'text-gray-500'">
+          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Horários</p>
+          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-500 dark:text-zinc-400'">
             <li>Seg - Sex:<br>09:00 - 20:00</li>
             <li>Sábado:<br>08:00 - 18:00</li>
             <li>Domingo:<br>Fechado</li>
           </ul>
         </div>
         <div>
-          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900'">Contato</p>
-          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400' : 'text-gray-500'">
+          <p class="font-bold text-xs uppercase tracking-widest mb-6" :class="isDark ? 'text-white' : 'text-gray-900 dark:text-zinc-100'">Contato</p>
+          <ul class="space-y-4 text-sm" :class="isDark ? 'text-gray-400 dark:text-zinc-500' : 'text-gray-500 dark:text-zinc-400'">
             <li>Av. Principal, 1234 - Centro<br>São Paulo, SP</li>
             <li class="text-theme-primary font-bold mt-4">+55 61 99312-7711</li>
           </ul>
@@ -309,7 +309,7 @@
       </div>
     </footer>
     
-    <div class="px-10 md:px-20 py-6 border-t flex justify-between items-center text-xs font-bold tracking-wider uppercase" :class="isDark ? 'bg-[#000] border-white/5 text-gray-600' : 'bg-gray-200 border-black/5 text-gray-400'">
+    <div class="px-10 md:px-20 py-6 border-t flex justify-between items-center text-xs font-bold tracking-wider uppercase" :class="isDark ? 'bg-[#000] border-white/5 text-gray-600 dark:text-zinc-400' : 'bg-gray-200 border-black/5 text-gray-400 dark:text-zinc-500'">
       <p>© 2026 {{ content.nomeEmpresa || niche.fallbackNome }}. Todos os direitos reservados.</p>
       <p>Powered by Premium Design Unit</p>
     </div>

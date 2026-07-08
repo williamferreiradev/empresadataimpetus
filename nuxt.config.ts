@@ -2,8 +2,13 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase', '@pinia/nuxt'],
-
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase', '@pinia/nuxt', '@nuxtjs/color-mode'],
+  
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light'
+  },
   runtimeConfig: {
     geminiApiKey: process.env.GEMINI_API_KEY || '',
   },

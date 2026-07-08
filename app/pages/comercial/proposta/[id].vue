@@ -9,9 +9,9 @@
         Voltar ao Pipeline
       </NuxtLink>
       
-      <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 flex items-center">
         Nova Proposta
-        <span v-if="cliente" class="ml-2 text-gray-500 font-normal">para {{ cliente.nome }}</span>
+        <span v-if="cliente" class="ml-2 text-gray-500 dark:text-zinc-400 font-normal">para {{ cliente.nome }}</span>
       </h2>
     </div>
 
@@ -22,67 +22,67 @@
       </svg>
     </div>
 
-    <form v-else @submit.prevent="saveProposal" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <form v-else @submit.prevent="saveProposal" class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 overflow-hidden">
       <!-- Section 1: Cabeçalho da Proposta -->
-      <div class="p-6 border-b border-gray-100 bg-gray-50">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Informações Gerais</h3>
+      <div class="p-6 border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-4">Informações Gerais</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Empresa do Cliente</label>
-            <input v-model="form.cliente_empresa" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white" placeholder="Nome da empresa">
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Empresa do Cliente</label>
+            <input v-model="form.cliente_empresa" type="text" required class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800" placeholder="Nome da empresa">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Segmento / Serviço</label>
-            <input v-model="form.segmento" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white" placeholder="Ex: Criação de Landing Page">
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Segmento / Serviço</label>
+            <input v-model="form.segmento" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800" placeholder="Ex: Criação de Landing Page">
           </div>
         </div>
       </div>
 
       <!-- Section 2: Diagnóstico -->
-      <div class="p-6 border-b border-gray-100">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Diagnóstico</h3>
+      <div class="p-6 border-b border-gray-100 dark:border-zinc-800">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-4">Diagnóstico</h3>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Contexto Atual</label>
-            <textarea v-model="form.contexto" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Qual a situação atual do cliente?"></textarea>
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Contexto Atual</label>
+            <textarea v-model="form.contexto" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Qual a situação atual do cliente?"></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Dores (Pain Points) *</label>
-            <textarea v-model="form.dores" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Quais os principais problemas que ele enfrenta?"></textarea>
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Dores (Pain Points) *</label>
+            <textarea v-model="form.dores" required rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Quais os principais problemas que ele enfrenta?"></textarea>
           </div>
         </div>
       </div>
 
       <!-- Section 3: Solução -->
-      <div class="p-6 border-b border-gray-100 bg-gray-50">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">A Solução</h3>
+      <div class="p-6 border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-4">A Solução</h3>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Escopo do Projeto *</label>
-            <textarea v-model="form.escopo" required rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="O que exatamente será entregue?"></textarea>
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Escopo do Projeto *</label>
+            <textarea v-model="form.escopo" required rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="O que exatamente será entregue?"></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Conteúdo Adicional / Observações</label>
-            <textarea v-model="form.conteudo" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Anotações extras ou links"></textarea>
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Conteúdo Adicional / Observações</label>
+            <textarea v-model="form.conteudo" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Anotações extras ou links"></textarea>
           </div>
         </div>
       </div>
 
       <!-- Section 4: Fechamento -->
       <div class="p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Prazos e Valores</h3>
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-4">Prazos e Valores</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Valor Estimado</label>
-            <input v-model="form.valor_estimado" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: R$ 5.000,00">
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Valor Estimado</label>
+            <input v-model="form.valor_estimado" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: R$ 5.000,00">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Prazo Estimado</label>
-            <input v-model="form.prazo_estimado" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: 30 dias">
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Prazo Estimado</label>
+            <input v-model="form.prazo_estimado" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: 30 dias">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Status Inicial</label>
-            <select v-model="form.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Status Inicial</label>
+            <select v-model="form.status" class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-zinc-800">
               <option value="rascunho">Rascunho</option>
               <option value="em_revisao">Em Revisão</option>
               <option value="enviado">Enviado</option>
@@ -92,8 +92,8 @@
       </div>
 
       <!-- Footer Buttons -->
-      <div class="p-6 border-t border-gray-100 bg-gray-50 flex justify-end space-x-3">
-        <button type="button" @click="navigateTo('/comercial/pipeline')" class="px-5 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+      <div class="p-6 border-t border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900 flex justify-end space-x-3">
+        <button type="button" @click="navigateTo('/comercial/pipeline')" class="px-5 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg text-sm font-medium text-gray-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors">
           Cancelar
         </button>
         <button type="submit" :disabled="isSaving" class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors shadow-sm disabled:opacity-50 flex items-center">

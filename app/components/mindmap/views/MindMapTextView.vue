@@ -1,8 +1,8 @@
 <template>
-  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-8 min-h-[60vh]">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Visão em Texto (Outline)</h2>
+  <div class="max-w-4xl mx-auto bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 p-8 min-h-[60vh]">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-zinc-100 mb-6 border-b pb-4">Visão em Texto (Outline)</h2>
     
-    <div v-if="!rootNodes.length" class="text-gray-500 italic text-center py-8">
+    <div v-if="!rootNodes.length" class="text-gray-500 dark:text-zinc-400 italic text-center py-8">
       O mapa está vazio.
     </div>
 

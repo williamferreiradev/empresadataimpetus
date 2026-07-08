@@ -1,14 +1,14 @@
 <template>
-  <div class="flex h-screen bg-gray-50 overflow-hidden">
+  <div class="flex h-screen bg-gray-50 dark:bg-zinc-900 overflow-hidden">
     
     <!-- Left Sidebar: Form -->
-    <div class="w-[400px] shrink-0 bg-white border-r border-gray-200 flex flex-col h-full z-10 shadow-lg">
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between shrink-0 bg-gray-50">
+    <div class="w-[400px] shrink-0 bg-white dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-700 flex flex-col h-full z-10 shadow-lg">
+      <div class="p-6 border-b border-gray-100 dark:border-zinc-800 flex items-center justify-between shrink-0 bg-gray-50 dark:bg-zinc-900">
         <div>
-          <h2 class="text-xl font-black text-gray-900">Editor de Site</h2>
-          <p class="text-sm text-gray-500 font-medium">Configure a landing page do cliente</p>
+          <h2 class="text-xl font-black text-gray-900 dark:text-zinc-100">Editor de Site</h2>
+          <p class="text-sm text-gray-500 dark:text-zinc-400 font-medium">Configure a landing page do cliente</p>
         </div>
-        <NuxtLink to="/comercial/propostas/modelos" class="p-2 text-gray-400 hover:text-gray-700 bg-white rounded-lg border hover:bg-gray-50">
+        <NuxtLink to="/comercial/propostas/modelos" class="p-2 text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-200 dark:text-zinc-300 bg-white dark:bg-zinc-800 rounded-lg border hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
         </NuxtLink>
       </div>
@@ -19,28 +19,28 @@
         <div class="space-y-4">
           <!-- Dropdown de clientes com pesquisa -->
           <div class="relative" ref="dropdownRef">
-            <label class="block text-sm font-bold text-gray-700 mb-2">Lead existente</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Lead existente</label>
             <div 
               @click="dropdownOpen = !dropdownOpen" 
-              class="w-full border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 p-3 bg-gray-50 cursor-pointer flex justify-between items-center"
+              class="w-full border border-gray-300 dark:border-zinc-600 rounded-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 p-3 bg-gray-50 dark:bg-zinc-900 cursor-pointer flex justify-between items-center"
             >
-              <span class="truncate text-gray-700">{{ selectedClienteNome || '-- Preencher manualmente ou selecionar --' }}</span>
-              <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <span class="truncate text-gray-700 dark:text-zinc-300">{{ selectedClienteNome || '-- Preencher manualmente ou selecionar --' }}</span>
+              <svg class="w-5 h-5 text-gray-400 dark:text-zinc-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
             
-            <div v-if="dropdownOpen" class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-              <div class="sticky top-0 bg-white p-2 border-b border-gray-100">
+            <div v-if="dropdownOpen" class="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+              <div class="sticky top-0 bg-white dark:bg-zinc-800 p-2 border-b border-gray-100 dark:border-zinc-800">
                 <input 
                   v-model="searchCliente" 
                   type="text" 
-                  class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none" 
+                  class="w-full border border-gray-300 dark:border-zinc-600 rounded-lg p-2 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none" 
                   placeholder="Pesquisar cliente..." 
                   @click.stop 
                 />
               </div>
               <div 
                 @click="selecionarDropdown('')" 
-                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm text-gray-600 border-b border-gray-100"
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm text-gray-600 dark:text-zinc-400 border-b border-gray-100 dark:border-zinc-800"
               >
                 -- Preencher manualmente ou limpar seleção --
               </div>
@@ -48,45 +48,45 @@
                 v-for="c in filteredClientes" 
                 :key="c.id" 
                 @click="selecionarDropdown(c)" 
-                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm truncate text-gray-800"
+                class="px-4 py-3 hover:bg-orange-50 cursor-pointer text-sm truncate text-gray-800 dark:text-zinc-100"
               >
                 {{ c.nome }} {{ c.empresa ? `— ${c.empresa}` : '' }}
               </div>
-              <div v-if="filteredClientes.length === 0" class="px-4 py-3 text-sm text-gray-500 text-center">
+              <div v-if="filteredClientes.length === 0" class="px-4 py-3 text-sm text-gray-500 dark:text-zinc-400 text-center">
                 Nenhum cliente encontrado
               </div>
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1">Nome do Cliente / Responsável <span class="text-red-500">*</span></label>
-            <input v-model="content.nomeCliente" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-colors" placeholder="Ex: João Silva" />
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1">Nome do Cliente / Responsável <span class="text-red-500">*</span></label>
+            <input v-model="content.nomeCliente" type="text" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white dark:bg-zinc-800 transition-colors" placeholder="Ex: João Silva" />
           </div>
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1">Nome da Empresa</label>
-            <input v-model="content.nomeEmpresa" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-colors" placeholder="Ex: Barbearia do João" />
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1">Nome da Empresa</label>
+            <input v-model="content.nomeEmpresa" type="text" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white dark:bg-zinc-800 transition-colors" placeholder="Ex: Barbearia do João" />
           </div>
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-1">Texto "Quem sou eu"</label>
-            <textarea v-model="content.sobreTexto" rows="3" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-colors" placeholder="Ex: Olá, eu sou o Cauê Du'corte. Minha jornada..."></textarea>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-1">Texto "Quem sou eu"</label>
+            <textarea v-model="content.sobreTexto" rows="3" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white dark:bg-zinc-800 transition-colors" placeholder="Ex: Olá, eu sou o Cauê Du'corte. Minha jornada..."></textarea>
           </div>
         </div>
 
         <!-- Image Uploads -->
         <div class="space-y-6">
-          <h3 class="font-bold text-gray-900 border-b pb-2">Imagens</h3>
+          <h3 class="font-bold text-gray-900 dark:text-zinc-100 border-b pb-2">Imagens</h3>
           
           <!-- Logo -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Logo da Empresa</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Logo da Empresa</label>
             <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden shrink-0">
+              <div class="w-16 h-16 rounded-xl border-2 border-dashed border-gray-300 dark:border-zinc-600 flex items-center justify-center bg-gray-50 dark:bg-zinc-900 overflow-hidden shrink-0">
                 <img v-if="content.logoUrl" :src="content.logoUrl" class="w-full h-full object-contain" />
-                <svg v-else class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <svg v-else class="w-6 h-6 text-gray-400 dark:text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
               </div>
               <div class="flex-1">
                 <input type="file" accept="image/*" @change="uploadImage($event, 'logoUrl')" class="hidden" id="upload-logo" :disabled="isUploading" />
-                <label for="upload-logo" class="cursor-pointer inline-block bg-white border border-gray-300 text-gray-700 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full text-center">
+                <label for="upload-logo" class="cursor-pointer inline-block bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors w-full text-center">
                   {{ isUploading === 'logoUrl' ? 'Enviando...' : 'Fazer Upload' }}
                 </label>
               </div>
@@ -95,17 +95,17 @@
 
           <!-- Hero Image -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Foto Principal (Hero)</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Foto Principal (Hero)</label>
             <div class="flex flex-col gap-3">
-              <div class="w-full h-32 rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden relative">
+              <div class="w-full h-32 rounded-xl border-2 border-dashed border-gray-300 dark:border-zinc-600 flex items-center justify-center bg-gray-50 dark:bg-zinc-900 overflow-hidden relative">
                 <img v-if="content.heroUrl" :src="content.heroUrl" class="w-full h-full object-cover" />
                 <div v-else class="text-center">
-                  <svg class="w-8 h-8 text-gray-400 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                  <p class="text-xs text-gray-500">Formato paisagem</p>
+                  <svg class="w-8 h-8 text-gray-400 dark:text-zinc-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <p class="text-xs text-gray-500 dark:text-zinc-400">Formato paisagem</p>
                 </div>
               </div>
               <input type="file" accept="image/*" @change="uploadImage($event, 'heroUrl')" class="hidden" id="upload-hero" :disabled="isUploading" />
-              <label for="upload-hero" class="cursor-pointer bg-white border border-gray-300 text-gray-700 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-center">
+              <label for="upload-hero" class="cursor-pointer bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors text-center">
                 {{ isUploading === 'heroUrl' ? 'Enviando...' : 'Fazer Upload da Foto' }}
               </label>
             </div>
@@ -113,17 +113,17 @@
 
           <!-- Sobre Mim Image -->
           <div>
-            <label class="block text-sm font-bold text-gray-700 mb-2">Foto "Quem sou eu"</label>
+            <label class="block text-sm font-bold text-gray-700 dark:text-zinc-300 mb-2">Foto "Quem sou eu"</label>
             <div class="flex flex-col gap-3">
-              <div class="w-full h-32 rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden relative">
+              <div class="w-full h-32 rounded-xl border-2 border-dashed border-gray-300 dark:border-zinc-600 flex items-center justify-center bg-gray-50 dark:bg-zinc-900 overflow-hidden relative">
                 <img v-if="content.sobreUrl" :src="content.sobreUrl" class="w-full h-full object-cover" />
                 <div v-else class="text-center">
-                  <svg class="w-8 h-8 text-gray-400 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                  <p class="text-xs text-gray-500">Foto perfil ou de trabalho</p>
+                  <svg class="w-8 h-8 text-gray-400 dark:text-zinc-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  <p class="text-xs text-gray-500 dark:text-zinc-400">Foto perfil ou de trabalho</p>
                 </div>
               </div>
               <input type="file" accept="image/*" @change="uploadImage($event, 'sobreUrl')" class="hidden" id="upload-sobre" :disabled="isUploading" />
-              <label for="upload-sobre" class="cursor-pointer bg-white border border-gray-300 text-gray-700 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-center">
+              <label for="upload-sobre" class="cursor-pointer bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 text-sm font-bold px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 dark:bg-zinc-900 transition-colors text-center">
                 {{ isUploading === 'sobreUrl' ? 'Enviando...' : 'Fazer Upload da Foto' }}
               </label>
             </div>
@@ -133,7 +133,7 @@
       </div>
 
       <!-- Footer Actions -->
-      <div class="p-6 border-t border-gray-200 bg-white shrink-0">
+      <div class="p-6 border-t border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shrink-0">
         <button 
           @click="salvarProposta" 
           :disabled="isSaving"
@@ -156,11 +156,11 @@
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
         <div class="flex-1 flex justify-center">
-          <div class="bg-black/40 px-4 py-1.5 rounded text-xs text-gray-400 font-mono tracking-wide w-full max-w-lg text-center border border-white/5">
+          <div class="bg-black/40 px-4 py-1.5 rounded text-xs text-gray-400 dark:text-zinc-500 font-mono tracking-wide w-full max-w-lg text-center border border-white/5">
             https://dataimpetus.com/p/preview
           </div>
         </div>
-        <div class="w-12 text-xs text-gray-500 font-bold tracking-widest uppercase">Preview</div>
+        <div class="w-12 text-xs text-gray-500 dark:text-zinc-400 font-bold tracking-widest uppercase">Preview</div>
       </div>
       
       <!-- Preview Scroll Area -->
