@@ -223,7 +223,7 @@
 
         <!-- Content -->
         <div class="p-8 flex-1 overflow-y-auto bg-gray-50 dark:bg-zinc-900/50 dark:bg-gray-900/50" id="pdf-content">
-          <div class="prose dark:prose-invert max-w-none" v-html="renderMarkdown(viewingTask.description)"></div>
+          <div class="prose dark:prose-invert dark:prose-dark max-w-none" v-html="renderMarkdown(viewingTask.description)"></div>
         </div>
 
         <!-- Footer / Ações -->

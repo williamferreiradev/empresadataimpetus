@@ -29,13 +29,18 @@
       <!-- VIEW MODE -->
       <template v-if="!isEditing">
         <div class="bg-gray-50 dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700 p-8">
+          <div class="flex items-center gap-3 mb-2" v-if="oferta.tipo">
+            <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-medium rounded-full">
+              {{ oferta.tipo }}
+            </span>
+          </div>
           <h1 class="text-3xl font-bold text-gray-900 dark:text-zinc-100">{{ oferta.title }}</h1>
           <p class="text-lg text-gray-600 dark:text-zinc-400 mt-2">{{ oferta.description }}</p>
         </div>
 
         <div class="p-8">
           <!-- Renderizando a hiperdescricao em HTML vindo do banco -->
-          <article class="prose prose-sm sm:prose-base prose-orange dark:prose-invert max-w-none" v-html="oferta.hiperdescricao || '<p class=\'text-gray-400 dark:text-zinc-500 italic\'>Nenhum texto cadastrado para esta oferta.</p>'"></article>
+          <article class="prose prose-sm sm:prose-base prose-orange dark:prose-invert dark:prose-dark max-w-none" v-html="oferta.hiperdescricao || '<p class=\'text-gray-400 dark:text-zinc-500 italic\'>Nenhum texto cadastrado para esta oferta.</p>'"></article>
         </div>
       </template>
 
@@ -52,6 +57,19 @@
               <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Breve Descrição</label>
               <input type="text" v-model="editForm.description" class="w-full border border-gray-300 dark:border-zinc-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
             </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Tipo de Oferta</label>
+            <select v-model="editForm.tipo" class="w-full border border-gray-300 dark:border-zinc-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
+              <option value="">Selecione o tipo...</option>
+              <option value="Planejamento de marketing">Planejamento de marketing</option>
+              <option value="Ecossitemas comercial">Ecossitemas comercial</option>
+              <option value="Jornada de compra">Jornada de compra</option>
+              <option value="Reativação de leads">Reativação de leads</option>
+              <option value="Mentoria Curso Consultoria">Mentoria Curso Consultoria</option>
+              <option value="Isca / cavalo de troia">Isca / cavalo de troia</option>
+            </select>
           </div>
 
           <div>
@@ -109,6 +127,7 @@ const isSaving = ref(false)
 const editForm = ref({
   title: '',
   description: '',
+  tipo: '',
   hiperdescricao: ''
 })
 
@@ -118,6 +137,7 @@ watch(oferta, (newVal) => {
     editForm.value = {
       title: newVal.title || '',
       description: newVal.description || '',
+      tipo: newVal.tipo || '',
       hiperdescricao: newVal.hiperdescricao || ''
     }
   }
@@ -128,6 +148,7 @@ const cancelEdit = () => {
     editForm.value = {
       title: oferta.value.title || '',
       description: oferta.value.description || '',
+      tipo: oferta.value.tipo || '',
       hiperdescricao: oferta.value.hiperdescricao || ''
     }
   }
@@ -144,6 +165,7 @@ const salvarEdicao = async () => {
     .update({
       title: editForm.value.title,
       description: editForm.value.description,
+      tipo: editForm.value.tipo || null,
       hiperdescricao: editForm.value.hiperdescricao,
       atualizado_em: new Date().toISOString()
     })
@@ -158,6 +180,7 @@ const salvarEdicao = async () => {
     // Atualiza a view
     oferta.value.title = editForm.value.title
     oferta.value.description = editForm.value.description
+    oferta.value.tipo = editForm.value.tipo
     oferta.value.hiperdescricao = editForm.value.hiperdescricao
     isEditing.value = false
   }

@@ -74,8 +74,8 @@
         <h1 class="text-xl font-semibold text-gray-800 dark:text-zinc-100 dark:text-white capitalize">{{ pageTitle }}</h1>
         
         <div class="flex items-center gap-6">
-          <!-- Toggle Ver Todos os Leads -->
-          <div class="hidden sm:flex items-center bg-gray-100 dark:bg-zinc-800 rounded-full p-1 shadow-inner border border-gray-200/50 dark:border-zinc-700/50">
+          <!-- Toggle Ver Todos os Leads (Ocultar em Ofertas) -->
+          <div v-if="!$route.path.includes('/ofertas')" class="hidden sm:flex items-center bg-gray-100 dark:bg-zinc-800 rounded-full p-1 shadow-inner border border-gray-200/50 dark:border-zinc-700/50">
             <button 
               @click="userViewAllLeads ? toggleViewAllLeads() : null"
               :class="!userViewAllLeads ? 'bg-white dark:bg-zinc-800 dark:bg-zinc-700 shadow text-orange-600 dark:text-orange-400 font-bold' : 'text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-200 font-medium'"

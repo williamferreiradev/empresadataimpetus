@@ -23,6 +23,19 @@
         </div>
 
         <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Tipo de Oferta</label>
+          <select v-model="form.tipo" class="w-full border border-gray-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-shadow">
+            <option value="">Selecione o tipo...</option>
+            <option value="Planejamento de marketing">Planejamento de marketing</option>
+            <option value="Ecossitemas comercial">Ecossitemas comercial</option>
+            <option value="Jornada de compra">Jornada de compra</option>
+            <option value="Reativação de leads">Reativação de leads</option>
+            <option value="Mentoria Curso Consultoria">Mentoria Curso Consultoria</option>
+            <option value="Isca / cavalo de troia">Isca / cavalo de troia</option>
+          </select>
+        </div>
+
+        <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Hiperdescrição (Cópia / VSL / Landing Page)</label>
           <p class="text-xs text-gray-500 dark:text-zinc-400 mb-3">Use o editor abaixo para formatar o texto como se fosse o Word, ou apenas cole o texto já formatado da IA.</p>
           
@@ -57,6 +70,7 @@ const isSaving = ref(false)
 const form = ref({
   title: '',
   description: '',
+  tipo: '',
   hiperdescricao: ''
 })
 
@@ -82,6 +96,7 @@ const salvarOferta = async () => {
       title: form.value.title,
       slug: slug,
       description: form.value.description,
+      tipo: form.value.tipo || null,
       hiperdescricao: form.value.hiperdescricao,
       icon: 'TagIcon' // Ícone padrão. Pode ser alterado no futuro.
     })

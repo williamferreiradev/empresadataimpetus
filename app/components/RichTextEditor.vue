@@ -47,7 +47,7 @@
     </div>
     <!-- Editor Area -->
     <client-only>
-      <editor-content :editor="editor" class="p-6 min-h-[500px] max-h-[800px] overflow-y-auto prose prose-sm sm:prose-base prose-orange dark:prose-invert max-w-none focus:outline-none bg-white dark:bg-zinc-800 dark:bg-zinc-900" />
+      <editor-content :editor="editor" class="p-6 min-h-[500px] max-h-[800px] overflow-y-auto prose prose-sm sm:prose-base prose-orange dark:prose-invert dark:prose-dark max-w-none focus:outline-none bg-white dark:bg-zinc-800 dark:bg-zinc-900" />
     </client-only>
   </div>
 </template>
@@ -78,7 +78,7 @@ const editor = useEditor({
   },
   editorProps: {
     attributes: {
-      class: 'focus:outline-none prose prose-sm sm:prose-base prose-orange dark:prose-invert max-w-none w-full h-full min-h-[500px]',
+      class: 'focus:outline-none prose prose-sm sm:prose-base prose-orange dark:prose-invert dark:prose-dark max-w-none w-full h-full min-h-[500px]',
     },
   },
 })

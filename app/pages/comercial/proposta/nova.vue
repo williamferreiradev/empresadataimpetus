@@ -46,15 +46,15 @@
 
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-2">Nome do contato <span class="text-red-500">*</span></label>
-            <input v-model="form.cliente_nome" required type="text" placeholder="Ex: João Silva" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3" />
+            <input v-model="form.cliente_nome" required type="text" placeholder="Ex: João Silva" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
           </div>
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-2">Empresa <span class="text-red-500">*</span></label>
-            <input v-model="form.cliente_empresa" required type="text" placeholder="Ex: Clínica Saúde+" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3" />
+            <input v-model="form.cliente_empresa" required type="text" placeholder="Ex: Clínica Saúde+" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
           </div>
           <div class="md:col-span-2">
             <label class="block text-sm font-bold text-slate-700 mb-2">Segmento</label>
-            <select v-model="form.segmento" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3">
+            <select v-model="form.segmento" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3">
               <option value="">Selecione...</option>
               <option value="Clínica/Saúde">Clínica/Saúde</option>
               <option value="Imobiliária">Imobiliária</option>
@@ -80,28 +80,28 @@
         <div class="grid grid-cols-1 gap-6">
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-2">Dores identificadas <span class="text-red-500">*</span></label>
-            <textarea v-model="form.dores" required rows="3" placeholder="Ex: Perde 3h/dia criando propostas manualmente. Follow-up inconsistente. CRM desatualizado..." class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
+            <textarea v-model="form.dores" required rows="3" placeholder="Ex: Perde 3h/dia criando propostas manualmente. Follow-up inconsistente. CRM desatualizado..." class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
           </div>
 
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-2">Escopo solicitado <span class="text-red-500">*</span></label>
-            <textarea v-model="form.escopo" required rows="3" placeholder="Ex: Automação de propostas comerciais + follow-up via WhatsApp + integração com CRM existente" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
+            <textarea v-model="form.escopo" required rows="3" placeholder="Ex: Automação de propostas comerciais + follow-up via WhatsApp + integração com CRM existente" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-bold text-slate-700 mb-2">Investimento estimado</label>
-              <input v-model="form.valor_estimado" type="text" placeholder="Ex: R$ 4.800 / mês" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <input v-model="form.valor_estimado" type="text" placeholder="Ex: R$ 4.800 / mês" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
             <div>
               <label class="block text-sm font-bold text-slate-700 mb-2">Prazo de entrega</label>
-              <input v-model="form.prazo_estimado" type="text" placeholder="Ex: 3 semanas" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3" />
+              <input v-model="form.prazo_estimado" type="text" placeholder="Ex: 3 semanas" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3" />
             </div>
           </div>
 
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-2">Contexto adicional</label>
-            <textarea v-model="form.contexto" rows="3" placeholder="Ex: Cliente já usa n8n. Tem urgência pro próximo trimestre. Concorre com fornecedor X." class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
+            <textarea v-model="form.contexto" rows="3" placeholder="Ex: Cliente já usa n8n. Tem urgência pro próximo trimestre. Concorre com fornecedor X." class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-3"></textarea>
           </div>
         </div>
       </div>
@@ -136,15 +136,15 @@
         <div class="space-y-4 mb-6">
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-1">Nome do Contato *</label>
-            <input v-model="newClient.nome_completo" type="text" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-2" />
+            <input v-model="newClient.nome_completo" type="text" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-2" />
           </div>
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-1">Empresa</label>
-            <input v-model="newClient.nome_empresa" type="text" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-2" />
+            <input v-model="newClient.nome_empresa" type="text" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-2" />
           </div>
           <div>
             <label class="block text-sm font-bold text-slate-700 mb-1">Telefone / WhatsApp</label>
-            <input v-model="newClient.telefone" type="text" class="w-full border-slate-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 p-2" />
+            <input v-model="newClient.telefone" type="text" class="w-full border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 p-2" />
           </div>
         </div>
         
