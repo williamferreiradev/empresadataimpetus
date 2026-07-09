@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import '@vue-flow/core/dist/style.css';
+@import '@vue-flow/core/dist/theme-default.css';
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+
+  /* Color Palette - Minimalist Black & Blue */
+  --bg-primary: #050811;    /* Black / Dark Void */
+  --bg-secondary: #0d111c;  /* Very Dark Blue Card */
+  --bg-tertiary: #192033;   /* Minimalist Elements / Borders */
+  
+  --text-primary: #f1f5f9;  /* Crisp light gray */
+  --text-secondary: #94a3b8;/* Cool gray */
+  --text-muted: #475569;    /* Muted slate gray */
+
+  /* Accents */
+  --accent-primary: #cc5533;  /* Claude clay orange */
+  --accent-hover: #e26a4a;    /* Claude light orange */
+  --accent-success: #059669;  /* Emerald */
+  --accent-warning: #d97706;  /* Amber */
+  --accent-danger: #dc2626;   /* Crimson */
+  --accent-danger-hover: #ef4444;
+
+  /* Node Colors */
+  --color-cat-core: #cc5533;
+  --color-cat-vertical: #10b981;
+  --color-cat-oferta: #f59e0b;
+  --color-cat-outbound: #ec4899;
+  --color-cat-posicionamento: #84cc16;
+
+  /* Effects - Flat and Minimalist */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 10px rgba(204, 85, 51, 0.1);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --transition-fast: 0.12s ease;
+  --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: var(--accent-danger);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.btn-danger:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--accent-danger-hover);
+  border-color: rgba(220, 38, 38, 0.5);
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+.btn-text:hover {
+  color: var(--text-primary);
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Inputs */
+.map-input {
+  background-color: rgba(5, 8, 17, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.85rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.map-input:focus {
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15);
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}

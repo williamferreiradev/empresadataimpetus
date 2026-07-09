@@ -1,0 +1,301 @@
+@import '@vue-flow/core/dist/style.css';
+@import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/node-resizer/dist/style.css';
+
+:root {
+  /* Minimalist Black & Blue / Neon */
+  --bg-primary: #050811;
+  --bg-secondary: #0d111c;
+  --bg-tertiary: #192033;
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+
+  --accent-primary: #cc5533;
+  --accent-hover: #e26a4a;
+  --accent-success: #059669;
+  --accent-warning: #d97706;
+  --accent-danger: #dc2626;
+  --accent-danger-hover: #ef4444;
+
+  --color-cat-core: #cc5533;
+  --color-cat-vertical: #10b981;
+  --color-cat-oferta: #f59e0b;
+  --color-cat-outbound: #ec4899;
+  --color-cat-posicionamento: #84cc16;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 10px rgba(204, 85, 51, 0.1);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --transition-fast: 0.12s ease;
+  --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.canvas-container {
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.btn-danger {
+  background-color: transparent;
+  color: var(--accent-danger);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+.btn-danger:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--accent-danger-hover);
+  border-color: rgba(220, 38, 38, 0.5);
+}
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+.btn-text:hover {
+  color: var(--text-primary);
+}
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+.btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+/* Inputs */
+.map-input {
+  background-color: rgba(5, 8, 17, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.85rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+.map-input:focus {
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15);
+}
+.mr-1 { margin-right: 0.25rem; }
+.mr-2 { margin-right: 0.5rem; }
+
+/* Canvas Controls */
+.flow-wrapper {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  background-color: #050505;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.vertical-toolbar {
+  position: absolute;
+  left: 350px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: rgba(13, 17, 28, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem 0.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--bg-tertiary);
+  z-index: 10;
+  box-shadow: var(--shadow-lg);
+}
+
+.toolbar-divider {
+  height: 1px;
+  background-color: var(--bg-tertiary);
+  margin: 0.25rem 0;
+}
+
+.tool-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tool-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.tool-btn.is-active-tool {
+  background-color: rgba(204, 85, 51, 0.15);
+  color: var(--accent-primary);
+}
+
+.canvas-controls {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 350px;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+}
+
+.control-card {
+  background-color: rgba(13, 17, 28, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--bg-tertiary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header-row h4 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-with-emoji {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.node-title-input {
+  width: 180px;
+}
+
+.category-select {
+  width: 140px;
+}
+
+.slides-navigator {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.slide-btn {
+  padding: 0.5rem;
+}
+
+.slide-indicator-card {
+  background-color: rgba(13, 17, 28, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--bg-tertiary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.slide-indicator-card:hover {
+  border-color: var(--text-muted);
+}
+
+.slide-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.15rem;
+}
+
+.slide-title-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}

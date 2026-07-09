@@ -21,7 +21,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
         <div>
           <label class="block text-xs font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Nome do Lead</label>
-          <input v-model="filterNome" type="text" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-shadow" placeholder="Buscar por nome">
+          <input v-model="filterNome" type="text" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-shadow" placeholder="Buscar por nome">
         </div>
 
         <!-- Nicho Dropdown -->

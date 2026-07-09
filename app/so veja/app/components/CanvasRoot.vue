@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
-import CustomNode from './nodes/CustomNode.vue'
-import CustomEdge from './edges/CustomEdge.vue'
+import { useMapStorage } from '../composables/useMapStorage'
+import type { CanvasNode, CanvasEdge } from '../types/canvas'
+import CustomNode from './CustomNode.vue'
+import CustomEdge from './CustomEdge.vue'
+import NavBar from './NavBar.vue'
+import DetailPanel from './DetailPanel.vue'
 import EmojiPicker from './EmojiPicker.vue'
 import { 
   MousePointer, 
@@ -18,24 +23,19 @@ import {
   Plus
 } from 'lucide-vue-next'
 
-const props = defineProps({
-  initialElements: { type: Array, default: () => [] },
-  markdownText: { type: String, default: '' },
-  showMarkdownEditor: { type: Boolean, default: false }
-})
+const props = defineProps<{
+  mapId: string
+}>()
 
-const emit = defineEmits(['update:elements', 'update:markdownText'])
+const router = useRouter()
+const { getMap, saveMap, listMaps } = useMapStorage()
 
-const internalMarkdown = computed({
-  get: () => props.markdownText,
-  set: (val) => emit('update:markdownText', val)
-})
-
+const mapName = ref('')
 const nodes = ref<any[]>([])
 const edges = ref<any[]>([])
 
-const activeNode = ref<any | null>(null)
-const activeEdge = ref<any | null>(null)
+const activeNode = ref<CanvasNode | null>(null)
+const activeEdge = ref<CanvasEdge | null>(null)
 const isPanelOpen = ref(false)
 const panOnDrag = ref(true)
 
@@ -66,215 +66,63 @@ function handleConfirmYes() {
   onConfirmCallback = null
 }
 
-const { onConnect, addEdges, onNodeClick, onEdgeClick, fitView, project, removeNodes, removeEdges } = useVueFlow()
+const { onConnect, addEdges, onNodeClick, onEdgeClick, fitView, project } = useVueFlow()
 
 // Load map data on mount
-
-const emitElements = () => {
-  const allElements = [...nodes.value, ...edges.value]
-  emit('update:elements', allElements)
-}
-
 onMounted(() => {
-  const mapData: { nodes: any[], edges: any[] } = { nodes: [], edges: [] }
-  if (props.initialElements && props.initialElements.length > 0) {
-    props.initialElements.forEach((el: any) => {
-      if (el.source) mapData.edges.push(el)
-      else mapData.nodes.push(el)
-    })
+  const index = listMaps()
+  const currentMap = index.find(m => m.id === props.mapId)
+  if (currentMap) {
+    mapName.value = currentMap.name
+  } else {
+    router.push('/')
+    return
   }
 
-  nodes.value = mapData.nodes.map(n => {
-    let colorKey = n.data?.category || n.data?.color || 'core'
-    const oldColorsMap: Record<string, string> = {
-      'emerald': 'vertical',
-      'gold': 'oferta',
-      'default': 'core',
-      'wine': 'posicionamento',
-      'dark': 'outbound',
-      'sticky-yellow': 'oferta'
+  const mapData = getMap(props.mapId)
+  
+  // Transform CanvasNode to Vue Flow Node
+  nodes.value = mapData.nodes.map(n => ({
+    id: n.id,
+    type: 'custom',
+    position: n.position,
+    style: {
+      width: `${n.width || 180}px`,
+      height: `${n.height || 80}px`
+    },
+    data: {
+      label: n.label,
+      category: n.category,
+      content: n.content,
+      onUpdateLabel: handleUpdateLabel,
+      shape: n.shape || 'rectangle',
+      width: n.width || 180,
+      height: n.height || 80,
+      isCollapsed: n.collapsed || false,
+      emoji: n.emoji,
+      onToggleCollapse: handleToggleCollapse,
+      onAddSubnode: handleAddSubnode,
+      onDeleteNode: handleDeleteNode
     }
-    if (oldColorsMap[colorKey]) {
-      colorKey = oldColorsMap[colorKey]
-    }
-    return {
-      id: n.id,
-      type: 'custom',
-      position: n.position,
-      style: {
-        width: n.style?.width || `${n.data?.width || 180}px`,
-        height: n.style?.height || `${n.data?.height || 80}px`
-      },
-      data: {
-        label: (n.data?.label || 'Bloco').replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/gi, ' ').replace(/<[^>]*>?/gm, ''),
-        category: colorKey,
-        content: n.data?.content || '',
-        shape: n.data?.shape || 'rectangle',
-        width: n.style?.width ? parseInt(n.style.width) : (n.data?.width || 180),
-        height: n.style?.height ? parseInt(n.style.height) : (n.data?.height || 80),
-        isCollapsed: n.data?.collapsed || false,
-        emoji: n.data?.emoji,
-        onUpdateLabel: handleUpdateLabel,
-        onToggleCollapse: handleToggleCollapse,
-        onAddSubnode: handleAddSubnode,
-        onDeleteNode: handleDeleteNode
-      }
-    }
-  })
+  }))
 
+  // Transform CanvasEdge to Vue Flow Edge
   edges.value = mapData.edges.map(e => ({
     id: e.id,
     type: 'custom',
     source: e.source,
     target: e.target,
-    sourceHandle: e.sourceHandle || 'right-s',
-    targetHandle: e.targetHandle || 'left-t',
     label: e.label,
     data: {
-      routing: e.data?.routing || 'bezier',
-      styleType: e.data?.styleType || 'normal',
-      color: e.data?.color || e.style?.stroke || '#64748b'
+      routing: e.routing || 'bezier',
+      styleType: e.styleType || 'normal',
+      color: e.color || '#64748b'
     }
   }))
-
+  // Load initial states after rendering is ready
   setTimeout(() => {
     updateHiddenStates()
-    fitView({ padding: 0.3, duration: 800 })
   }, 150)
-})
-
-function loadTemplate(type: string) {
-  if (type === 'team') {
-    internalMarkdown.value = `# Diretoria Geral\n## Engenharia de Software\n### Squad Alpha (Frontend)\n### Squad Beta (Backend)\n## Marketing e Vendas\n### Inbound Marketing\n### Outbound Sales\n## Suporte ao Cliente`
-  } else {
-    internalMarkdown.value = `# Jornada de Aprendizado\n## Fundamentos Web\n### HTML Semântico\n### CSS Grid e Flexbox\n### Javascript Moderno\n## Frameworks Reativos\n### Vue.js 3\n### Nuxt 4\n## DevOps e Infra\n### Docker e Containers\n### Deploy na Vercel`
-  }
-}
-
-function insertHeading(level: number) {
-  const el = document.getElementById('md-editor') as HTMLTextAreaElement
-  if (!el) return
-  const start = el.selectionStart
-  const end = el.selectionEnd
-  const text = internalMarkdown.value
-  const selectedText = text.substring(start, end) || 'Tópico'
-  const hashes = '#'.repeat(level)
-  const replacement = `\n${hashes} ${selectedText}\n`
-  internalMarkdown.value = text.substring(0, start) + replacement + text.substring(end)
-  setTimeout(() => {
-    el.focus()
-    el.setSelectionRange(start + hashes.length + 2, start + hashes.length + 2 + selectedText.length)
-  }, 50)
-}
-
-function insertBullet() {
-  const el = document.getElementById('md-editor') as HTMLTextAreaElement
-  if (!el) return
-  const start = el.selectionStart
-  const end = el.selectionEnd
-  const text = internalMarkdown.value
-  const selectedText = text.substring(start, end) || 'Item'
-  const replacement = `\n- ${selectedText}\n`
-  internalMarkdown.value = text.substring(0, start) + replacement + text.substring(end)
-  setTimeout(() => {
-    el.focus()
-    el.setSelectionRange(start + 3, start + 3 + selectedText.length)
-  }, 50)
-}
-
-function parseMarkdownToFlow(markdown: string) {
-  if (!markdown) return
-  const lines = markdown.split('\n')
-  const headers: { id: string, level: number, label: string }[] = []
-  
-  lines.forEach((line: string, index: number) => {
-    const match = line.match(/^(#{1,6})\s+(.+)$/)
-    if (match && match[1] && match[2]) {
-      headers.push({
-        id: `md-${index}`,
-        label: match[2].trim(),
-        level: match[1].length
-      })
-    }
-  })
-
-  const newNodes: any[] = []
-  const newEdges: any[] = []
-  const lastActiveAtLevel: Record<number, string> = {}
-  
-  let currentY = 40
-  const startX = 60
-  const columnWidth = 260
-  const rowHeight = 110
-  const countAtLevel: Record<number, number> = {}
-
-  const existingNodes: Record<string, any> = {}
-  nodes.value.forEach(el => {
-    if (el.position) existingNodes[el.id] = el
-  })
-
-  headers.forEach((header) => {
-    const parentId = lastActiveAtLevel[header.level - 1]
-    
-    const verticalIndex = countAtLevel[header.level] || 0
-    countAtLevel[header.level] = verticalIndex + 1
-    
-    let x = startX + (header.level - 1) * columnWidth
-    let y = currentY + (verticalIndex * rowHeight)
-
-    if (existingNodes[header.id]) {
-      x = existingNodes[header.id].position.x
-      y = existingNodes[header.id].position.y
-    }
-
-    newNodes.push({
-      id: header.id,
-      type: 'custom',
-      position: { x, y },
-      style: { width: '180px', height: '80px' },
-      data: {
-        label: header.label,
-        shape: 'rectangle',
-        category: header.level === 1 ? 'core' : header.level === 2 ? 'vertical' : 'oferta',
-        onUpdateLabel: handleUpdateLabel,
-        onToggleCollapse: handleToggleCollapse,
-        onAddSubnode: handleAddSubnode,
-        onDeleteNode: handleDeleteNode
-      }
-    })
-
-    if (parentId) {
-      newEdges.push({
-        id: `e-${parentId}-${header.id}`,
-        source: parentId,
-        target: header.id,
-        type: 'custom',
-        data: { routing: 'bezier', styleType: 'normal', color: '#64748b' }
-      })
-    }
-
-    lastActiveAtLevel[header.level] = header.id
-  })
-
-  const manualNodes = nodes.value.filter(el => el.position && !el.id.startsWith('md-'))
-  const manualEdges = edges.value.filter(el => el.source && !el.id.startsWith('e-md-'))
-  
-  nodes.value = [...newNodes, ...manualNodes]
-  edges.value = [...newEdges, ...manualEdges]
-  emitElements()
-}
-
-let mdDebounce: ReturnType<typeof setTimeout> | null = null
-let isGeneratingMarkdown = false
-
-watch(internalMarkdown, (val, oldVal) => {
-  if (isGeneratingMarkdown) return
-  if (val !== oldVal && val !== undefined) {
-    if (mdDebounce) clearTimeout(mdDebounce)
-    mdDebounce = setTimeout(() => {
-      parseMarkdownToFlow(val)
-    }, 500)
-  }
 })
 
 // Collapse / Hierarchy helper functions
@@ -341,7 +189,28 @@ let saveTimeout: any = null
 function triggerSave() {
   if (saveTimeout) clearTimeout(saveTimeout)
   saveTimeout = setTimeout(() => {
-    emitElements()
+    const rawNodes: CanvasNode[] = nodes.value.map(n => ({
+      id: n.id,
+      label: n.data.label,
+      category: n.data.category,
+      content: n.data.content,
+      position: n.position,
+      shape: n.data.shape || 'rectangle',
+      width: n.data.width || 180,
+      height: n.data.height || 80,
+      collapsed: n.data.isCollapsed || false,
+      emoji: n.data.emoji
+    }))
+    const rawEdges: CanvasEdge[] = edges.value.map(e => ({
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      label: e.label,
+      routing: e.data?.routing || 'bezier',
+      styleType: e.data?.styleType || 'normal',
+      color: e.data?.color || '#64748b'
+    }))
+    saveMap(props.mapId, { nodes: rawNodes, edges: rawEdges })
   }, 500)
 }
 
@@ -363,105 +232,9 @@ onConnect((params) => {
   }])
 })
 
-function buildHierarchyOrder(nodesList: any[], edgesList: any[]) {
-  const incomingCount = new Map<string, number>()
-  const adj = new Map<string, any[]>()
-  
-  nodesList.forEach(n => {
-    incomingCount.set(n.id, 0)
-    adj.set(n.id, [])
-  })
-  
-  edgesList.forEach(e => {
-    if (adj.has(e.source) && incomingCount.has(e.target)) {
-      adj.get(e.source)!.push({ target: e.target, y: nodesList.find(n => n.id === e.target)?.position.y || 0 })
-      incomingCount.set(e.target, (incomingCount.get(e.target) || 0) + 1)
-    }
-  })
-  
-  for (let [id, children] of adj.entries()) {
-    children.sort((a, b) => a.y - b.y)
-  }
-  
-  const roots = nodesList.filter(n => incomingCount.get(n.id) === 0).sort((a, b) => a.position.y - b.position.y)
-  
-  const ordered: any[] = []
-  const visited = new Set<string>()
-  
-  function dfs(nodeId: string) {
-    if (visited.has(nodeId)) return
-    visited.add(nodeId)
-    const node = nodesList.find(n => n.id === nodeId)
-    if (node) ordered.push(node)
-    
-    for (let child of adj.get(nodeId)!) {
-      dfs(child.target)
-    }
-  }
-  
-  for (let root of roots) {
-    dfs(root.id)
-  }
-  
-  nodesList.forEach(n => {
-    if (!visited.has(n.id)) dfs(n.id)
-  })
-  
-  return ordered
-}
-
 const orderedNodes = computed(() => {
-  return buildHierarchyOrder(nodes.value, edges.value)
+  return [...nodes.value].sort((a, b) => a.position.x - b.position.x)
 })
-
-function generateMarkdown() {
-  let md = ''
-  const incomingCount = new Map<string, number>()
-  const adj = new Map<string, any[]>()
-  
-  nodes.value.forEach(n => {
-    incomingCount.set(n.id, 0)
-    adj.set(n.id, [])
-  })
-  
-  edges.value.forEach(e => {
-    if (adj.has(e.source) && incomingCount.has(e.target)) {
-      adj.get(e.source)!.push({ target: e.target, y: nodes.value.find(n => n.id === e.target)?.position.y || 0 })
-      incomingCount.set(e.target, (incomingCount.get(e.target) || 0) + 1)
-    }
-  })
-  
-  for (let [id, children] of adj.entries()) {
-    children.sort((a, b) => a.y - b.y)
-  }
-  
-  const roots = nodes.value.filter(n => incomingCount.get(n.id) === 0).sort((a, b) => a.position.y - b.position.y)
-  const visited = new Set<string>()
-  
-  function dfsMd(nodeId: string, depth: number) {
-    if (visited.has(nodeId)) return
-    visited.add(nodeId)
-    const node = nodes.value.find(n => n.id === nodeId)
-    if (node) {
-      let indent = '  '.repeat(depth)
-      let prefix = depth === 0 ? '# ' : depth === 1 ? '## ' : depth === 2 ? '### ' : '- '
-      md += `${indent}${prefix}${node.data.label}\n\n`
-    }
-    for (let child of adj.get(nodeId)!) {
-      dfsMd(child.target, depth + 1)
-    }
-  }
-  
-  for (let root of roots) {
-    dfsMd(root.id, 0)
-  }
-  
-  isGeneratingMarkdown = true
-  internalMarkdown.value = md
-  setTimeout(() => {
-    isGeneratingMarkdown = false
-  }, 100)
-}
 
 const currentSlideIndex = ref(0)
 
@@ -644,9 +417,7 @@ function handleAddSubnode(parentId?: string) {
     id: `e-${crypto.randomUUID()}`,
     type: 'custom',
     source: parentNode.id,
-    sourceHandle: 'right-s',
     target: id,
-    targetHandle: 'left-t',
     data: {
       routing: 'bezier',
       styleType: 'normal',
@@ -655,22 +426,10 @@ function handleAddSubnode(parentId?: string) {
   })
 }
 
-function handleDeleteEdge(edgeId?: string) {
-  const idToDelete = edgeId || activeEdge.value?.id
-  if (!idToDelete) return
-  
-  showConfirm('Deseja realmente excluir esta conexão?', () => {
-    removeEdges([idToDelete])
-    if (activeEdge.value && activeEdge.value.id === idToDelete) {
-      isPanelOpen.value = false
-      activeEdge.value = null
-    }
-  })
-}
-
 function handleDeleteNode(nodeId: string) {
   showConfirm('Deseja realmente excluir este bloco?', () => {
-    removeNodes([nodeId])
+    nodes.value = nodes.value.filter(n => n.id !== nodeId)
+    edges.value = edges.value.filter(e => e.source !== nodeId && e.target !== nodeId)
     
     if (activeNode.value && activeNode.value.id === nodeId) {
       isPanelOpen.value = false
@@ -778,7 +537,15 @@ function handleUpdateEdgeColor(color: string) {
   }
 }
 
-// Deduplicated handleDeleteEdge
+function handleDeleteEdge() {
+  if (activeEdge.value) {
+    showConfirm('Tem certeza que deseja excluir esta conexão?', () => {
+      edges.value = edges.value.filter(e => e.id !== activeEdge.value?.id)
+      isPanelOpen.value = false
+      activeEdge.value = null
+    })
+  }
+}
 
 // Controls panel
 const nodeLabel = ref('')
@@ -897,55 +664,21 @@ function handleDeleteSelected() {
   }
 
   showConfirm('Deseja excluir os itens selecionados no canvas?', () => {
-    const nodesToRemove = nodes.value.filter(n => n.selected)
-    const edgesToRemove = edges.value.filter(e => e.selected || selectedNodes.includes(e.source) || selectedNodes.includes(e.target))
-    
-    removeNodes(nodesToRemove)
-    removeEdges(edgesToRemove)
+    nodes.value = nodes.value.filter(n => !n.selected)
+    edges.value = edges.value.filter(e => !e.selected && !selectedNodes.includes(e.source) && !selectedNodes.includes(e.target))
     
     if (activeNode.value && selectedNodes.includes(activeNode.value.id)) {
       isPanelOpen.value = false
       activeNode.value = null
-    }
-    if (activeEdge.value && edgesToRemove.some(e => e.id === activeEdge.value.id)) {
-      isPanelOpen.value = false
-      activeEdge.value = null
     }
   })
 }
 </script>
 
 <template>
-  <div class="canvas-container flex flex-row h-full w-full">
-    <!-- Markdown Editor Aside -->
-    <aside v-show="showMarkdownEditor" class="w-80 border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col h-full shadow-sm z-10 transition-all">
-      <div class="p-4 border-b border-gray-100 dark:border-zinc-800 flex flex-col gap-3">
-        <h3 class="font-semibold text-sm text-gray-700 dark:text-zinc-300 uppercase tracking-wider">Gerador por Texto</h3>
-        <div class="flex gap-2">
-          <button @click="loadTemplate('team')" class="text-xs font-medium text-orange-600 dark:text-orange-400 hover:underline">🏢 Equipe</button>
-          <button @click="loadTemplate('steps')" class="text-xs font-medium text-orange-600 dark:text-orange-400 hover:underline">📚 Estudos</button>
-        </div>
-        <div class="flex items-center gap-1 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-700 rounded p-1">
-          <button @click="generateMarkdown" class="px-2 py-1 text-xs font-bold text-white bg-orange-500 hover:bg-orange-600 rounded">Gerar do Mapa</button>
-          <div class="w-px h-4 bg-gray-300 dark:bg-zinc-700 mx-1"></div>
-          <button @click="insertHeading(1)" class="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded">H1</button>
-          <button @click="insertHeading(2)" class="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded">H2</button>
-          <button @click="insertHeading(3)" class="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded">H3</button>
-          <div class="w-px h-4 bg-gray-300 dark:bg-zinc-700 mx-1"></div>
-          <button @click="insertBullet" class="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded">• Lista</button>
-        </div>
-      </div>
-      <textarea
-        id="md-editor"
-        v-model="internalMarkdown"
-        class="flex-1 w-full bg-transparent p-4 text-sm font-mono text-gray-800 dark:text-zinc-200 resize-none outline-none"
-        placeholder="# Seu título principal\n## Subtópico..."
-      ></textarea>
-    </aside>
-
-    <div class="flex-1 relative w-full h-full">
-
-    
+  <div class="canvas-container">
+    <!-- Top dynamic navbar -->
+    <NavBar :nodes="nodes" :map-name="mapName" @back="router.push('/')" />
 
     <!-- Vue Flow Editor -->
     <div class="flow-wrapper" @dragover.prevent @drop="onDrop">
@@ -957,8 +690,7 @@ function handleDeleteSelected() {
         :pan-on-drag="panOnDrag"
         fit-view-on-init
         class="rough-canvas-flow"
-        @pane-dblclick="handlePaneDblClick"
-        :delete-key-code="['Backspace', 'Delete']"
+        @dblclick="handlePaneDblClick"
       />
     </div>
 
@@ -1011,7 +743,7 @@ function handleDeleteSelected() {
       >
         <Circle :size="16" />
       </button>
-      <button class="tool-btn" @click="$router.push('/docs')" title="Escrever e Gerar de Documento">
+      <button class="tool-btn" @click="router.push('/docs')" title="Escrever e Gerar de Documento">
         <FileText :size="16" />
       </button>
       <button class="tool-btn" @click="fitView({ duration: 800 })" title="Enquadrar Visualização">
@@ -1118,10 +850,7 @@ function handleDeleteSelected() {
       </div>
     </Transition>
   </div>
-    </div>
 </template>
-
-<style src="~/assets/css/mindmap.css"></style>
 
 <style scoped>
 .canvas-container {

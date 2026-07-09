@@ -119,8 +119,8 @@ watch(() => [
 <style scoped>
 .rough-edge-container :deep(path) {
   transition: stroke var(--transition-fast), stroke-width var(--transition-fast);
-  stroke-dasharray: 5000;
-  stroke-dashoffset: 5000;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
   animation: draw-edge 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
@@ -131,7 +131,7 @@ watch(() => [
 
 @keyframes draw-edge {
   0% {
-    stroke-dashoffset: 5000;
+    stroke-dashoffset: 1000;
   }
   100% {
     stroke-dashoffset: 0;

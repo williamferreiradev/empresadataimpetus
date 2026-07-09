@@ -12,23 +12,23 @@
     
     <!-- Nav Links -->
     <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-      <NuxtLink to="/marketing/inicio" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+      <NuxtLink to="/marketing/inicio" active-class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-500 group transition-colors">
         <HomeIcon class="h-5 w-5 mr-3 text-gray-400 dark:text-zinc-500 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path === '/marketing/inicio'}" />
         Dashboard
       </NuxtLink>
-      <NuxtLink to="/marketing/clientes" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+      <NuxtLink to="/marketing/clientes" active-class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-500 group transition-colors">
         <UsersIcon class="h-5 w-5 mr-3 text-gray-400 dark:text-zinc-500 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/clientes')}" />
         Clientes
       </NuxtLink>
-      <NuxtLink to="/marketing/calendario" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+      <NuxtLink to="/marketing/calendario" active-class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-500 group transition-colors">
         <CalendarIcon class="h-5 w-5 mr-3 text-gray-400 dark:text-zinc-500 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/calendario')}" />
         Calendário Editorial
       </NuxtLink>
-      <NuxtLink to="/marketing/mapas-mentais" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+      <NuxtLink to="/marketing/mapas-mentais" active-class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-500 group transition-colors">
         <LightBulbIcon class="h-5 w-5 mr-3 text-gray-400 dark:text-zinc-500 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/mapas-mentais')}" />
         Mapas Mentais
       </NuxtLink>
-      <NuxtLink to="/marketing/configuracoes" active-class="bg-orange-50 text-orange-600" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 hover:text-orange-600 group transition-colors">
+      <NuxtLink to="/marketing/configuracoes" active-class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 dark:text-zinc-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-500 group transition-colors">
         <Cog6ToothIcon class="h-5 w-5 mr-3 text-gray-400 dark:text-zinc-500 group-hover:text-orange-500 transition-colors" :class="{'text-orange-500': $route.path.includes('/configuracoes')}" />
         Configurações
       </NuxtLink>

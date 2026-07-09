@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen relative overflow-hidden bg-[#f8f9fa]">
+  <div class="w-screen h-screen relative overflow-hidden bg-gray-50 dark:bg-zinc-950">
     <!-- Header flutuante para controle do mapa -->
     <div class="absolute top-4 left-24 z-50 flex items-center bg-white dark:bg-zinc-800 rounded-lg shadow-md border border-gray-200 dark:border-zinc-700 px-4 py-2 gap-4">
       <button 
@@ -44,6 +44,20 @@
       
       <div class="h-6 w-px bg-gray-300 mx-2"></div>
       
+      <!-- Toggle Markdown Editor -->
+      <button 
+        @click="showMarkdownEditor = !showMarkdownEditor"
+        class="text-sm font-medium py-1.5 px-3 rounded flex items-center transition-colors"
+        :class="showMarkdownEditor ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' : 'text-gray-600 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-zinc-100'"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        {{ showMarkdownEditor ? 'Ocultar Gerador' : 'Gerador Markdown' }}
+      </button>
+
+      <div class="h-6 w-px bg-gray-300 mx-2"></div>
+      
       <button 
         @click="salvarMapa" 
         :disabled="saving"
@@ -65,7 +79,9 @@
     <template v-if="!loading">
       <MindMapEditor 
         v-show="currentView === 'map'"
-        :initial-elements="mapa.elementos" 
+        :initial-elements="mapa.elementos"
+        v-model:markdownText="mapa.markdown_content"
+        :show-markdown-editor="showMarkdownEditor"
         @update:elements="updateElementos"
       />
       
@@ -89,10 +105,11 @@ import MindMapTableView from '~/components/mindmap/views/MindMapTableView.vue'
 definePageMeta({ layout: false })
 
 const currentView = ref('map')
+const showMarkdownEditor = ref(false)
 
 const route = useRoute()
 const supabase = useSupabaseClient()
-const mapa = ref({ nome: '', elementos: [] })
+const mapa = ref({ nome: '', elementos: [], markdown_content: '' })
 const loading = ref(true)
 const saving = ref(false)
 const elementosAtuais = ref([])
@@ -107,6 +124,7 @@ onMounted(async () => {
   if (data) {
     mapa.value = data
     if (!mapa.value.elementos) mapa.value.elementos = []
+    if (!mapa.value.markdown_content) mapa.value.markdown_content = ''
     elementosAtuais.value = JSON.parse(JSON.stringify(mapa.value.elementos)) // Setup initial state
   }
   loading.value = false
@@ -125,15 +143,16 @@ const updateElementos = (els) => {
   triggerAutoSave()
 }
 
-watch(() => mapa.value.nome, () => {
+watch([() => mapa.value.nome, () => mapa.value.markdown_content], () => {
   if (!loading.value) triggerAutoSave()
-})
+}, { deep: true })
 
 const salvarMapa = async () => {
   saving.value = true
   const payload = {
     nome: mapa.value.nome,
-    elementos: elementosAtuais.value
+    elementos: elementosAtuais.value,
+    markdown_content: mapa.value.markdown_content
   }
   
   await supabase
