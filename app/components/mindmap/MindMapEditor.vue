@@ -278,14 +278,17 @@ watch(internalMarkdown, (val, oldVal) => {
 })
 
 // Collapse / Hierarchy helper functions
-function getDescendants(nodeId: string): string[] {
+function getDescendants(nodeId: string, visited = new Set<string>()): string[] {
+  if (visited.has(nodeId)) return []
+  visited.add(nodeId)
+
   const children = edges.value
     .filter(e => e.source === nodeId)
     .map(e => e.target)
   
   let descendants = [...children]
   children.forEach(childId => {
-    descendants = [...descendants, ...getDescendants(childId)]
+    descendants = [...descendants, ...getDescendants(childId, visited)]
   })
   return descendants
 }
@@ -294,7 +297,10 @@ function getCollapsedCount(nodeId: string): number {
   return getDescendants(nodeId).length
 }
 
-function isNodeHidden(nodeId: string): boolean {
+function isNodeHidden(nodeId: string, visited = new Set<string>()): boolean {
+  if (visited.has(nodeId)) return false // Prevenir loop infinito em caso de ciclo
+  visited.add(nodeId)
+  
   const parentEdge = edges.value.find(e => e.target === nodeId)
   if (!parentEdge) return false
   
@@ -303,7 +309,7 @@ function isNodeHidden(nodeId: string): boolean {
   
   if (parentNode.data.isCollapsed) return true
   
-  return isNodeHidden(parentNode.id)
+  return isNodeHidden(parentNode.id, visited)
 }
 
 function handleToggleCollapse(nodeId: string) {
@@ -465,13 +471,16 @@ function generateMarkdown() {
 
 const currentSlideIndex = ref(0)
 
-function expandAncestors(nodeId: string) {
+function expandAncestors(nodeId: string, visited = new Set<string>()) {
+  if (visited.has(nodeId)) return
+  visited.add(nodeId)
+  
   const parentEdge = edges.value.find(e => e.target === nodeId)
   if (parentEdge) {
     const parentNode = nodes.value.find(n => n.id === parentEdge.source)
     if (parentNode) {
       parentNode.data.isCollapsed = false
-      expandAncestors(parentNode.id)
+      expandAncestors(parentNode.id, visited)
     }
   }
 }
@@ -715,7 +724,7 @@ function handleUpdateCategory(newCategory: string) {
   }
 }
 
-function handleUpdateNodeShape(newShape: 'rectangle' | 'sticky' | 'circle') {
+function handleUpdateNodeShape(newShape: 'rectangle' | 'sticky' | 'circle' | 'text-h1' | 'text-h2' | 'text-p') {
   if (activeNode.value) {
     activeNode.value.shape = newShape
     const nodeIndex = nodes.value.findIndex(n => n.id === activeNode.value?.id)
@@ -836,6 +845,33 @@ function addShapeNode(shape: 'rectangle' | 'sticky' | 'circle') {
       shape,
       width: 180,
       height: 80,
+      isCollapsed: false,
+      onToggleCollapse: handleToggleCollapse,
+    }
+  })
+}
+
+function addTextNode(type: 'text-h1' | 'text-h2' | 'text-p') {
+  const id = `n-${crypto.randomUUID()}`
+  nodes.value.push({
+    id,
+    type: 'custom',
+    position: {
+      x: 150 + Math.random() * 200,
+      y: 150 + Math.random() * 200
+    },
+    style: {
+      width: type === 'text-h1' ? '300px' : type === 'text-h2' ? '250px' : '200px',
+      height: type === 'text-h1' ? '80px' : type === 'text-h2' ? '60px' : '50px'
+    },
+    data: {
+      label: type === 'text-h1' ? 'Título H1' : type === 'text-h2' ? 'Subtítulo H2' : 'Parágrafo',
+      category: 'core',
+      content: '',
+      onUpdateLabel: handleUpdateLabel,
+      shape: type,
+      width: type === 'text-h1' ? 300 : type === 'text-h2' ? 250 : 200,
+      height: type === 'text-h1' ? 80 : type === 'text-h2' ? 60 : 50,
       isCollapsed: false,
       onToggleCollapse: handleToggleCollapse,
       onAddSubnode: handleAddSubnode,
@@ -1046,6 +1082,12 @@ function handleDeleteSelected() {
             <option value="posicionamento">Vermelho Rubi</option>
           </select>
           <button class="btn btn-primary" @click="handleAddNode">Adicionar</button>
+          
+          <!-- Text Dynamic Nodes -->
+          <div class="w-px h-6 bg-gray-600 mx-1"></div>
+          <button class="btn btn-secondary text-xs px-2" @click="addTextNode('text-h1')" title="Adicionar H1">H1</button>
+          <button class="btn btn-secondary text-xs px-2" @click="addTextNode('text-h2')" title="Adicionar H2">H2</button>
+          <button class="btn btn-secondary text-xs px-2" @click="addTextNode('text-p')" title="Adicionar Texto (P)">P</button>
         </div>
       </div>
     </div>
@@ -1223,25 +1265,24 @@ function handleDeleteSelected() {
 .slides-navigator {
   position: absolute;
   bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
   z-index: 60;
   background-color: rgba(30, 41, 59, 0.85);
   backdrop-filter: blur(12px);
   border: 1px solid var(--bg-tertiary);
   border-radius: var(--radius-md);
-  padding: 0.5rem;
+  padding: 0.35rem;
   box-shadow: var(--shadow-lg);
   transition: all var(--transition-normal);
 }
 
 .slide-btn {
-  padding: 0.5rem 0.8rem;
-  font-size: 0.9rem;
-  height: 38px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  height: 32px;
 }
 
 .slide-indicator-card {
@@ -1249,9 +1290,9 @@ function handleDeleteSelected() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 1.25rem;
-  min-width: 180px;
-  max-width: 280px;
+  padding: 0 0.75rem;
+  min-width: 120px;
+  max-width: 200px;
   cursor: pointer;
   user-select: none;
 }

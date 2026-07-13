@@ -58,6 +58,22 @@
         </p>
       </div>
     </div>
+
+    <!-- Custom Confirm Modal -->
+    <div v-if="confirmMessage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4 animate-in fade-in zoom-in duration-200">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-zinc-100 mb-2">Atenção</h3>
+        <p class="text-gray-600 dark:text-zinc-400 mb-6">{{ confirmMessage }}</p>
+        <div class="flex justify-end gap-3">
+          <button @click="confirmMessage = null" class="px-4 py-2 rounded-lg font-medium text-gray-600 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
+            Cancelar
+          </button>
+          <button @click="handleConfirmYes" class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-colors shadow-sm">
+            Excluir
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,8 +133,21 @@ const criarNovoMapa = async () => {
   }
 }
 
-const deletarMapa = async (id) => {
-  if(!confirm('Tem certeza que deseja excluir este mapa?')) return;
+const confirmMessage = ref(null)
+const mapToDelete = ref(null)
+
+const deletarMapa = (id) => {
+  mapToDelete.value = id
+  confirmMessage.value = 'Tem certeza que deseja excluir este mapa?'
+}
+
+const handleConfirmYes = async () => {
+  if (!mapToDelete.value) return
+  
+  const id = mapToDelete.value
+  confirmMessage.value = null
+  mapToDelete.value = null
+  
   const { error } = await supabase.from('ibeia_mapas_mentais').delete().eq('id', id)
   if(!error) {
     fetchMapas()

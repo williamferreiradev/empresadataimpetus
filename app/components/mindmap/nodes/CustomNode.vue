@@ -15,7 +15,7 @@ const props = defineProps<{
     category: string
     content: string
     onUpdateLabel?: (id: string, newLabel: string) => any
-    shape?: 'rectangle' | 'sticky' | 'circle'
+    shape?: 'rectangle' | 'sticky' | 'circle' | 'text-h1' | 'text-h2' | 'text-p'
     width?: number
     height?: number
     isCollapsed?: boolean
@@ -40,7 +40,7 @@ const labelInputRef = ref<HTMLInputElement | null>(null)
 
 const shapeModel = computed({
   get: () => props.data.shape || 'rectangle',
-  set: (val: 'rectangle' | 'sticky' | 'circle') => {
+  set: (val: 'rectangle' | 'sticky' | 'circle' | 'text-h1' | 'text-h2' | 'text-p') => {
     props.data.shape = val
   }
 })
@@ -82,7 +82,9 @@ function drawRoughNode() {
 
   const shapeType = props.data.shape || 'rectangle'
 
-  if (shapeType === 'circle') {
+  if (shapeType.startsWith('text-')) {
+    return
+  } else if (shapeType === 'circle') {
     const circleShape = rc.ellipse(w / 2, h / 2, w - 12, h - 12, {
       seed,
       stroke: categoryColor,
@@ -203,11 +205,13 @@ function handleResize(event: any) {
       class="custom-node-toolbar"
     >
       <div class="toolbar-content" @click.stop>
-        <!-- Shape Select -->
         <select v-model="shapeModel" class="toolbar-select" title="Formato do Bloco">
           <option value="rectangle">Retângulo</option>
           <option value="sticky">Nota</option>
           <option value="circle">Círculo</option>
+          <option value="text-h1">Texto H1</option>
+          <option value="text-h2">Texto H2</option>
+          <option value="text-p">Texto P</option>
         </select>
         
         <!-- Colors Grid -->
@@ -291,7 +295,14 @@ function handleResize(event: any) {
         />
       </div>
       <div v-else class="view-mode" title="Dê duplo clique para editar o título">
-        <span class="node-label">{{ data.label }}</span>
+        <span 
+          class="node-label" 
+          :class="{
+            'is-h1': data.shape === 'text-h1',
+            'is-h2': data.shape === 'text-h2',
+            'is-p': data.shape === 'text-p'
+          }"
+        >{{ data.label }}</span>
       </div>
     </div>
 
@@ -371,6 +382,29 @@ function handleResize(event: any) {
   color: var(--text-primary);
   word-break: break-word;
   line-height: 1.3;
+}
+
+.node-label.is-h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-display, var(--font-sans));
+  line-height: 1.1;
+}
+
+.node-label.is-h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-display, var(--font-sans));
+  line-height: 1.2;
+}
+
+.node-label.is-p {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .edit-mode {
